@@ -31,28 +31,35 @@ static void setupLaser()
   
   TCCR4B = 0x00;  // stop Timer4 clock for register updates
   TCCR4A = 0x82; // Clear OC4A on match, fast PWM mode, lower WGM4x=14
-  ICR4 = 800; // 800 clock cycles = 20,000hz
-  OCR4A = 799; // ICR4 - 1 force immediate compare on next tick
+  ICR4 = 560; // 800 clock cycles = 20,000hz
+  OCR4A = 559; // ICR4 - 1 force immediate compare on next tick
   TCCR4B = 0x18 | 0x01; // upper WGM4x = 14, clock sel = prescaler, start running
+  
+  noInterrupts();
+  TCCR4B &= 0xf8; // stop timer, OC4A may be active now
+  TCNT4 = 560; // force immediate compare on next tick
+  ICR4 = 560; // set new PWM period
+  TCCR4B |= 0x01; // start the timer with proper prescaler value
+  interrupts();
 }
 
 static void fireLaser(float intensity)
 {
+  unsigned long g = (unsigned long) int(intensity);
   if (intensity < 0) intensity = 0;
   if (intensity > 1000) intensity = 1000;
-  float laser_pwm = 16000000 / (LASER_PWM_MIN + ((LASER_PWM_MAX - LASER_PWM_MIN) * (intensity / 1000)));
-  noInterrupts();
-  TCCR4B &= 0xf8; // stop timer, OC4A may be active now
-  TCNT4 = 799; // force immediate compare on next tick
-  ICR4 = laser_pwm; // set new PWM period
-  TCCR4B |= 0x01; // start the timer with proper prescaler value
-  interrupts();
-  digitalWrite(LASER_FIRING_PIN,HIGH);
+  
+  unsigned long laser_pwm = intensity / 1000 * 560;
+
+  analogWrite(LASER_INTENSITY_PIN, laser_pwm);
+  digitalWrite(LASER_FIRING_PIN, HIGH);
   SERIAL_ECHO_START;
   SERIAL_ECHO("Laser firing intensity: ");
   SERIAL_ECHO(intensity);
   SERIAL_ECHO("Laser firing PWM: ");
   SERIAL_ECHOLN(laser_pwm);
+  SERIAL_ECHO("g: ");
+  SERIAL_ECHOLN(g);
 }
 
 static void offLaser()
