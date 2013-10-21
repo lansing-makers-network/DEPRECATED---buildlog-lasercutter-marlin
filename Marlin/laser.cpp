@@ -45,11 +45,10 @@ static void setupLaser()
 
 static void fireLaser(float intensity)
 {
-  unsigned long g = (unsigned long) int(intensity);
-  if (intensity < 0) intensity = 0;
-  if (intensity > 1000) intensity = 1000;
+  if (intensity < 0.0) intensity = 0.0;
+  if (intensity > 100.0) intensity = 100.0;
   
-  unsigned long laser_pwm = intensity / 1000 * 560;
+  int laser_pwm = int(intensity / 100.0 * 560.0);
 
   analogWrite(LASER_INTENSITY_PIN, laser_pwm);
   digitalWrite(LASER_FIRING_PIN, HIGH);
@@ -58,8 +57,6 @@ static void fireLaser(float intensity)
   SERIAL_ECHO(intensity);
   SERIAL_ECHO("Laser firing PWM: ");
   SERIAL_ECHOLN(laser_pwm);
-  SERIAL_ECHO("g: ");
-  SERIAL_ECHOLN(g);
 }
 
 static void offLaser()
