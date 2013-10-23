@@ -1115,10 +1115,12 @@ void process_commands()
 #ifdef LASER
     case 3:
       if(code_seen('S')){
+        st_synchronize();
         fireLaser(code_value());
       }
       break;
     case 5:
+      st_synchronize();
       offLaser();
       break;
 #endif
