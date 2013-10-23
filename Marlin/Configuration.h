@@ -75,6 +75,7 @@
 #define LASER 1
 #define LASER_PWM_MIN 20000
 #define LASER_PWM_MAX 50000
+#define SDSUPPORT
 
 //===========================================================================
 //=============================Thermal Settings  ============================
