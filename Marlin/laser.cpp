@@ -27,6 +27,9 @@ static void setupLaser()
   pinMode(LASER_FIRING_PIN, OUTPUT);
   pinMode(LASER_INTENSITY_PIN, OUTPUT);
   
+  digitalWrite(LASER_ACC_PIN, HIGH);  // Laser accessories are active LOW, so preset the pin
+  pinMode(LASER_ACC_PIN, OUTPUT);
+
   analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
   
   TCCR4B = 0x00;  // stop Timer4 clock for register updates
