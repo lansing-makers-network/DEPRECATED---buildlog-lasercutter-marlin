@@ -395,6 +395,7 @@
       #define LASER_INTENSITY_PIN 6
       #define LASER_FIRING_PIN    5
 	  #define LASER_ACC_PIN       4
+      #define KILL_PIN            11
     #endif
   #endif
 
