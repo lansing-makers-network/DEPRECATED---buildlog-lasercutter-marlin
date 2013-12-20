@@ -30,6 +30,9 @@ static void setupLaser()
   digitalWrite(LASER_ACC_PIN, HIGH);  // Laser accessories are active LOW, so preset the pin
   pinMode(LASER_ACC_PIN, OUTPUT);
 
+  digitalWrite(LASER_AOK_PIN, HIGH);  // Setup to the AOK pin to pull-up.
+  pinMode(LASER_AOK_PIN, INPUT);
+
   analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
   
   TCCR4B = 0x00;  // stop Timer4 clock for register updates
@@ -52,7 +55,7 @@ static void fireLaser(float intensity)
   if (intensity > 100.0) intensity = 100.0;
   
   int laser_pwm = int(intensity / 100.0 * 560.0);
-
+  waitForLaserAok();
   analogWrite(LASER_INTENSITY_PIN, laser_pwm);
   digitalWrite(LASER_FIRING_PIN, HIGH);
   SERIAL_ECHO_START;
@@ -66,3 +69,24 @@ static void offLaser()
 {
   digitalWrite(LASER_FIRING_PIN,LOW);
 }
+
+static void prepareLaser() {
+	digitalWrite(LASER_ACC_PIN, LOW);
+}
+
+static void waitForLaserAok() {
+	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
+	while(digitalRead(LASER_AOK_PIN)) {
+		if (millis() > timeout) {
+			SERIAL_ECHO_START;
+			SERIAL_ECHOLN("KILL: Relay board failed to indicate AOK");
+			kill();
+		}
+	}
+}
+
+static void shutdownLaser() {
+	digitalWrite(LASER_ACC_PIN, HIGH);
+}
+
+

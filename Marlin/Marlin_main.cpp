@@ -1495,6 +1495,9 @@ void process_commands()
           LCD_MESSAGEPGM(WELCOME_MSG);
           lcd_update();
         #endif
+		#ifdef LASER
+          prepareLaser();
+		#endif
         break;
       #endif
 
@@ -1506,6 +1509,9 @@ void process_commands()
         disable_e2();
         finishAndDisableSteppers();
         fanSpeed = 0;
+		#ifdef LASER
+        	shutdownLaser();
+	    #endif
         delay(1000); // Wait a little before to switch off
       #if defined(SUICIDE_PIN) && SUICIDE_PIN > -1
         st_synchronize();
@@ -2623,6 +2629,9 @@ void manage_inactivity()
         disable_e0();
         disable_e1();
         disable_e2();
+		#ifdef LASER
+            shutdownLaser();
+		#endif
       }
     }
   }
@@ -2676,6 +2685,9 @@ void kill()
   disable_e0();
   disable_e1();
   disable_e2();
+#ifdef LASER
+  shutdownLaser();
+#endif
 
 #if defined(PS_ON_PIN) && PS_ON_PIN > -1
   pinMode(PS_ON_PIN,INPUT);
