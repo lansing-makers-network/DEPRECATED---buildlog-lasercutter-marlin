@@ -57,6 +57,19 @@ static void lcd_set_contrast();
 #endif
 static void lcd_control_retract_menu();
 static void lcd_sdcard_menu();
+#ifdef LASER
+	static void lcd_laser_focus_menu();
+	static void lcd_laser_menu();
+	static void lcd_laser_test_fire_menu()
+	static void action_laser_focus_3mm();
+	static void action_laser_focus_635mm();
+	static void laser_set_focus(float f_length);
+	static void laser_test_fire(uint8_t power, uint8_t dwell);
+	static void action_laser_test_20_3ms();
+	static void action_laser_test_20_10ms();
+	static void action_laser_test_100_3ms();
+	static void action_laser_test_100_10ms();
+#endif
 
 static void lcd_quick_feedback();//Cause an LCD refresh, and give the user visual or audiable feedback that something has happend
 
@@ -255,6 +268,9 @@ static void lcd_main_menu()
     }else{
         MENU_ITEM(submenu, MSG_PREPARE, lcd_prepare_menu);
     }
+	#ifdef LASER
+    	MENU_ITEM(submenu, "Laser Utilities", lcd_laser_menu);
+	#endif
     MENU_ITEM(submenu, MSG_CONTROL, lcd_control_menu);
 #ifdef SDSUPPORT
     if (card.cardOK)
@@ -688,6 +704,79 @@ static void lcd_control_retract_menu()
 }
 #endif
 
+#ifdef LASER
+static void lcd_laser_menu()
+{
+	START_MENU();
+	MENU_ITEM(back, MSG_MAIN, lcd_main_menu);
+	MENU_ITEM(submenu, "Set Focus", lcd_laser_focus_menu);
+	MENU_ITEM(submenu, "Test Fire", lcd_laser_test_fire_menu);
+	END_MENU();
+}
+
+static void lcd_laser_test_fire_menu() {
+	START_MENU();
+	MENU_ITEM(back, "Laser Utilities", lcd_laser_menu);
+	MENU_ITEM(function, "20% 3ms", action_laser_test_20_3ms);
+	MENU_ITEM(function, "20% 10ms", action_laser_test_20_10ms);
+	MENU_ITEM(function, "100%, 3ms", action_laser_test_100_3ms);
+	MENU_ITEM(function, "100%, 10ms", action_laser_test_100_10ms);
+	END_MENU();
+}
+
+
+static void action_laser_test_20_3ms() {
+	laser_test_fire(20, 3);
+}
+
+static void action_laser_test_20_10ms() {
+	laser_test_fire(20, 10);
+}
+
+static void action_laser_test_100_3ms() {
+	laser_test_fire(100, 3);
+}
+
+static void action_laser_test_100_10ms() {
+	laser_test_fire(100, 10);
+}
+
+static void laser_test_fire(uint8_t power, uint8_t dwell) {
+	char fire_cmd[20], dwell_cmd[20];
+
+	enquecommand_P(PSTR("M17"));
+	sprintf_P(fire_cmd, PSTR("M3 S%u"), power));
+	sprintf_P(dwell_cmd, PSTR("G4 P%u"), dwell));
+
+	enquecommand(fire_cmd);
+	enquecommand(dwell_cmd);
+	enquecommand_P(PSTR("M5"));
+}
+
+static void lcd_laser_focus_menu() {
+	START_MENU();
+	MENU_ITEM(back, "Laser Utilities", lcd_laser_menu);
+	MENU_ITEM(function, "1/8in (3mm)", action_laser_focus_3mm);
+	MENU_ITEM(function, "1/4in (6.35mm)", action_laser_focus_635mm);
+	END_MENU();
+}
+
+static void action_laser_focus_3mm() {
+	laser_set_focus(3);
+}
+
+static void action_laser_focus_635mm() {
+	laser_set_focus(6.35);
+}
+
+static void laser_set_focus(float f_length) {
+	enquecommand_P(PSTR("G28 Z F150"));
+	float focus = LASER_FOCAL_HEIGHT - f_length;
+	char cmd[20];
+	sprintf_P(cmd, PSTR("G0 Z%f F150"), focus);
+	enquecommand(cmd);
+}
+#endif
 #if SDCARDDETECT == -1
 static void lcd_sd_refresh()
 {
@@ -1302,6 +1391,7 @@ char *itostr4(const int &xx)
   conv[4]=0;
   return conv;
 }
+
 
 //  convert float to string with 12345 format
 char *ftostr5(const float &x)
