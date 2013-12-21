@@ -273,7 +273,7 @@ static void lcd_main_menu()
     MENU_ITEM(back, MSG_WATCH, lcd_status_screen);
 	#ifdef LASER
     	if (!(movesplanned() || IS_SD_PRINTING)) {
-    		MENU_ITEM(submenu, "Laser Utilities", lcd_laser_menu);
+    		MENU_ITEM(submenu, "Laser Functions", lcd_laser_menu);
     	}
 	#endif
     if (movesplanned() || IS_SD_PRINTING)
@@ -743,7 +743,7 @@ static void lcd_laser_menu()
 
 static void lcd_laser_test_fire_menu() {
 	START_MENU();
-	MENU_ITEM(back, "Laser Utilities", lcd_laser_menu);
+	MENU_ITEM(back, "Laser Functions", lcd_laser_menu);
 	MENU_ITEM(function, " 20%  3ms", action_laser_test_20_3ms);
 	MENU_ITEM(function, " 20% 10ms", action_laser_test_20_10ms);
 	MENU_ITEM(function, "100%  3ms", action_laser_test_100_3ms);
@@ -782,7 +782,7 @@ static void laser_test_fire(uint8_t power, uint8_t dwell) {
 float focalLength = 0;
 static void lcd_laser_focus_menu() {
 	START_MENU();
-	MENU_ITEM(back, "Laser Utilities", lcd_laser_menu);
+	MENU_ITEM(back, "Laser Functions", lcd_laser_menu);
 	MENU_ITEM(function, "1mm", action_laser_focus_1mm);
 	MENU_ITEM(function, "2mm", action_laser_focus_2mm);
 	MENU_ITEM(function, "3mm - 1/8in", action_laser_focus_3mm);
