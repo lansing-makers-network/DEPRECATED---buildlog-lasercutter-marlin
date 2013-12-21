@@ -343,6 +343,7 @@ static void lcd_tune_menu()
     START_MENU();
     MENU_ITEM(back, MSG_MAIN, lcd_main_menu);
     MENU_ITEM_EDIT(int3, MSG_SPEED, &feedmultiply, 10, 999);
+#ifndef LASER
     MENU_ITEM_EDIT(int3, MSG_NOZZLE, &target_temperature[0], 0, HEATER_0_MAXTEMP - 15);
 #if TEMP_SENSOR_1 != 0
     MENU_ITEM_EDIT(int3, MSG_NOZZLE1, &target_temperature[1], 0, HEATER_1_MAXTEMP - 15);
@@ -357,6 +358,7 @@ static void lcd_tune_menu()
     MENU_ITEM_EDIT(int3, MSG_FLOW, &extrudemultiply, 10, 999);
 #ifdef FILAMENTCHANGEENABLE
      MENU_ITEM(gcode, MSG_FILAMENTCHANGE, PSTR("M600"));
+#endif
 #endif
     END_MENU();
 }
@@ -547,7 +549,9 @@ static void lcd_control_menu()
 {
     START_MENU();
     MENU_ITEM(back, MSG_MAIN, lcd_main_menu);
+#ifndef LASER
     MENU_ITEM(submenu, MSG_TEMPERATURE, lcd_control_temperature_menu);
+#endif
     MENU_ITEM(submenu, MSG_MOTION, lcd_control_motion_menu);
 #ifdef DOGLCD
 //    MENU_ITEM_EDIT(int3, MSG_CONTRAST, &lcd_contrast, 0, 63);
@@ -563,7 +567,7 @@ static void lcd_control_menu()
     MENU_ITEM(function, MSG_RESTORE_FAILSAFE, Config_ResetDefault);
     END_MENU();
 }
-
+#ifndef LASER
 static void lcd_control_temperature_menu()
 {
 #ifdef PIDTEMP
@@ -634,7 +638,7 @@ static void lcd_control_temperature_preheat_abs_settings_menu()
 #endif
     END_MENU();
 }
-
+#endif
 static void lcd_control_motion_menu()
 {
     START_MENU();
