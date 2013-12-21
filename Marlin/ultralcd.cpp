@@ -7,6 +7,7 @@
 #include "temperature.h"
 #include "stepper.h"
 #include "ConfigurationStore.h"
+#include "laser.h"
 
 int8_t encoderDiff; /* encoderDiff is updated from interrupt context and added to encoderPosition every LCD update */
 
@@ -74,6 +75,8 @@ static void lcd_sdcard_menu();
 	static void action_laser_test_20_10ms();
 	static void action_laser_test_100_3ms();
 	static void action_laser_test_100_10ms();
+	static void action_laser_acc_on();
+	static void action_laser_acc_off();
 #endif
 
 static void lcd_quick_feedback();//Cause an LCD refresh, and give the user visual or audiable feedback that something has happend
@@ -720,6 +723,11 @@ static void lcd_laser_menu()
 	MENU_ITEM(back, MSG_MAIN, lcd_main_menu);
 	MENU_ITEM(submenu, "Set Focus", lcd_laser_focus_menu);
 	MENU_ITEM(submenu, "Test Fire", lcd_laser_test_fire_menu);
+	if (!laserAccOn) {
+		MENU_ITEM(function, "Turn On Pumps/Fans", action_laser_acc_on);
+	} else {
+		MENU_ITEM(function, "Turn Off Pumps/Fans", action_laser_acc_off);
+	}
 	END_MENU();
 }
 
@@ -733,6 +741,14 @@ static void lcd_laser_test_fire_menu() {
 	END_MENU();
 }
 
+
+static void action_laser_acc_on() {
+	enquecommand_P(PSTR("M80"));
+}
+
+static void action_laser_acc_off() {
+	enquecommand_P(PSTR("M81"));
+}
 
 static void action_laser_test_20_3ms() {
 	laser_test_fire(20, 3);
