@@ -75,7 +75,7 @@
 #define LASER 1
 #define LASER_PWM_MIN 20000
 #define LASER_PWM_MAX 50000
-#define LASER_FOCAL_HEIGHT 65.7
+#define LASER_FOCAL_HEIGHT 91.67
 #define LASER_AOK_TIMEOUT 10000  // Number of millis to wait for AOK from Relay board
 #define SDSUPPORT
 
