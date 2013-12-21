@@ -778,7 +778,8 @@ static void laser_set_focus(float f_length) {
 	enquecommand_P(PSTR("G28 Z F150"));
 	float focus = LASER_FOCAL_HEIGHT - f_length;
 	char cmd[20];
-	sprintf_P(cmd, PSTR("G0 Z%f F150"), focus);
+
+	sprintf_P(cmd, PSTR("G0 Z%s F150"), ftostr52(focus));
 	enquecommand(cmd);
 }
 #endif
