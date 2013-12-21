@@ -61,10 +61,15 @@ static void lcd_sdcard_menu();
 	static void lcd_laser_focus_menu();
 	static void lcd_laser_menu();
 	static void lcd_laser_test_fire_menu();
-	static void action_laser_focus_3mm();
-	static void action_laser_focus_635mm();
-	static void laser_set_focus(float f_length);
 	static void laser_test_fire(uint8_t power, uint8_t dwell);
+	static void laser_set_focus(float f_length);
+	static void action_laser_focus_1mm();
+	static void action_laser_focus_2mm();
+	static void action_laser_focus_3mm();
+	static void action_laser_focus_4mm();
+	static void action_laser_focus_5mm();
+	static void action_laser_focus_6mm();
+	static void action_laser_focus_7mm();
 	static void action_laser_test_20_3ms();
 	static void action_laser_test_20_10ms();
 	static void action_laser_test_100_3ms();
@@ -746,34 +751,49 @@ static void action_laser_test_100_10ms() {
 }
 
 static void laser_test_fire(uint8_t power, uint8_t dwell) {
-	char fire_cmd[20], dwell_cmd[20];
-
-	enquecommand_P(PSTR("M80"));
-	enquecommand_P(PSTR("M17"));
-	sprintf_P(fire_cmd, PSTR("M3 S%u"), power);
-	sprintf_P(dwell_cmd, PSTR("G4 P%u"), dwell);
-
-	enquecommand(fire_cmd);
-	enquecommand(dwell_cmd);
-	enquecommand_P(PSTR("M5"));
+	fireLaser(power, dwell);
 }
 
 static void lcd_laser_focus_menu() {
 	START_MENU();
 	MENU_ITEM(back, "Laser Utilities", lcd_laser_menu);
-	MENU_ITEM(function, "1/8in (3mm)", action_laser_focus_3mm);
-	MENU_ITEM(function, "1/4in (6.35mm)", action_laser_focus_635mm);
+	MENU_ITEM(function, "1mm", action_laser_focus_1mm);
+	MENU_ITEM(function, "2mm", action_laser_focus_2mm);
+	MENU_ITEM(function, "3mm - 1/8in", action_laser_focus_3mm);
+	MENU_ITEM(function, "4mm", action_laser_focus_4mm);
+	MENU_ITEM(function, "5mm", action_laser_focus_5mm);
+	MENU_ITEM(function, "6mm - 1/4in", action_laser_focus_6mm);
+	MENU_ITEM(function, "7mm", action_laser_focus_7mm);
 	END_MENU();
+}
+
+static void action_laser_focus_1mm() {
+	laser_set_focus(1);
+}
+
+static void action_laser_focus_2mm() {
+	laser_set_focus(2);
 }
 
 static void action_laser_focus_3mm() {
 	laser_set_focus(3);
 }
 
-static void action_laser_focus_635mm() {
-	laser_set_focus(6.35);
+static void action_laser_focus_4mm() {
+	laser_set_focus(4);
 }
 
+static void action_laser_focus_5mm() {
+	laser_set_focus(5);
+}
+
+static void action_laser_focus_6mm() {
+	laser_set_focus(6);
+}
+
+static void action_laser_focus_7mm() {
+	laser_set_focus(7);
+}
 static void laser_set_focus(float f_length) {
 	enquecommand_P(PSTR("G28 Z F150"));
 	float focus = LASER_FOCAL_HEIGHT - f_length;
