@@ -67,10 +67,11 @@ void fireLaser(float intensity)
   analogWrite(LASER_INTENSITY_PIN, laser_pwm);
   digitalWrite(LASER_FIRING_PIN, HIGH);
   SERIAL_ECHO_START;
-  SERIAL_ECHO("Laser firing intensity: ");
+  SERIAL_ECHO("Laser firing: ");
   SERIAL_ECHO(intensity);
-  SERIAL_ECHO("Laser firing PWM: ");
-  SERIAL_ECHOLN(laser_pwm);
+  SERIAL_ECHO("% (PWM: ");
+  SERIAL_ECHO(laser_pwm);
+  SERIAL_ECHOLN(")");
 }
 
 void fireLaser(float intensity, uint8_t duration) {
@@ -92,11 +93,16 @@ void prepareLaser() {
 
 static void waitForLaserAok() {
 	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
+	bool first_loop = true;
 	while(digitalRead(LASER_AOK_PIN)) {
 		if (millis() > timeout) {
 			SERIAL_ECHO_START;
 			SERIAL_ECHOLN("KILL: Relay board failed to indicate AOK");
 			kill();
+		}
+		if (first_loop) {
+			SERIAL_ECHO_START;
+			SERIAL_ECHOLN("POWER: Waiting for relays...");
 		}
 	}
 }
