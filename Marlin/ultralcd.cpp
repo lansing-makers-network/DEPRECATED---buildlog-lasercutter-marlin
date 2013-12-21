@@ -748,6 +748,7 @@ static void action_laser_test_100_10ms() {
 static void laser_test_fire(uint8_t power, uint8_t dwell) {
 	char fire_cmd[20], dwell_cmd[20];
 
+	enquecommand_P(PSTR("M80"));
 	enquecommand_P(PSTR("M17"));
 	sprintf_P(fire_cmd, PSTR("M3 S%u"), power);
 	sprintf_P(dwell_cmd, PSTR("G4 P%u"), dwell);
