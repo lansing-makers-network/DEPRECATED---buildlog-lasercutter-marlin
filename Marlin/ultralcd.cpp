@@ -60,7 +60,7 @@ static void lcd_sdcard_menu();
 #ifdef LASER
 	static void lcd_laser_focus_menu();
 	static void lcd_laser_menu();
-	static void lcd_laser_test_fire_menu()
+	static void lcd_laser_test_fire_menu();
 	static void action_laser_focus_3mm();
 	static void action_laser_focus_635mm();
 	static void laser_set_focus(float f_length);
@@ -745,8 +745,8 @@ static void laser_test_fire(uint8_t power, uint8_t dwell) {
 	char fire_cmd[20], dwell_cmd[20];
 
 	enquecommand_P(PSTR("M17"));
-	sprintf_P(fire_cmd, PSTR("M3 S%u"), power));
-	sprintf_P(dwell_cmd, PSTR("G4 P%u"), dwell));
+	sprintf_P(fire_cmd, PSTR("M3 S%u"), power);
+	sprintf_P(dwell_cmd, PSTR("G4 P%u"), dwell);
 
 	enquecommand(fire_cmd);
 	enquecommand(dwell_cmd);

@@ -102,7 +102,7 @@ void manage_inactivity();
   #define disable_x() do { WRITE(X_ENABLE_PIN,!X_ENABLE_ON); WRITE(X2_ENABLE_PIN,!X_ENABLE_ON); } while (0)
 #elif defined(X_ENABLE_PIN) && X_ENABLE_PIN > -1
   	  #define  enable_x() WRITE(X_ENABLE_PIN, X_ENABLE_ON)
-      #define disable_x() WRITE(X_ENABLE_PIN,!X_ENABLE_ON)-
+      #define disable_x() WRITE(X_ENABLE_PIN,!X_ENABLE_ON)
 #else
   #define enable_x() ;
   #define disable_x() ;
