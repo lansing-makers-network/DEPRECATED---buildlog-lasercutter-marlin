@@ -44,6 +44,7 @@ extern bool laserOn;
 static void waitForLaserAok();
 void setupLaser();
 void fireLaser(float intensity);
+void fireLaser(float intensity, uint8_t duration);
 void offLaser();
 void prepareLaser();
 void shutdownLaser();

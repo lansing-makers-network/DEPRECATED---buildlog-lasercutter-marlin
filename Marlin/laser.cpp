@@ -73,6 +73,12 @@ void fireLaser(float intensity)
   SERIAL_ECHOLN(laser_pwm);
 }
 
+void fireLaser(float intensity, uint8_t duration) {
+	fireLaser(intensity);
+	delay(duration);
+	offLaser();
+}
+
 void offLaser()
 {
   digitalWrite(LASER_FIRING_PIN,LOW);
