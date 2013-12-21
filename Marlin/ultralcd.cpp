@@ -742,10 +742,10 @@ static void lcd_laser_menu()
 static void lcd_laser_test_fire_menu() {
 	START_MENU();
 	MENU_ITEM(back, "Laser Utilities", lcd_laser_menu);
-	MENU_ITEM(function, "20% 3ms", action_laser_test_20_3ms);
-	MENU_ITEM(function, "20% 10ms", action_laser_test_20_10ms);
-	MENU_ITEM(function, "100%, 3ms", action_laser_test_100_3ms);
-	MENU_ITEM(function, "100%, 10ms", action_laser_test_100_10ms);
+	MENU_ITEM(function, " 20%  3ms", action_laser_test_20_3ms);
+	MENU_ITEM(function, " 20% 10ms", action_laser_test_20_10ms);
+	MENU_ITEM(function, "100%  3ms", action_laser_test_100_3ms);
+	MENU_ITEM(function, "100% 10ms", action_laser_test_100_10ms);
 	END_MENU();
 }
 
