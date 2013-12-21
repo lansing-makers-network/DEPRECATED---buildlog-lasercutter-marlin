@@ -271,15 +271,15 @@ static void lcd_main_menu()
 {
     START_MENU();
     MENU_ITEM(back, MSG_WATCH, lcd_status_screen);
+	#ifdef LASER
+    	MENU_ITEM(submenu, "Laser Utilities", lcd_laser_menu);
+	#endif
     if (movesplanned() || IS_SD_PRINTING)
     {
         MENU_ITEM(submenu, MSG_TUNE, lcd_tune_menu);
     }else{
         MENU_ITEM(submenu, MSG_PREPARE, lcd_prepare_menu);
     }
-	#ifdef LASER
-    	MENU_ITEM(submenu, "Laser Utilities", lcd_laser_menu);
-	#endif
     MENU_ITEM(submenu, MSG_CONTROL, lcd_control_menu);
 #ifdef SDSUPPORT
     if (card.cardOK)
