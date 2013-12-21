@@ -34,7 +34,7 @@ void setupLaser()
   pinMode(LASER_ACC_PIN, OUTPUT);
 
   digitalWrite(LASER_AOK_PIN, HIGH);  // Setup to the AOK pin to pull-up.
-  pinMode(LASER_AOK_PIN, INPUT);
+  pinMode(LASER_AOK_PIN, INPUT_PULLUP);
 
   analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
   
