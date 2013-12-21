@@ -64,6 +64,7 @@ static void lcd_sdcard_menu();
 	static void lcd_laser_test_fire_menu();
 	static void laser_test_fire(uint8_t power, uint8_t dwell);
 	static void laser_set_focus(float f_length);
+	static void action_laser_focus_custom();
 	static void action_laser_focus_1mm();
 	static void action_laser_focus_2mm();
 	static void action_laser_focus_3mm();
@@ -776,7 +777,7 @@ static void action_laser_test_100_10ms() {
 static void laser_test_fire(uint8_t power, uint8_t dwell) {
 	fireLaser(power, dwell);
 }
-
+float focalLength = 0;
 static void lcd_laser_focus_menu() {
 	START_MENU();
 	MENU_ITEM(back, "Laser Utilities", lcd_laser_menu);
@@ -787,7 +788,12 @@ static void lcd_laser_focus_menu() {
 	MENU_ITEM(function, "5mm", action_laser_focus_5mm);
 	MENU_ITEM(function, "6mm - 1/4in", action_laser_focus_6mm);
 	MENU_ITEM(function, "7mm", action_laser_focus_7mm);
+	MENU_ITEM_EDIT_CALLBACK(float32, "Custom", &focalLength, 0, LASER_FOCAL_HEIGHT, action_laser_focus_custom);
 	END_MENU();
+}
+
+static void action_laser_focus_custom() {
+	laser_set_focus(focalLength);
 }
 
 static void action_laser_focus_1mm() {
@@ -819,6 +825,7 @@ static void action_laser_focus_7mm() {
 }
 static void laser_set_focus(float f_length) {
 	enquecommand_P(PSTR("G28 Z F150"));
+	focalLength = f_length;
 	float focus = LASER_FOCAL_HEIGHT - f_length;
 	char cmd[20];
 
