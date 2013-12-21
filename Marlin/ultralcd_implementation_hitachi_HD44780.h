@@ -365,6 +365,13 @@ Possible status screens:
 */
 static void lcd_implementation_status_screen()
 {
+
+#ifdef LASER
+
+	lcd.setCursor(0, 0);
+	lcd.print("Laser Power: ");
+	lcd.print(itostr3(laserPower());
+#else
     int tHotend=int(degHotend(0) + 0.5);
     int tTarget=int(degTargetHotend(0) + 0.5);
 
@@ -421,7 +428,7 @@ static void lcd_implementation_status_screen()
         lcd.print(' ');
 # endif//EXTRUDERS > 1 || TEMP_SENSOR_BED != 0
 #endif//LCD_WIDTH > 19
-
+#endif
 #if LCD_HEIGHT > 2
 //Lines 2 for 4 line LCD
 # if LCD_WIDTH < 20
