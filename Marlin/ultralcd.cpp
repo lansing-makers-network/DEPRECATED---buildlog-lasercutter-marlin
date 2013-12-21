@@ -272,7 +272,9 @@ static void lcd_main_menu()
     START_MENU();
     MENU_ITEM(back, MSG_WATCH, lcd_status_screen);
 	#ifdef LASER
-    	MENU_ITEM(submenu, "Laser Utilities", lcd_laser_menu);
+    	if (!(movesplanned() || IS_SD_PRINTING)) {
+    		MENU_ITEM(submenu, "Laser Utilities", lcd_laser_menu);
+    	}
 	#endif
     if (movesplanned() || IS_SD_PRINTING)
     {
