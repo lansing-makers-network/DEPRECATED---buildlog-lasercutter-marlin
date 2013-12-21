@@ -1,3 +1,5 @@
+#ifndef LASER_H
+#define LASER_H
 /*
   laser.h - Laser cutter control library for Arduino using 16 bit timers- Version 1
   Copyright (c) 2013 Timothy Schmidt.  All right reserved.
@@ -35,4 +37,12 @@
  */
 
 //typedef enum { _timer5, _timer3, _timer4, _Nbr_16timers } timer16_Sequence_t ;
+extern uint8_t iLaserPower;
 
+static void waitForLaserAok();
+void setupLaser();
+void fireLaser(float intensity);
+void offLaser();
+void prepareLaser();
+void shutdownLaser();
+#endif

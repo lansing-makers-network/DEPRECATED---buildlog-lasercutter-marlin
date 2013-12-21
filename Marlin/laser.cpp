@@ -17,14 +17,15 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include "laser.h"
 #include "Configuration.h"
 #include "pins.h"
 #include <avr/interrupt.h>
 #include <Arduino.h>
 
-uint8_t laserPower = 0;
+uint8_t iLaserPower = 0;
 
-static void setupLaser()
+void setupLaser()
 {
   pinMode(LASER_FIRING_PIN, OUTPUT);
   pinMode(LASER_INTENSITY_PIN, OUTPUT);
@@ -51,16 +52,16 @@ static void setupLaser()
   interrupts();
 }
 
-static uint8_t laserPower() {
-	return laserPower;
+uint8_t laserPower() {
+	return iLaserPower;
 }
-static void fireLaser(float intensity)
+void fireLaser(float intensity)
 {
   if (intensity < 0.0) intensity = 0.0;
   if (intensity > 100.0) intensity = 100.0;
   
   int laser_pwm = int(intensity / 100.0 * 560.0);
-  laserPower = int(intensity);
+  iLaserPower = int(intensity);
   waitForLaserAok();
   analogWrite(LASER_INTENSITY_PIN, laser_pwm);
   digitalWrite(LASER_FIRING_PIN, HIGH);
@@ -71,12 +72,12 @@ static void fireLaser(float intensity)
   SERIAL_ECHOLN(laser_pwm);
 }
 
-static void offLaser()
+void offLaser()
 {
   digitalWrite(LASER_FIRING_PIN,LOW);
 }
 
-static void prepareLaser() {
+void prepareLaser() {
 	digitalWrite(LASER_ACC_PIN, LOW);
 }
 
@@ -91,7 +92,7 @@ static void waitForLaserAok() {
 	}
 }
 
-static void shutdownLaser() {
+void shutdownLaser() {
 	digitalWrite(LASER_ACC_PIN, HIGH);
 }
 
