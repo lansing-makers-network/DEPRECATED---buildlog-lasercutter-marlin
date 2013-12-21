@@ -37,7 +37,9 @@
  */
 
 //typedef enum { _timer5, _timer3, _timer4, _Nbr_16timers } timer16_Sequence_t ;
-extern uint8_t iLaserPower;
+extern uint8_t laserPower;
+extern bool laserAccOn;
+extern bool laserOn;
 
 static void waitForLaserAok();
 void setupLaser();

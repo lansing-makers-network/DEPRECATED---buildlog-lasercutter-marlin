@@ -23,7 +23,9 @@
 #include <avr/interrupt.h>
 #include <Arduino.h>
 
-uint8_t iLaserPower = 0;
+uint8_t laserPower = 0;
+bool laserOn = false;
+bool laserAccOn = false;
 
 void setupLaser()
 {
@@ -52,16 +54,15 @@ void setupLaser()
   interrupts();
 }
 
-uint8_t laserPower() {
-	return iLaserPower;
-}
+
 void fireLaser(float intensity)
 {
   if (intensity < 0.0) intensity = 0.0;
   if (intensity > 100.0) intensity = 100.0;
   
   int laser_pwm = int(intensity / 100.0 * 560.0);
-  iLaserPower = int(intensity);
+  laserPower = int(intensity);
+  laserOn = true;
   waitForLaserAok();
   analogWrite(LASER_INTENSITY_PIN, laser_pwm);
   digitalWrite(LASER_FIRING_PIN, HIGH);
@@ -75,10 +76,12 @@ void fireLaser(float intensity)
 void offLaser()
 {
   digitalWrite(LASER_FIRING_PIN,LOW);
+  laserOn = false;
 }
 
 void prepareLaser() {
 	digitalWrite(LASER_ACC_PIN, LOW);
+	laserAccOn = true;
 }
 
 static void waitForLaserAok() {
@@ -94,6 +97,7 @@ static void waitForLaserAok() {
 
 void shutdownLaser() {
 	digitalWrite(LASER_ACC_PIN, HIGH);
+	laserAccOn = false;
 }
 
 
