@@ -106,7 +106,8 @@ static void waitForLaserAok() {
 		}
 		if (first_loop) {
 			SERIAL_ECHO_START;
-			SERIAL_ECHOLN("POWER: Waiting for relays...");
+			SERIAL_ECHOLN("POWER: Waiting for relay board AOK...");
+			first_loop = false;
 		}
 	}
 }
