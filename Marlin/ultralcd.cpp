@@ -72,10 +72,10 @@ static void lcd_sdcard_menu();
 	static void action_laser_focus_5mm();
 	static void action_laser_focus_6mm();
 	static void action_laser_focus_7mm();
-	static void action_laser_test_20_3ms();
-	static void action_laser_test_20_10ms();
-	static void action_laser_test_100_3ms();
-	static void action_laser_test_100_10ms();
+	static void action_laser_test_20_50ms();
+	static void action_laser_test_20_100ms();
+	static void action_laser_test_100_50ms();
+	static void action_laser_test_100_100ms();
 	static void action_laser_acc_on();
 	static void action_laser_acc_off();
 #endif
@@ -744,10 +744,10 @@ static void lcd_laser_menu()
 static void lcd_laser_test_fire_menu() {
 	START_MENU();
 	MENU_ITEM(back, "Laser Functions", lcd_laser_menu);
-	MENU_ITEM(function, " 20%  3ms", action_laser_test_20_3ms);
-	MENU_ITEM(function, " 20% 10ms", action_laser_test_20_10ms);
-	MENU_ITEM(function, "100%  3ms", action_laser_test_100_3ms);
-	MENU_ITEM(function, "100% 10ms", action_laser_test_100_10ms);
+	MENU_ITEM(function, " 20%  50ms", action_laser_test_20_50ms);
+	MENU_ITEM(function, " 20% 100ms", action_laser_test_20_100ms);
+	MENU_ITEM(function, "100%  50ms", action_laser_test_100_50ms);
+	MENU_ITEM(function, "100% 100ms", action_laser_test_100_100ms);
 	END_MENU();
 }
 
@@ -760,20 +760,20 @@ static void action_laser_acc_off() {
 	enquecommand_P(PSTR("M81"));
 }
 
-static void action_laser_test_20_3ms() {
-	laser_test_fire(20, 3);
+static void action_laser_test_20_50ms() {
+	laser_test_fire(20, 50);
 }
 
-static void action_laser_test_20_10ms() {
-	laser_test_fire(20, 10);
+static void action_laser_test_20_100ms() {
+	laser_test_fire(20, 100);
 }
 
-static void action_laser_test_100_3ms() {
-	laser_test_fire(100, 3);
+static void action_laser_test_100_50ms() {
+	laser_test_fire(100, 50);
 }
 
-static void action_laser_test_100_10ms() {
-	laser_test_fire(100, 10);
+static void action_laser_test_100_100ms() {
+	laser_test_fire(100, 100);
 }
 
 static void laser_test_fire(uint8_t power, uint8_t dwell) {
