@@ -777,6 +777,7 @@ static void action_laser_test_100_10ms() {
 }
 
 static void laser_test_fire(uint8_t power, uint8_t dwell) {
+	enquecommand_P(PSTR("M80"));  // Enable laser accessories since we don't know if its been done (and there's no penalty for doing it again).
 	fireLaser(power, dwell);
 }
 float focalLength = 0;
