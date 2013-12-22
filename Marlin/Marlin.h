@@ -190,6 +190,7 @@ extern bool axis_relative_modes[];
 extern int feedmultiply;
 extern int extrudemultiply; // Sets extrude multiply factor (in percent)
 extern float current_position[NUM_AXIS] ;
+extern bool has_axis_homed[NUM_AXIS] ;
 extern float add_homeing[3];
 #ifdef DELTA
 extern float endstop_adj[3];

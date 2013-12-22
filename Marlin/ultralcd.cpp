@@ -826,7 +826,9 @@ static void action_laser_focus_7mm() {
 	laser_set_focus(7);
 }
 static void laser_set_focus(float f_length) {
-	enquecommand_P(PSTR("G28 Z F150"));
+	if (!has_axis_homed[Z_AXIS]) {
+		enquecommand_P(PSTR("G28 Z F150"));
+	}
 	focalLength = f_length;
 	float focus = LASER_FOCAL_HEIGHT - f_length;
 	char cmd[20];

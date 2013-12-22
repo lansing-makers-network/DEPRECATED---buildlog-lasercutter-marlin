@@ -975,6 +975,11 @@ void finishAndDisableSteppers()
   disable_x();
   disable_y();
   disable_z();
+#ifndef Z_AXIS_IS_LEADSCREW
+  has_axis_homed[Z_AXIS] = false;
+#endif
+  has_axis_homed[X_AXIS] = false;
+  has_axis_homed[Y_AXIS] = false;
   disable_e0();
   disable_e1();
   disable_e2();

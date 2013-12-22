@@ -172,6 +172,7 @@ int feedmultiply=100; //100->1 200->2
 int saved_feedmultiply;
 int extrudemultiply=100; //100->1 200->2
 float current_position[NUM_AXIS] = { 0.0, 0.0, 0.0, 0.0 };
+bool has_axis_homed[NUM_AXIS] = {false, false, false, false };
 float add_homeing[3]={0,0,0};
 #ifdef DELTA
 float endstop_adj[3]={0,0,0};
@@ -785,7 +786,7 @@ static void homeaxis(int axis) {
         servos[servo_endstops[axis]].write(servo_endstop_angles[axis * 2]);
       }
     #endif
-
+    has_axis_homed[axis] = true;
     current_position[axis] = 0;
     plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
     destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
@@ -1552,9 +1553,20 @@ void process_commands()
         else
         {
           st_synchronize();
-          if(code_seen('X')) disable_x();
-          if(code_seen('Y')) disable_y();
-          if(code_seen('Z')) disable_z();
+          if(code_seen('X')) {
+        	  has_axis_homed[X_AXIS] = false;
+        	  disable_x();
+          }
+          if(code_seen('Y')) {
+        	  has_axis_homed[Y_AXIS] = false;
+        	  disable_y();
+          }
+          if(code_seen('Z')) {
+			  #ifndef Z_AXIS_IS_LEADSCREW
+        	  	  has_axis_homed[Z_AXIS] = false;
+			#endif
+        	  disable_z();
+          }
           #if ((E0_ENABLE_PIN != X_ENABLE_PIN) && (E1_ENABLE_PIN != Y_ENABLE_PIN)) // Only enable on boards that have seperate ENABLE_PINS
             if(code_seen('E')) {
               disable_e0();
@@ -2626,6 +2638,11 @@ void manage_inactivity()
         disable_x();
         disable_y();
         disable_z();
+#ifndef Z_AXIS_IS_LEADSCREW
+        has_axis_homed[Z_AXIS] = false;
+#endif
+        has_axis_homed[X_AXIS] = false;
+        has_axis_homed[Y_AXIS] = false;
         disable_e0();
         disable_e1();
         disable_e2();
