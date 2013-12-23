@@ -1114,13 +1114,13 @@ void process_commands()
     break;
 #endif
 #ifdef LASER
-    case 3:
-      if(code_seen('S')){
+    case 3:  //M3 - fire laser
+      if(code_seen('S') && (!IsStopped())){
         st_synchronize();
         fireLaser(code_value());
       }
       break;
-    case 5:
+    case 5:  //M5 stop firing laser
       st_synchronize();
       offLaser();
       break;
@@ -2719,6 +2719,10 @@ void kill()
 void Stop()
 {
   disable_heater();
+#ifdef LASER
+  offLaser();
+  shutdownLaser();
+#endif
   if(Stopped == false) {
     Stopped = true;
     Stopped_gcode_LastN = gcode_LastN; // Save last g_code for restart

@@ -100,9 +100,10 @@ static void waitForLaserAok() {
 	bool first_loop = true;
 	while(digitalRead(LASER_AOK_PIN)) {
 		if (millis() > timeout) {
-			SERIAL_ECHO_START;
-			SERIAL_ECHOLN("KILL: Relay board failed to indicate AOK");
-			kill();
+			SERIAL_ERROR_START;
+			SERIAL_ERRORLNPGM(PSTR("Power supply failed to indicate AOK"));
+			LCD_MESSAGEPGM(PSTR('Power safety checks failed.'));
+			Stop();
 		}
 		if (first_loop) {
 			SERIAL_ECHO_START;
