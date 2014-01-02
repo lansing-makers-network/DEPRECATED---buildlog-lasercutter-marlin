@@ -73,6 +73,7 @@
 // The following selects whether or not the firmware is controlling a laser cutter
 // LASER_PWM_MIN and MAX are defined in units HZ (cycles / second)
 #define LASER 1
+#define CUSTOM_MENDEL_NAME "LMN Laser"
 #define LASER_PWM_MIN 20000
 #define LASER_PWM_MAX 50000
 #define LASER_FOCAL_HEIGHT 91.67

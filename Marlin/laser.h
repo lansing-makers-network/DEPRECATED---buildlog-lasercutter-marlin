@@ -40,6 +40,7 @@
 extern uint8_t laserPower;
 extern bool laserAccOn;
 extern bool laserOn;
+extern bool laserAok;
 
 static void waitForLaserAok();
 void setupLaser();

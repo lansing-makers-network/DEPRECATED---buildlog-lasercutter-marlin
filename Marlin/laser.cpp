@@ -23,13 +23,10 @@
 #include <avr/interrupt.h>
 #include <Arduino.h>
 
+
 uint8_t laserPower = 0;
 bool laserOn = false;
 bool laserAccOn = false;
-
-#ifdef LASER
-#define CUSTOM_MACHINE_NAME "Buildlog Lasercutter Marlin"
-#endif
 
 void setupLaser()
 {

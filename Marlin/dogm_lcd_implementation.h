@@ -38,7 +38,11 @@
 #include "dogm_font_data_marlin.h"
 #include "ultralcd.h"
 #include "ultralcd_st7920_u8glib_rrd.h"
+#define LASER 1
 
+#ifdef LASER
+#include "laserbitmaps.h"
+#endif
 
 /* Russian language not supported yet, needs custom font
 
@@ -174,11 +178,26 @@ static void lcd_implementation_status_screen()
  static unsigned char fan_rot = 0;
  
  u8g.setColorIndex(1);	// black on white
- 
+#ifndef LASER
  // Symbols menu graphics, animated fan
  if ((blink % 2) &&  fanSpeed )	u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen0_bmp);
 	else u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen1_bmp);
- 
+#else
+ if (laserAccOn) {
+	 u8g.drawBitmapP(29,4, LASERENABLE_BYTEWIDTH, LASERENABLE_HEIGHT, laserenable_bmp);
+ }
+ u8g.setFont(FONT_STATUSMENU);
+ u8g.setColorIndex(1);
+ u8g.setPrintPos(3,6);
+ if (laserOn) {
+	 u8g.drawBitmapP(5,14, ICON_BYTEWIDTH, ICON_HEIGHT, laseron_bmp);
+	 u8g.print(itostr3(laserPower));
+	 lcd_printPGM(PSTR("%"));
+ } else {
+	 u8g.drawBitmapP(5,14, ICON_BYTEWIDTH, ICON_HEIGHT, laseroff_bmp);
+	 lcd_printPGM(PSTR("---%"));
+ }
+#endif
  #ifdef SDSUPPORT
  //SD Card Symbol
  u8g.drawBox(42,42,8,7);
@@ -212,7 +231,7 @@ static void lcd_implementation_status_screen()
 			lcd_printPGM(PSTR("--:--"));
 		 }
  #endif
- 
+#ifndef LASER
  // Extruder 1
  u8g.setFont(FONT_STATUSMENU);
  u8g.setPrintPos(6,6);
@@ -286,7 +305,7 @@ static void lcd_implementation_status_screen()
 		 u8g.drawBox(88,18,2,2);
 		 u8g.setColorIndex(1);	// black on white
 		}
- 
+#endif
  // Fan
  u8g.setFont(FONT_STATUSMENU);
  u8g.setPrintPos(104,27);
