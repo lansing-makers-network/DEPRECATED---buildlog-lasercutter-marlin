@@ -22,6 +22,7 @@
 #include "pins.h"
 #include <avr/interrupt.h>
 #include <Arduino.h>
+#include "Marlin.h"
 
 
 uint8_t laserPower = 0;
