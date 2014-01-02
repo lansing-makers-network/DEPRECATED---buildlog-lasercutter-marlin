@@ -29,6 +29,9 @@ uint8_t laserPower = 0;
 bool laserOn = false;
 bool laserAccOn = false;
 bool laserAok = false;
+float rastmmperdot = 0.2;
+float laser_raster_step = 0.2;
+float laser_raster_mm_per_dot = 0.2;
 
 void setupLaser()
 {

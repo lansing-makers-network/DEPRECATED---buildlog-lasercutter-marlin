@@ -1,5 +1,4 @@
-#ifndef LASER_H
-#define LASER_H
+
 /*
   laser.h - Laser cutter control library for Arduino using 16 bit timers- Version 1
   Copyright (c) 2013 Timothy Schmidt.  All right reserved.
@@ -18,13 +17,51 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+#ifndef LASER_H
+#define LASER_H
+
+#define RASTER_DURATION 1  // Raster pulse duration in MS
+#define RASTER_FEEDRATE 18000 // Raster feedrate.  Can be fairly high as the moves will be exceedingly small
+#define MAX_RASTER_LINE 60
+#define laserRasterLine() { \
+	static char pixels[MAX_RASTER_LINE]; \
+	int numLength; \
+	int numPixels; \
+	if (code_seen('L')) { \
+		numLength = int(code_value()); \
+		if (code_seen('D')) { \
+			numPixels = base64_decode(pixels, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], numLength); \
+			for (int i = 0; i<numPixels; i++) { \
+			  if (pixels[i] > 15) { \
+				  SERIAL_ECHO("Pixel: "); \
+				  SERIAL_ECHOLN(itostr3(pixels[i])); \
+				fireLaser((float(pixels[i])/255.0)*100.0, RASTER_DURATION); \
+				} \
+			  destination[X_AXIS] += laser_raster_step; \
+			  prepare_move(); \
+			  st_synchronize(); \
+			} \
+		} \
+	}\
+}
+
+#define laserRasterNewLine(DIR) { \
+	laser_raster_step = laser_raster_mm_per_dot * DIR;  \
+	next_feedrate = RASTER_FEEDRATE;  \
+	destination[Y_AXIS] = current_position[Y_AXIS] + (laser_raster_mm_per_dot *1.33); \
+	prepare_move(); \
+	st_synchronize(); \
+}
+
+
+
+
 
 /*
   A laser is activated by c
   
   
  */
-
 #include <inttypes.h>
 
 /*
@@ -41,6 +78,8 @@ extern uint8_t laserPower;
 extern bool laserAccOn;
 extern bool laserOn;
 extern bool laserAok;
+extern float laser_raster_step;
+extern float laser_raster_mm_per_dot;
 
 static bool waitForLaserAok();
 void setupLaser();
