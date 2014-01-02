@@ -42,10 +42,10 @@ extern bool laserAccOn;
 extern bool laserOn;
 extern bool laserAok;
 
-static void waitForLaserAok();
+static bool waitForLaserAok();
 void setupLaser();
 void fireLaser(float intensity);
-void fireLaser(float intensity, uint8_t duration);
+void fireLaser(float intensity, uint16_t duration);
 void offLaser();
 void prepareLaser();
 void shutdownLaser();

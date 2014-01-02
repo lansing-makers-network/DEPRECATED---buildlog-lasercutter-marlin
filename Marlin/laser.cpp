@@ -27,6 +27,7 @@
 uint8_t laserPower = 0;
 bool laserOn = false;
 bool laserAccOn = false;
+bool laserAok = false;
 
 void setupLaser()
 {
@@ -64,18 +65,20 @@ void fireLaser(float intensity)
   int laser_pwm = int(intensity / 100.0 * 560.0);
   laserPower = int(intensity);
   laserOn = true;
-  waitForLaserAok();
+  if (!waitForLaserAok()) {
+	  return;
+  }
   analogWrite(LASER_INTENSITY_PIN, laser_pwm);
   digitalWrite(LASER_FIRING_PIN, HIGH);
   SERIAL_ECHO_START;
   SERIAL_ECHO("Laser firing: ");
-  SERIAL_ECHO(intensity);
+  SERIAL_ECHO(itostr3(intensity));
   SERIAL_ECHO("% (PWM: ");
   SERIAL_ECHO(laser_pwm);
   SERIAL_ECHOLN(")");
 }
 
-void fireLaser(float intensity, uint8_t duration) {
+void fireLaser(float intensity, uint16_t duration) {
 	fireLaser(intensity);
 	delay(duration);
 	offLaser();
@@ -87,32 +90,45 @@ void offLaser()
   laserOn = false;
 }
 
+
 void prepareLaser() {
-	digitalWrite(LASER_ACC_PIN, LOW);
-	laserAccOn = true;
+	if (!laserAccOn) {
+		digitalWrite(LASER_ACC_PIN, LOW);
+		SERIAL_ECHO_START;
+		SERIAL_ECHOLNPGM("POWER: Laser Power Enabled");
+		laserAccOn = true;
+	}
 }
 
-static void waitForLaserAok() {
+static bool waitForLaserAok() {
 	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
 	bool first_loop = true;
 	while(digitalRead(LASER_AOK_PIN)) {
 		if (millis() > timeout) {
 			SERIAL_ERROR_START;
-			SERIAL_ERRORLNPGM(PSTR("Power supply failed to indicate AOK"));
-			LCD_MESSAGEPGM(PSTR('Power safety checks failed.'));
+			SERIAL_ERRORLNPGM("Power supply failed to indicate AOK");
+
 			Stop();
+			laserAok = false;
+			return false;
+
 		}
 		if (first_loop) {
 			SERIAL_ECHO_START;
-			SERIAL_ECHOLN("POWER: Waiting for relay board AOK...");
+			SERIAL_ECHOLNPGM("POWER: Waiting for relay board AOK...");
 			first_loop = false;
 		}
 	}
+	laserAok = true;
+	return true;
 }
 
 void shutdownLaser() {
-	digitalWrite(LASER_ACC_PIN, HIGH);
-	laserAccOn = false;
+	if (laserAccOn) {
+		digitalWrite(LASER_ACC_PIN, HIGH);
+		SERIAL_ECHO_START;
+		SERIAL_ECHOLNPGM("POWER: Laser Power Disabled");
+		laserAccOn = false;
+	}
 }
-
 
