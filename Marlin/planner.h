@@ -61,9 +61,18 @@ typedef struct {
   unsigned long acceleration_st;                     // acceleration steps/sec^2
   unsigned long fan_speed;
   #ifdef BARICUDA
-  unsigned long valve_pressure;
-  unsigned long e_to_p_pressure;
-  #endif
+    unsigned long valve_pressure;
+    unsigned long e_to_p_pressure;
+  #endif // BARICUDA
+  #ifdef LASER
+    bool laser_continuous;
+    bool laser_ppm;
+    bool laser_raster;
+    char raster_data;
+    float laser_intensity;
+    uint16_t laser_pulse;
+    long steps_l;
+  #endif // LASER
   volatile char busy;
 } block_t;
 
