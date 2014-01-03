@@ -578,7 +578,23 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   block->steps_e = labs(target[E_AXIS]-position[E_AXIS]);
   block->steps_e *= extrudemultiply;
   block->steps_e /= 100;
+  
+  #ifdef LASER
+  block->laser_intensity = laser_intensity;
+  block->pulse_length = pulse_length;
+  block->laser_firing = laser_firing;
+  if (laser_firing == LASER_ON && laser_ppm > 0) {
+  block->steps_l = labs(sqrt(pow((target[X_AXIS]-position[X_AXIS])/axis_steps_per_unit[X_AXIS], 2)+pow((target[Y_AXIS]-position[Y_AXIS])/axis_steps_per_unit[Y_AXIS], 2))*laser_ppm);
+  } else {
+  block->steps_l = 0;
+  }
+  #endif // LASER
+  
+  #ifdef LASER
+  block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, max(block->steps_e, block->steps_l))));
+  #else
   block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, block->steps_e)));
+  #endif // LASER
 
   // Bail if this is a zero-length block
   if (block->step_event_count <= dropsegments)
