@@ -416,5 +416,4 @@ const unsigned int dropsegments=5; //everything with less than this number of st
   #undef BED_MAXTEMP
 #endif
 
-
 #endif //__CONFIGURATION_ADV_H

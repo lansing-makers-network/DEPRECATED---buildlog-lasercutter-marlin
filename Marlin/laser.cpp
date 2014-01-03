@@ -71,12 +71,6 @@ void fireLaser(float intensity)
   }
   analogWrite(LASER_INTENSITY_PIN, laser_pwm);
   digitalWrite(LASER_FIRING_PIN, HIGH);
-  SERIAL_ECHO_START;
-  SERIAL_ECHO("Laser firing: ");
-  SERIAL_ECHO(itostr3(intensity));
-  SERIAL_ECHO("% (PWM: ");
-  SERIAL_ECHO(laser_pwm);
-  SERIAL_ECHOLN(")");
 }
 
 void fireLaser(float intensity, uint16_t duration) {

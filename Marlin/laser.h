@@ -27,9 +27,10 @@ extern bool laserOn;
 extern bool laserAok;
 
 static bool waitForLaserAok();
-float laser_pwm = 0;
-float laser_intensity = 100;
-uint8_t pulse_length = 30;
+static float laser_pwm = 0;
+static float laser_intensity = 100;
+static float laser_ppm = 0;
+static uint8_t pulse_length = 30;
 
 void setupLaser();
 void fireLaser(float intensity);
