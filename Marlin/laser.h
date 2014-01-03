@@ -49,4 +49,8 @@ void fireLaser(float intensity, uint16_t duration);
 void offLaser();
 void prepareLaser();
 void shutdownLaser();
+
+#define LASER_ON 1
+#define LASER_OFF 0
+
 #endif
