@@ -19,30 +19,18 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-/*
-  A laser is activated by c
-  
-  
- */
-
 #include <inttypes.h>
 
-/*
- * Defines for 16 bit timers used with  Servo library
- *
- * If _useTimerX is defined then TimerX is a 16 bit timer on the curent board
- * timer16_Sequence_t enumerates the sequence that the timers should be allocated
- * _Nbr_16timers indicates how many 16 bit timers are available.
- *
- */
-
-//typedef enum { _timer5, _timer3, _timer4, _Nbr_16timers } timer16_Sequence_t ;
 extern uint8_t laserPower;
 extern bool laserAccOn;
 extern bool laserOn;
 extern bool laserAok;
 
 static bool waitForLaserAok();
+float laser_pwm = 0;
+float laser_intensity = 100;
+uint8_t pulse_length = 30;
+
 void setupLaser();
 void fireLaser(float intensity);
 void fireLaser(float intensity, uint16_t duration);

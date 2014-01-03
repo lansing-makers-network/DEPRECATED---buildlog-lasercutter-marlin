@@ -42,7 +42,6 @@
 
 #ifdef LASER
 #include "laser.h"
-//#include "laser.cpp"
 #endif
 
 #if NUM_SERVOS > 0
