@@ -349,6 +349,14 @@ ISR(TIMER1_COMPA_vect)
     // Set directions TO DO This should be done once during init of trapezoid. Endstops -> interrupt
     out_bits = current_block->direction_bits;
 
+	#ifdef LASER
+    if (current_block->laser_status == LASER_ON && current_block->steps_l == 0) {
+                analogWrite(LASER_INTENSITY_PIN, current_block->laser_intensity);
+                digitalWrite(LASER_FIRING_PIN, HIGH);
+        } else {
+                digitalWrite(LASER_FIRING_PIN, LOW);
+        }
+    #endif // LASER
 
     // Set the direction bits (X_AXIS=A_AXIS and Y_AXIS=B_AXIS for COREXY)
     if((out_bits & (1<<X_AXIS))!=0){
@@ -618,6 +626,7 @@ ISR(TIMER1_COMPA_vect)
         }
       #endif //!ADVANCE
       
+      // steps_l > 0: PPM and RASTER happen here
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
