@@ -1126,11 +1126,11 @@ void process_commands()
       if (code_seen('P') && (!IsStopped()))
     	uint8_t laser_duration = code_value();
     	
-      laser_firing = LASER_ON;
+      laser_status = LASER_ON;
     	
       break;
     case 5:  //M5 stop firing laser
-	  laser_firing = LASER_OFF;
+	  laser_status = LASER_OFF;
       break;
 #endif
     case 17:
@@ -2565,7 +2565,7 @@ void prepare_move()
   }
   else {
 	#ifdef LASER
-    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder, laser_firing, laser_intensity, laser_ppm, laser_duration);
+    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder, laser_status, laser_intensity, laser_ppm, laser_duration);
     #else
     plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
     #endif // LASER

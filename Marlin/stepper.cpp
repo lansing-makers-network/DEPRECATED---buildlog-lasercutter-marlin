@@ -50,6 +50,11 @@ static long counter_x,       // Counter variables for the bresenham line tracer
             counter_y,
             counter_z,
             counter_e;
+            
+#ifdef LASER
+static long counter_l;
+#endif // LASER
+
 volatile static unsigned long step_events_completed; // The number of step events executed in the current block
 #ifdef ADVANCE
   static long advance_rate, advance, final_advance = 0;
@@ -612,6 +617,32 @@ ISR(TIMER1_COMPA_vect)
           WRITE_E_STEP(INVERT_E_STEP_PIN);
         }
       #endif //!ADVANCE
+      
+      #ifdef LASER
+		counter_l += current_block->steps_l;
+		  if (counter_l > 0) {
+			if (current_block->laser_status == LASER_ON){
+		  	  analogWrite(LASER_INTENSITY_PIN, current_block->laser_intensity);
+		  	  digitalWrite(LASER_FIRING_PIN, HIGH);
+		  	  
+			  uint16_t micros_now = (uint16_t)micros();
+			  uint8_t millis_delay = current_block->laser_duration;
+			  while (millis_delay > 0) {
+				if (((uint16_t)micros() - micros_now) >= 100) {
+				millis_delay--;
+				micros_now += 100;
+				}
+				#ifndef AT90USB
+				MSerial.checkRx(); // Check for serial chars.
+				#endif
+			  }
+		  	  
+			  digitalWrite(LASER_FIRING_PIN, LOW);
+			}
+		  counter_l -= current_block->step_event_count;
+		  }
+      #endif // LASER
+      
       step_events_completed += 1;
       if(step_events_completed >= current_block->step_event_count) break;
     }

@@ -34,7 +34,7 @@ static float laser_pwm = 0;
 static float laser_intensity = 100;
 static float laser_ppm = 0;
 static uint8_t laser_duration = 0;
-static bool laser_firing = LASER_OFF;
+static bool laser_status = LASER_OFF;
 
 void setupLaser();
 void fireLaser(float intensity);
