@@ -1121,19 +1121,16 @@ void process_commands()
 #endif
 #ifdef LASER
     case 3:  //M3 - fire laser
-      if(code_seen('S') && (!IsStopped())){
-    	float intensity = code_value();
-        st_synchronize();
-    	if (code_seen('P')) {
-    		fireLaser(intensity, code_value());
-    	} else {
-        fireLaser(intensity);
-    	}
-      }
+      if (code_seen('S') && (!IsStopped()))
+    	float laser_intensity = code_value();
+      if (code_seen('P') && (!IsStopped()))
+    	uint8_t laser_duration = code_value();
+    	
+      bool laser_firing = LASER_ON;
+    	
       break;
     case 5:  //M5 stop firing laser
-      st_synchronize();
-      offLaser();
+	  laser_firing = LASER_OFF;
       break;
 #endif
     case 17:
