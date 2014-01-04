@@ -21,6 +21,9 @@
 
 #include <inttypes.h>
 
+#define LASER_ON 1
+#define LASER_OFF 0
+
 extern uint8_t laserPower;
 extern bool laserAccOn;
 extern bool laserOn;
@@ -30,7 +33,8 @@ static bool waitForLaserAok();
 static float laser_pwm = 0;
 static float laser_intensity = 100;
 static float laser_ppm = 0;
-static uint8_t pulse_length = 30;
+static uint8_t laser_duration = 0;
+static bool laser_firing = LASER_OFF;
 
 void setupLaser();
 void fireLaser(float intensity);
@@ -38,8 +42,5 @@ void fireLaser(float intensity, uint16_t duration);
 void offLaser();
 void prepareLaser();
 void shutdownLaser();
-
-#define LASER_ON 1
-#define LASER_OFF 0
 
 #endif

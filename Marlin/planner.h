@@ -69,11 +69,11 @@ typedef struct {
     unsigned long e_to_p_pressure;
   #endif // BARICUDA
   #ifdef LASER
-    bool laser_firing;
-    char raster_data;
-    float laser_intensity;
-    uint8_t pulse_length;
-    long steps_l;
+	bool laser_firing;
+    float laser_intensity; // if an array, use raster
+    float laser_ppm; // number of pulses per millimeter
+    uint8_t laser_duration; // in tenths of a millisecond - if non-zero, use ppm
+    long steps_l; // number of laser pulses in this segment - if non-zero, fire laser
   #endif // LASER
   volatile char busy;
 } block_t;
@@ -83,7 +83,11 @@ void plan_init();
 
 // Add a new linear movement to the buffer. x, y and z is the signed, absolute target position in 
 // millimaters. Feed rate specifies the speed of the motion.
-void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_firing = LASER_OFF, char raster_data = NULL, float laser_ppm = 0, float laser_intensity = 100.0, uint8_t pulse_length = 30);
+#ifdef LASER
+void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_firing = LASER_OFF, float laser_intensity = 100.0, float laser_ppm = 0, uint8_t laser_duration = 0);
+#else
+void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder);
+#endif // LASER
 
 // Set position. Used for G92 instructions.
 void plan_set_position(const float &x, const float &y, const float &z, const float &e);

@@ -840,7 +840,14 @@ void process_commands()
   {
     switch((int)code_value())
     {
-    case 0: // G0 -> G1
+    case 0: // G0
+      if(Stopped == false) {
+        get_coordinates(); // For X Y Z E F
+        prepare_move();
+        //ClearToSend();
+        return;
+      }
+      //break;
     case 1: // G1
       if(Stopped == false) {
         get_coordinates(); // For X Y Z E F
@@ -2560,7 +2567,11 @@ void prepare_move()
       plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
   }
   else {
+	#ifdef LASER
+    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder, laser_firing, laser_intensity, laser_ppm, laser_duration);
+    #else
     plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
+    #endif // LASER
   }
 #endif //else DELTA
   for(int8_t i=0; i < NUM_AXIS; i++) {
