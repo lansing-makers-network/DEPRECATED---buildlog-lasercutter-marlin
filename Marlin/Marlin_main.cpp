@@ -1125,6 +1125,8 @@ void process_commands()
     	float laser_intensity = code_value();
       if (code_seen('P') && (!IsStopped()))
     	uint8_t laser_duration = code_value();
+      if (code_seen('Q') && (!IsStopped()))
+        float laser_ppm = code_value();
     	
       laser_status = LASER_ON;
     	
