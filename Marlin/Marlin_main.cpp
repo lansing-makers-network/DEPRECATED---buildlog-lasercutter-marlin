@@ -1126,7 +1126,7 @@ void process_commands()
       if (code_seen('P') && (!IsStopped()))
     	uint8_t laser_duration = code_value();
     	
-      bool laser_firing = LASER_ON;
+      laser_firing = LASER_ON;
     	
       break;
     case 5:  //M5 stop firing laser
