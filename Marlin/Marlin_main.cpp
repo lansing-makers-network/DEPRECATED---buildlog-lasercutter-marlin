@@ -1121,13 +1121,22 @@ void process_commands()
 #endif
 #ifdef LASER
     case 3:  //M3 - fire laser
-      if (code_seen('S') && (!IsStopped()))
+      if (code_seen('S') && (!IsStopped())) {
     	float laser_intensity = code_value();
-      if (code_seen('P') && (!IsStopped()))
+	  } else {
+		float laser_intensity = 100;
+	  }
+      if (code_seen('P') && (!IsStopped())) {
     	uint8_t laser_duration = code_value();
-      if (code_seen('Q') && (!IsStopped()))
+      } else {
+		float laser_duration = 0;
+	  }
+      if (code_seen('Q') && (!IsStopped())) {
         float laser_ppm = code_value();
-    	
+      } else {
+		float laser_ppm = 0;
+	  }
+	  
       laser_status = LASER_ON;
     	
       break;
