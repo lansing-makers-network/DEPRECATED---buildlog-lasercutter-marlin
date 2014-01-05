@@ -1508,6 +1508,7 @@ void process_commands()
         #endif
 		#ifdef LASER
           prepareLaser();
+          waitForLaserAok();
 		#endif
         break;
       #endif
@@ -2734,7 +2735,7 @@ void Stop()
 {
   disable_heater();
 #ifdef LASER
-  offLaser();
+  digitalWrite(LASER_FIRING_PIN, LOW);
   shutdownLaser();
 #endif
   if(Stopped == false) {

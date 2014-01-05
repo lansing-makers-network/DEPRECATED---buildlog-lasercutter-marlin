@@ -29,7 +29,6 @@ extern bool laserAccOn;
 extern bool laserOn;
 extern bool laserAok;
 
-static bool waitForLaserAok();
 static float laser_pwm = 0;
 static float laser_intensity = 100;
 static float laser_ppm = 0;
@@ -37,10 +36,8 @@ static uint8_t laser_duration = 0;
 static bool laser_status = LASER_OFF;
 
 void setupLaser();
-void fireLaser(float intensity);
-void fireLaser(float intensity, uint16_t duration);
-void offLaser();
 void prepareLaser();
+void waitForLaserAok();
 void shutdownLaser();
 
 #endif

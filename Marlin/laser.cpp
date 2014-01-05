@@ -57,35 +57,6 @@ void setupLaser()
   interrupts();
 }
 
-
-void fireLaser(float intensity)
-{
-  if (intensity < 0.0) intensity = 0.0;
-  if (intensity > 100.0) intensity = 100.0;
-  
-  int laser_pwm = int(intensity / 100.0 * 560.0);
-  laserPower = int(intensity);
-  laserOn = true;
-  if (!waitForLaserAok()) {
-	  return;
-  }
-  analogWrite(LASER_INTENSITY_PIN, laser_pwm);
-  digitalWrite(LASER_FIRING_PIN, HIGH);
-}
-
-void fireLaser(float intensity, uint16_t duration) {
-	fireLaser(intensity);
-	delay(duration);
-	offLaser();
-}
-
-void offLaser()
-{
-  digitalWrite(LASER_FIRING_PIN,LOW);
-  laserOn = false;
-}
-
-
 void prepareLaser() {
 	if (!laserAccOn) {
 		digitalWrite(LASER_ACC_PIN, LOW);
@@ -95,7 +66,7 @@ void prepareLaser() {
 	}
 }
 
-static bool waitForLaserAok() {
+void waitForLaserAok() {
 	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
 	bool first_loop = true;
 	while(digitalRead(LASER_AOK_PIN)) {
@@ -105,8 +76,7 @@ static bool waitForLaserAok() {
 
 			Stop();
 			laserAok = false;
-			return false;
-
+			break;
 		}
 		if (first_loop) {
 			SERIAL_ECHO_START;
@@ -115,7 +85,6 @@ static bool waitForLaserAok() {
 		}
 	}
 	laserAok = true;
-	return true;
 }
 
 void shutdownLaser() {
