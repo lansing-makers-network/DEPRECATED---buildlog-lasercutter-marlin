@@ -33,28 +33,30 @@ bool laserAok = false;
 void setupLaser()
 {
   pinMode(LASER_FIRING_PIN, OUTPUT);
-  pinMode(LASER_INTENSITY_PIN, OUTPUT);
   
+  #ifdef LASER_INTENSITY_PIN
+    pinMode(LASER_INTENSITY_PIN, OUTPUT);
+    analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
+  
+    TCCR4B = 0x00;  // stop Timer4 clock for register updates
+    TCCR4A = 0x82; // Clear OC4A on match, fast PWM mode, lower WGM4x=14
+    ICR4 = abs(16000000 / LASER_PWM); // clock cycles per PWM pulse
+    OCR4A = abs(16000000 / LASER_PWM) - 1; // ICR4 - 1 force immediate compare on next tick
+    TCCR4B = 0x18 | 0x01; // upper WGM4x = 14, clock sel = prescaler, start running
+  
+    noInterrupts();
+    TCCR4B &= 0xf8; // stop timer, OC4A may be active now
+    TCNT4 = abs(16000000 / LASER_PWM); // force immediate compare on next tick
+    ICR4 = abs(16000000 / LASER_PWM); // set new PWM period
+    TCCR4B |= 0x01; // start the timer with proper prescaler value
+    interrupts();
+  #endif // LASER_INTENSITY_PIN
+
   digitalWrite(LASER_ACC_PIN, HIGH);  // Laser accessories are active LOW, so preset the pin
   pinMode(LASER_ACC_PIN, OUTPUT);
 
   digitalWrite(LASER_AOK_PIN, HIGH);  // Setup to the AOK pin to pull-up.
   pinMode(LASER_AOK_PIN, INPUT_PULLUP);
-
-  analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
-  
-  TCCR4B = 0x00;  // stop Timer4 clock for register updates
-  TCCR4A = 0x82; // Clear OC4A on match, fast PWM mode, lower WGM4x=14
-  ICR4 = 560; // 800 clock cycles = 20,000hz
-  OCR4A = 559; // ICR4 - 1 force immediate compare on next tick
-  TCCR4B = 0x18 | 0x01; // upper WGM4x = 14, clock sel = prescaler, start running
-  
-  noInterrupts();
-  TCCR4B &= 0xf8; // stop timer, OC4A may be active now
-  TCNT4 = 560; // force immediate compare on next tick
-  ICR4 = 560; // set new PWM period
-  TCCR4B |= 0x01; // start the timer with proper prescaler value
-  interrupts();
 }
 
 void prepareLaser() {

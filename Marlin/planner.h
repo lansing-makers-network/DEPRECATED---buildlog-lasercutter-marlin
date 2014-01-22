@@ -69,8 +69,9 @@ typedef struct {
     unsigned long e_to_p_pressure;
   #endif // BARICUDA
   #ifdef LASER
-	bool laser_status;
-    int laser_intensity; // if an array, use raster
+	uint8_t laser_mode; // LASER_CONTINUOUS, LASER_PPM, LASER_RASTER
+	bool laser_status; // LASER_OFF, LASER_ON
+    int laser_intensity; // in raster mode, this is an array
     float laser_ppm; // number of pulses per millimeter
     uint8_t laser_duration; // in tenths of a millisecond - if non-zero, use ppm
     long steps_l; // number of laser pulses in this segment - if non-zero, fire laser
@@ -84,7 +85,7 @@ void plan_init();
 // Add a new linear movement to the buffer. x, y and z is the signed, absolute target position in 
 // millimaters. Feed rate specifies the speed of the motion.
 #ifdef LASER
-void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_status = LASER_OFF, int laser_intensity = 560, float laser_ppm = 0, uint8_t laser_duration = 0);
+void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_status = LASER_OFF, uint8_t laser_mode = LASER_CONTINUOUS, int laser_intensity = 560, float laser_ppm = 0, uint8_t laser_duration = 0);
 #else
 void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder);
 #endif // LASER

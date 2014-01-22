@@ -70,16 +70,26 @@
 
 #define POWER_SUPPLY 1
 
-// The following selects whether or not the firmware is controlling a laser cutter
-// LASER_PWM_MIN and MAX are defined in units HZ (cycles / second)
-#define LASER 1
-#define CUSTOM_MENDEL_NAME "LMN Laser"
-#define LASER_PWM_MIN 20000
-#define LASER_PWM_MAX 50000
+// This section determines whether or not the firmware is controlling a laser
+// Laser control is required for the mUVe1 3D printer, and buildlog.net laser cutter
+// LASER_PWM is defined in units HZ (cycles / second)
+
+// #define MUVE
+// #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
+// #define LASER_PWM 8000
+// #define MUVE_Z_PEEL
+// #define MUVE_E_LASER
+
+#define BUILDLOG
+#define CUSTOM_MENDEL_NAME "Laser Cutter"
+#define LASER_PWM 30000
 #define LASER_FOCAL_HEIGHT 91.67
 #define LASER_AOK_TIMEOUT 30000  // Number of millis to wait for AOK from Relay board
 
-#define SDSUPPORT
+#if defined MUVE or defined BUILDLOG
+  #define LASER
+  #define LASER_G1
+#endif
 
 //===========================================================================
 //=============================Thermal Settings  ============================

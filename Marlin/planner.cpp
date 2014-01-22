@@ -513,7 +513,7 @@ float junction_deviation = 0.1;
 // Add a new linear movement to the buffer. steps_x, _y and _z is the absolute position in 
 // mm. Microseconds specify how many microseconds the move should take to perform. To aid acceleration
 // calculation the caller must also provide the physical length of the line in millimeters.
-void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_status, int laser_intensity, float laser_ppm, uint8_t laser_duration)
+void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_status, uint8_t laser_mode, int laser_intensity, float laser_ppm, uint8_t laser_duration)
 {
   // Calculate the buffer head after we push this byte
   int next_buffer_head = next_block_index(block_buffer_head);
@@ -579,23 +579,19 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   block->steps_e *= extrudemultiply;
   block->steps_e /= 100;
   
-  // LASER Firing scenarios:
-  //  - laser_firing == LASER_OFF												laser off
-  //  - laser_firing == LASER_ON, laser_ppm == 0, laser_intensity is singular	continuous firing
-  //  - laser_firing == LASER_ON, laser_ppm > 0, laser_intensity is singular	use ppm
-  //  - laser_firing == LASER_ON, laser_ppm > 0, laser_intensity is array		use raster
+  
   #ifdef LASER
   block->laser_intensity = int(laser_intensity / 100.0 * 560.0);
   block->laser_duration = laser_duration;
   block->laser_status = laser_status;
-  if (laser_status == LASER_ON && laser_ppm > 0) {
+  block->laser_mode = laser_mode;
+  if (laser_mode == LASER_PPM) {
   block->steps_l = labs(sqrt(pow((target[X_AXIS]-position[X_AXIS])/axis_steps_per_unit[X_AXIS], 2)+pow((target[Y_AXIS]-position[Y_AXIS])/axis_steps_per_unit[Y_AXIS], 2))*laser_ppm);
+  } else if (laser_mode == LASER_RASTER) {
+  
   } else {
   block->steps_l = 0;
   }
-  #endif // LASER
-  
-  #ifdef LASER
   block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, max(block->steps_e, block->steps_l))));
   #else
   block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, block->steps_e)));
