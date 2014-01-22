@@ -578,24 +578,8 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   block->steps_e = labs(target[E_AXIS]-position[E_AXIS]);
   block->steps_e *= extrudemultiply;
   block->steps_e /= 100;
-  
-  
-  #ifdef LASER
-  block->laser_intensity = int(laser_intensity / 100.0 * abs(16000000 / LASER_PWM));
-  block->laser_duration = laser_duration;
-  block->laser_status = laser_status;
-  block->laser_mode = laser_mode;
-  if (laser_mode == LASER_PPM) {
-  block->steps_l = labs(sqrt(pow((target[X_AXIS]-position[X_AXIS])/axis_steps_per_unit[X_AXIS], 2)+pow((target[Y_AXIS]-position[Y_AXIS])/axis_steps_per_unit[Y_AXIS], 2))*laser_ppm);
-  } else if (laser_mode == LASER_RASTER) {
-  
-  } else {
-  block->steps_l = 0;
-  }
-  block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, max(block->steps_e, block->steps_l))));
-  #else
+ 
   block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, block->steps_e)));
-  #endif // LASER
 
   // Bail if this is a zero-length block
   if (block->step_event_count <= dropsegments)
@@ -691,6 +675,22 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   {
     block->millimeters = sqrt(square(delta_mm[X_AXIS]) + square(delta_mm[Y_AXIS]) + square(delta_mm[Z_AXIS]));
   }
+  
+  #ifdef LASER
+    block->laser_intensity = int(laser_intensity / 100.0 * abs(16000000 / LASER_PWM));
+    block->laser_duration = laser_duration;
+    block->laser_status = laser_status;
+    block->laser_mode = laser_mode;
+    if (laser_mode == LASER_PPM) {
+      block->steps_l = labs(sqrt(pow(delta_mm[X_AXIS], 2)+pow(delta_mm[Y_AXIS], 2))*laser_ppm);
+    } else if (laser_mode == LASER_RASTER) {
+  
+    } else {
+      block->steps_l = 0;
+    }
+    block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, max(block->steps_e, block->steps_l))));
+  #endif // LASER
+  
   float inverse_millimeters = 1.0/block->millimeters;  // Inverse millimeters to remove multiple divides 
 
     // Calculate speed in mm/second for each axis. No divide by zero due to previous checks.
