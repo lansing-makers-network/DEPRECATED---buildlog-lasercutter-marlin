@@ -888,8 +888,28 @@ void process_commands()
         lcd_update();
       }
       break;
-      #ifdef FWRETRACT
-      case 10: // G10 retract
+    #ifdef LASER
+    case 7: //G7 Execute X+ raster line
+      SERIAL_ECHO_START;
+      SERIAL_ECHOLN("Positive Raster Line");
+      laserRasterNewLine(1);
+	  laserRasterLine();
+      break;
+    case 8: //G8 Execute X- raster line
+   	  SERIAL_ECHO_START;
+      SERIAL_ECHOLN("Negative Raster Line");
+      laserRasterNewLine(-1);
+	  laserRasterLine();
+      break;
+    case 9: //Continue previous raster line
+      SERIAL_ECHO_START;
+      SERIAL_ECHOLN("Continue Raster Line");
+	  laserRasterLine();
+	  break;
+	#endif // LASER
+
+    #ifdef FWRETRACT
+    case 10: // G10 retract
       if(!retracted)
       {
         destination[X_AXIS]=current_position[X_AXIS];
@@ -903,7 +923,7 @@ void process_commands()
       }
 
       break;
-      case 11: // G10 retract_recover
+    case 11: // G10 retract_recover
       if(!retracted)
       {
         destination[X_AXIS]=current_position[X_AXIS];
