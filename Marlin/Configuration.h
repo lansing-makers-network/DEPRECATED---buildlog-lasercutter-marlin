@@ -90,6 +90,7 @@
   #define LASER
   #define LASER_G1
   #define LASER_SPINDLE
+  #define LASER_RASTER_RATIO 1.33
 #endif
 
 //===========================================================================

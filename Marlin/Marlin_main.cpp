@@ -892,19 +892,17 @@ void process_commands()
     case 7: //G7 Execute X+ raster line
       SERIAL_ECHO_START;
       SERIAL_ECHOLN("Positive Raster Line");
-      laserRasterNewLine(1);
-	  laserRasterLine();
+
       break;
     case 8: //G8 Execute X- raster line
    	  SERIAL_ECHO_START;
       SERIAL_ECHOLN("Negative Raster Line");
-      laserRasterNewLine(-1);
-	  laserRasterLine();
+ 
       break;
     case 9: //Continue previous raster line
       SERIAL_ECHO_START;
       SERIAL_ECHOLN("Continue Raster Line");
-	  laserRasterLine();
+
 	  break;
 	#endif // LASER
 
