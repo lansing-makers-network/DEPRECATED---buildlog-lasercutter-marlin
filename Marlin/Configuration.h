@@ -89,6 +89,7 @@
 #if defined MUVE or defined BUILDLOG
   #define LASER
   #define LASER_G1
+  #define LASER_SPINDLE
 #endif
 
 //===========================================================================

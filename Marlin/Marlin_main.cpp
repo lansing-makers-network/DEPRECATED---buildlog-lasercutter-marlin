@@ -1124,7 +1124,7 @@ void process_commands()
     }
     break;
 #endif
-#ifdef LASER
+#ifdef LASER_SPINDLE
     case 3:  //M3 - fire laser
       if (code_seen('S') && (!IsStopped())) {
     	float laser_intensity = code_value();
@@ -1148,7 +1148,7 @@ void process_commands()
     case 5:  //M5 stop firing laser
 	  laser_status = LASER_OFF;
       break;
-#endif
+#endif // LASER_SPINDLE
     case 17:
         LCD_MESSAGEPGM(MSG_NO_MOVE);
         enable_x();
