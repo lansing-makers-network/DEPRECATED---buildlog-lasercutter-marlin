@@ -852,9 +852,9 @@ void process_commands()
       if(Stopped == false) {
         get_coordinates(); // For X Y Z E F
         
-        #ifdef LASER_G1
+        #ifdef LASER_FIRE_G1
           laser_status = LASER_ON;
-        #endif // LASER_G1
+        #endif // LASER_FIRE_G1
         
         prepare_move();
         //ClearToSend();
@@ -1142,7 +1142,7 @@ void process_commands()
     }
     break;
 #endif
-#ifdef LASER_SPINDLE
+#ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
       if (code_seen('S') && (!IsStopped())) {
     	float laser_intensity = code_value();
@@ -1166,7 +1166,7 @@ void process_commands()
     case 5:  //M5 stop firing laser
 	  laser_status = LASER_OFF;
       break;
-#endif // LASER_SPINDLE
+#endif // LASER_FIRE_SPINDLE
     case 17:
         LCD_MESSAGEPGM(MSG_NO_MOVE);
         enable_x();

@@ -78,7 +78,7 @@
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_PWM 8000
 // #define MUVE_Z_PEEL
-// #define MUVE_E_LASER
+// #define LASER_FIRE_E
 
 #define BUILDLOG
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
@@ -88,8 +88,8 @@
 
 #if defined MUVE or defined BUILDLOG
   #define LASER
-  #define LASER_G1
-  #define LASER_SPINDLE
+  #define LASER_FIRE_G1
+  #define LASER_FIRE_SPINDLE
   #define LASER_RASTER_RATIO 1.33
 #endif
 
