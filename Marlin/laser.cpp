@@ -62,21 +62,20 @@ bool laser_peripherals_ok(){
 void laser_peripherals_on(){
 	digitalWrite(LASER_ACC_PIN, LOW);
 	SERIAL_ECHO_START;
-	SERIAL_ECHOLNPGM("POWER: Laser Power Enabled");
+	SERIAL_ECHOLNPGM("POWER: Laser Peripherals Enabled");
 }
 void laser_peripherals_off(){
 	digitalWrite(LASER_ACC_PIN, HIGH);
 	SERIAL_ECHO_START;
-	SERIAL_ECHOLNPGM("POWER: Laser Power Disabled");
+	SERIAL_ECHOLNPGM("POWER: Laser Peripherals Disabled");
 }
-void waitForLaserAok() {
+void laser_wait_for_peripherals() {
 	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
 	bool first_loop = true;
-	while(digitalRead(LASER_AOK_PIN)) {
+	while(!laser_peripherals_ok()) {
 		if (millis() > timeout) {
 			SERIAL_ERROR_START;
 			SERIAL_ERRORLNPGM("Power supply failed to indicate AOK");
-
 			Stop();
 			break;
 		}

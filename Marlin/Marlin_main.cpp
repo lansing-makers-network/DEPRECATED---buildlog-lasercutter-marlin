@@ -1545,8 +1545,7 @@ void process_commands()
         #endif
 		#ifdef LASER_PERIPHERALS
 		  laser_peripherals_on();
-		  waitForLaserAok();
-
+		  laser_wait_for_peripherals();
 		#endif // LASER_PERIPHERALS
         break;
       #endif

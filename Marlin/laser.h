@@ -37,8 +37,8 @@ static uint8_t laser_mode = LASER_CONTINUOUS;
 
 void laser_setup();
 void laser_peripherals_on();
-void waitForLaserAok();
 void laser_peripherals_off();
 bool laser_peripherals_ok();
+void laser_wait_for_peripherals();
 
 #endif

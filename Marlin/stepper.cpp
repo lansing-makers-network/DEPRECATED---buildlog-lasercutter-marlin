@@ -349,13 +349,16 @@ ISR(TIMER1_COMPA_vect)
     // Set directions TO DO This should be done once during init of trapezoid. Endstops -> interrupt
     out_bits = current_block->direction_bits;
 
+	// Continuous firing of the laser during a move happens here, PPM and raster happen further down
 	#ifdef LASER
-    if (current_block->laser_status == LASER_ON && current_block->steps_l == 0) {
-                analogWrite(LASER_INTENSITY_PIN, current_block->laser_intensity);
-                digitalWrite(LASER_FIRING_PIN, HIGH);
-        } else {
-                digitalWrite(LASER_FIRING_PIN, LOW);
-        }
+	if (current_block->laser_mode == LASER_CONTINUOUS && current_block->laser_status == LASER_ON) {
+	  #ifdef LASER_INTENSITY_PIN
+      analogWrite(LASER_INTENSITY_PIN, current_block->laser_intensity);
+      #endif // LASER_INTENSITY_PIN
+      digitalWrite(LASER_FIRING_PIN, HIGH);
+    } else {
+      digitalWrite(LASER_FIRING_PIN, LOW);
+    }
     #endif // LASER
 
     // Set the direction bits (X_AXIS=A_AXIS and Y_AXIS=B_AXIS for COREXY)
@@ -630,7 +633,7 @@ ISR(TIMER1_COMPA_vect)
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
-			if (current_block->laser_status == LASER_ON){
+			if (current_block->laser_mode = LASER_PPM && current_block->laser_status == LASER_ON){
 		  	  analogWrite(LASER_INTENSITY_PIN, current_block->laser_intensity);
 		  	  digitalWrite(LASER_FIRING_PIN, HIGH);
 		  	  
@@ -645,8 +648,9 @@ ISR(TIMER1_COMPA_vect)
 				MSerial.checkRx(); // Check for serial chars.
 				#endif
 			  }
-		  	  
 			  digitalWrite(LASER_FIRING_PIN, LOW);
+			} else if (current_block->laser_mode = LASER_RASTER && current_block->laser_status == LASER_ON){
+				
 			}
 		  counter_l -= current_block->step_event_count;
 		  }
