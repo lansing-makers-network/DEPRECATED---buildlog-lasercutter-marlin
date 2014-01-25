@@ -393,10 +393,12 @@
     
     #ifdef BUILDLOG
       #define LASER_INTENSITY_PIN 6
+      #define LASER_FIRING_PIN	5
+	#endif // BUILDLOG
+	#ifdef LASER_PERIPHERALS
       #define LASER_ACC_PIN       4
 	  #define LASER_AOK_PIN		  11
-	  #define LASER_FIRING_PIN	5
-    #endif // BUILDLOG
+    #endif // LASER_PERIPHERALS
     #ifdef MUVE
       #define LASER_FIRING_PIN    9
     #endif // MUVE

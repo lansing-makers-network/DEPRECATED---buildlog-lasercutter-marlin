@@ -93,6 +93,9 @@
   #define LASER_RASTER_RATIO 1.33
 #endif
 
+// Uncomment this if the laser cutter is equipped with a peripheral control board
+#define LASER_PERIPHERALS
+
 //===========================================================================
 //=============================Thermal Settings  ============================
 //===========================================================================

@@ -40,14 +40,14 @@ void setupLaser()
   
     TCCR4B = 0x00;  // stop Timer4 clock for register updates
     TCCR4A = 0x82; // Clear OC4A on match, fast PWM mode, lower WGM4x=14
-    ICR4 = abs(16000000 / LASER_PWM); // clock cycles per PWM pulse
-    OCR4A = abs(16000000 / LASER_PWM) - 1; // ICR4 - 1 force immediate compare on next tick
+    ICR4 = labs(F_CPU / LASER_PWM); // clock cycles per PWM pulse
+    OCR4A = labs(F_CPU / LASER_PWM) - 1; // ICR4 - 1 force immediate compare on next tick
     TCCR4B = 0x18 | 0x01; // upper WGM4x = 14, clock sel = prescaler, start running
   
     noInterrupts();
     TCCR4B &= 0xf8; // stop timer, OC4A may be active now
-    TCNT4 = abs(16000000 / LASER_PWM); // force immediate compare on next tick
-    ICR4 = abs(16000000 / LASER_PWM); // set new PWM period
+    TCNT4 = labs(F_CPU / LASER_PWM); // force immediate compare on next tick
+    ICR4 = labs(F_CPU / LASER_PWM); // set new PWM period
     TCCR4B |= 0x01; // start the timer with proper prescaler value
     interrupts();
   #endif // LASER_INTENSITY_PIN
@@ -55,19 +55,11 @@ void setupLaser()
   digitalWrite(LASER_ACC_PIN, HIGH);  // Laser accessories are active LOW, so preset the pin
   pinMode(LASER_ACC_PIN, OUTPUT);
 
-  digitalWrite(LASER_AOK_PIN, HIGH);  // Setup to the AOK pin to pull-up.
+  digitalWrite(LASER_AOK_PIN, HIGH);  // Set the AOK pin to pull-up.
   pinMode(LASER_AOK_PIN, INPUT_PULLUP);
 }
 
-void prepareLaser() {
-	if (!laserAccOn) {
-		digitalWrite(LASER_ACC_PIN, LOW);
-		SERIAL_ECHO_START;
-		SERIAL_ECHOLNPGM("POWER: Laser Power Enabled");
-		laserAccOn = true;
-	}
-}
-
+#ifdef LASER_PERIPHERALS
 void waitForLaserAok() {
 	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
 	bool first_loop = true;
@@ -97,4 +89,4 @@ void shutdownLaser() {
 		laserAccOn = false;
 	}
 }
-
+#endif // LASER_PERIPHERALS

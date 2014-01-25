@@ -677,7 +677,7 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   }
   
   #ifdef LASER
-    block->laser_intensity = int(laser_intensity / 100.0 * abs(16000000 / LASER_PWM));
+    block->laser_intensity = int(laser_intensity / 100.0 * abs(F_CPU / LASER_PWM));
     block->laser_duration = laser_duration;
     block->laser_status = laser_status;
     block->laser_mode = laser_mode;

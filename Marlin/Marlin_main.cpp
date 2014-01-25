@@ -1538,10 +1538,14 @@ void process_commands()
           LCD_MESSAGEPGM(WELCOME_MSG);
           lcd_update();
         #endif
-		#ifdef LASER
-          prepareLaser();
-          waitForLaserAok();
-		#endif
+		#ifdef LASER_PERIPHERALS
+          digitalWrite(LASER_ACC_PIN, LOW);
+		  SERIAL_ECHO_START;
+		  SERIAL_ECHOLNPGM("POWER: Laser Power Enabled");
+
+		  waitForLaserAok();
+
+		#endif // LASER_PERIPHERALS
         break;
       #endif
 
@@ -1553,9 +1557,9 @@ void process_commands()
         disable_e2();
         finishAndDisableSteppers();
         fanSpeed = 0;
-		#ifdef LASER
+		#ifdef LASER_PERIPHERALS
         	shutdownLaser();
-	    #endif
+	    #endif // LASER_PERIPHERALS
         delay(1000); // Wait a little before to switch off
       #if defined(SUICIDE_PIN) && SUICIDE_PIN > -1
         st_synchronize();
