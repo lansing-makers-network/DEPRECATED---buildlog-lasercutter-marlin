@@ -54,6 +54,15 @@ void laser_setup()
   pinMode(LASER_AOK_PIN, INPUT_PULLUP);
   #endif // LASER_PERIPHERALS
 }
+void laser_fire(int intensity){
+	#ifdef LASER_INTENSITY_PIN
+    analogWrite(LASER_INTENSITY_PIN, intensity);
+    #endif // LASER_INTENSITY_PIN
+    digitalWrite(LASER_FIRING_PIN, HIGH);
+}
+void laser_extinguish(){
+	digitalWrite(LASER_FIRING_PIN, LOW);
+}
 
 #ifdef LASER_PERIPHERALS
 bool laser_peripherals_ok(){
@@ -85,14 +94,5 @@ void laser_wait_for_peripherals() {
 			first_loop = false;
 		}
 	}
-}
-void laser_fire(int intensity){
-	#ifdef LASER_INTENSITY_PIN
-    analogWrite(LASER_INTENSITY_PIN, intensity);
-    #endif // LASER_INTENSITY_PIN
-    digitalWrite(LASER_FIRING_PIN, HIGH);
-}
-void laser_extinguish(){
-	digitalWrite(LASER_FIRING_PIN, LOW);
 }
 #endif // LASER_PERIPHERALS
