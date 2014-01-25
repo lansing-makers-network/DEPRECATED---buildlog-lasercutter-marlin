@@ -682,7 +682,7 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
     block->laser_status = laser_status;
     block->laser_mode = laser_mode;
     if (laser_mode == LASER_PPM) {
-      block->steps_l = labs(sqrt(pow(delta_mm[X_AXIS], 2)+pow(delta_mm[Y_AXIS], 2))*laser_ppm);
+      block->steps_l = labs(block->millimeters*laser_ppm);
     } else if (laser_mode == LASER_RASTER) {
   
     } else {
