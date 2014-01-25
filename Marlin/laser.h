@@ -36,9 +36,11 @@ static bool laser_status = LASER_OFF;
 static uint8_t laser_mode = LASER_CONTINUOUS;
 
 void laser_setup();
+bool laser_peripherals_ok();
 void laser_peripherals_on();
 void laser_peripherals_off();
-bool laser_peripherals_ok();
 void laser_wait_for_peripherals();
+void laser_fire(int intensity);
+void laser_extinguish();
 
 #endif

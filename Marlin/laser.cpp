@@ -86,4 +86,13 @@ void laser_wait_for_peripherals() {
 		}
 	}
 }
+void laser_fire(int intensity){
+	#ifdef LASER_INTENSITY_PIN
+    analogWrite(LASER_INTENSITY_PIN, intensity);
+    #endif // LASER_INTENSITY_PIN
+    digitalWrite(LASER_FIRING_PIN, HIGH);
+}
+void laser_extinguish(){
+	digitalWrite(LASER_FIRING_PIN, LOW);
+}
 #endif // LASER_PERIPHERALS

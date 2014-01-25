@@ -352,12 +352,9 @@ ISR(TIMER1_COMPA_vect)
 	// Continuous firing of the laser during a move happens here, PPM and raster happen further down
 	#ifdef LASER
 	if (current_block->laser_mode == LASER_CONTINUOUS && current_block->laser_status == LASER_ON) {
-	  #ifdef LASER_INTENSITY_PIN
-      analogWrite(LASER_INTENSITY_PIN, current_block->laser_intensity);
-      #endif // LASER_INTENSITY_PIN
-      digitalWrite(LASER_FIRING_PIN, HIGH);
+	  laser_fire(current_block->laser_intensity);
     } else {
-      digitalWrite(LASER_FIRING_PIN, LOW);
+      laser_extinguish();
     }
     #endif // LASER
 
@@ -633,10 +630,9 @@ ISR(TIMER1_COMPA_vect)
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
-			if (current_block->laser_mode = LASER_PPM && current_block->laser_status == LASER_ON){
-		  	  analogWrite(LASER_INTENSITY_PIN, current_block->laser_intensity);
-		  	  digitalWrite(LASER_FIRING_PIN, HIGH);
-		  	  
+			if (current_block->laser_mode = LASER_PPM && current_block->laser_status == LASER_ON){ // PPM Firing Mode
+		  	  laser_fire(current_block->laser_intensity);
+		  	  		  	  
 			  uint16_t micros_now = (uint16_t)micros();
 			  uint8_t millis_delay = current_block->laser_duration;
 			  while (millis_delay > 0) {
@@ -648,8 +644,9 @@ ISR(TIMER1_COMPA_vect)
 				MSerial.checkRx(); // Check for serial chars.
 				#endif
 			  }
-			  digitalWrite(LASER_FIRING_PIN, LOW);
-			} else if (current_block->laser_mode = LASER_RASTER && current_block->laser_status == LASER_ON){
+			  
+			  laser_extinguish();
+			} else if (current_block->laser_mode = LASER_RASTER && current_block->laser_status == LASER_ON){ // Raster Firing Mode
 				
 			}
 		  counter_l -= current_block->step_event_count;
