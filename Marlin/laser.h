@@ -40,9 +40,9 @@ static uint8_t laser_duration = 0;
 static bool laser_status = LASER_OFF;
 static uint8_t laser_mode = LASER_CONTINUOUS;
 
-void setupLaser();
-void prepareLaser();
+void laser_setup();
+void laser_peripherals_on();
 void waitForLaserAok();
-void shutdownLaser();
+void laser_peripherals_off();
 
 #endif

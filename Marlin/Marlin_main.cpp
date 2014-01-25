@@ -453,7 +453,7 @@ void setup()
   #endif
   
   #ifdef LASER
-  setupLaser();
+  laser_setup();
   #endif
 }
 
@@ -1539,10 +1539,7 @@ void process_commands()
           lcd_update();
         #endif
 		#ifdef LASER_PERIPHERALS
-          digitalWrite(LASER_ACC_PIN, LOW);
-		  SERIAL_ECHO_START;
-		  SERIAL_ECHOLNPGM("POWER: Laser Power Enabled");
-
+		  laser_peripherals_on();
 		  waitForLaserAok();
 
 		#endif // LASER_PERIPHERALS
@@ -1558,7 +1555,7 @@ void process_commands()
         finishAndDisableSteppers();
         fanSpeed = 0;
 		#ifdef LASER_PERIPHERALS
-        	shutdownLaser();
+        	laser_peripherals_off();
 	    #endif // LASER_PERIPHERALS
         delay(1000); // Wait a little before to switch off
       #if defined(SUICIDE_PIN) && SUICIDE_PIN > -1
@@ -2703,7 +2700,7 @@ void manage_inactivity()
         disable_e1();
         disable_e2();
 		#ifdef LASER
-            shutdownLaser();
+            laser_peripherals_off();
 		#endif
       }
     }
@@ -2759,7 +2756,7 @@ void kill()
   disable_e1();
   disable_e2();
 #ifdef LASER
-  shutdownLaser();
+  laser_peripherals_off();
 #endif
 
 #if defined(PS_ON_PIN) && PS_ON_PIN > -1
@@ -2777,7 +2774,7 @@ void Stop()
   disable_heater();
 #ifdef LASER
   digitalWrite(LASER_FIRING_PIN, LOW);
-  shutdownLaser();
+  laser_peripherals_off();
 #endif
   if(Stopped == false) {
     Stopped = true;

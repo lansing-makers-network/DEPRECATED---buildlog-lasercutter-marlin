@@ -30,7 +30,7 @@ bool laserOn = false;
 bool laserAccOn = false;
 bool laserAok = false;
 
-void setupLaser()
+void laser_setup()
 {
   pinMode(LASER_FIRING_PIN, OUTPUT);
   
@@ -52,14 +52,26 @@ void setupLaser()
     interrupts();
   #endif // LASER_INTENSITY_PIN
 
+  #ifdef LASER_PERIPHERALS
   digitalWrite(LASER_ACC_PIN, HIGH);  // Laser accessories are active LOW, so preset the pin
   pinMode(LASER_ACC_PIN, OUTPUT);
 
   digitalWrite(LASER_AOK_PIN, HIGH);  // Set the AOK pin to pull-up.
   pinMode(LASER_AOK_PIN, INPUT_PULLUP);
+  #endif // LASER_PERIPHERALS
 }
 
 #ifdef LASER_PERIPHERALS
+void laser_peripherals_on(){
+	digitalWrite(LASER_ACC_PIN, LOW);
+	SERIAL_ECHO_START;
+	SERIAL_ECHOLNPGM("POWER: Laser Power Enabled");
+}
+void laser_peripherals_off(){
+	digitalWrite(LASER_ACC_PIN, HIGH);
+	SERIAL_ECHO_START;
+	SERIAL_ECHOLNPGM("POWER: Laser Power Disabled");
+}
 void waitForLaserAok() {
 	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
 	bool first_loop = true;
@@ -79,14 +91,5 @@ void waitForLaserAok() {
 		}
 	}
 	laserAok = true;
-}
-
-void shutdownLaser() {
-	if (laserAccOn) {
-		digitalWrite(LASER_ACC_PIN, HIGH);
-		SERIAL_ECHO_START;
-		SERIAL_ECHOLNPGM("POWER: Laser Power Disabled");
-		laserAccOn = false;
-	}
 }
 #endif // LASER_PERIPHERALS
