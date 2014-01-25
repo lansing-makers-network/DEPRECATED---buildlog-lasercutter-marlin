@@ -630,7 +630,7 @@ ISR(TIMER1_COMPA_vect)
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
-			if (current_block->laser_mode = LASER_PPM && current_block->laser_status == LASER_ON){ // PPM Firing Mode
+			if (current_block->laser_mode == LASER_PPM && current_block->laser_status == LASER_ON){ // PPM Firing Mode
 		  	  laser_fire(current_block->laser_intensity);
 		  	  		  	  
 			  uint16_t micros_now = (uint16_t)micros();
@@ -646,7 +646,7 @@ ISR(TIMER1_COMPA_vect)
 			  }
 			  
 			  laser_extinguish();
-			} else if (current_block->laser_mode = LASER_RASTER && current_block->laser_status == LASER_ON){ // Raster Firing Mode
+			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON){ // Raster Firing Mode
 				
 			}
 		  counter_l -= current_block->step_event_count;
@@ -659,7 +659,7 @@ ISR(TIMER1_COMPA_vect)
     // Calculare new timer value
     unsigned short timer;
     unsigned short step_rate;
-    if (step_events_completed <= (unsigned long int)current_block->accelerate_until) {
+    if (step_events_completed <= (unsigned long int)current_block->accelerate_until) { // Accelerate!
 
       MultiU24X24toH16(acc_step_rate, acceleration_time, current_block->acceleration_rate);
       acc_step_rate += current_block->initial_rate;
@@ -683,7 +683,7 @@ ISR(TIMER1_COMPA_vect)
 
       #endif
     }
-    else if (step_events_completed > (unsigned long int)current_block->decelerate_after) {
+    else if (step_events_completed > (unsigned long int)current_block->decelerate_after) { // Decelerate!
       MultiU24X24toH16(step_rate, deceleration_time, current_block->acceleration_rate);
 
       if(step_rate > acc_step_rate) { // Check step_rate stays positive
@@ -711,7 +711,7 @@ ISR(TIMER1_COMPA_vect)
         old_advance = advance >>8;
       #endif //ADVANCE
     }
-    else {
+    else { // Stay the same (nominal) speed!
       OCR1A = OCR1A_nominal;
       // ensure we're running at the correct step rate, even if we just came off an acceleration
       step_loops = step_loops_nominal;
