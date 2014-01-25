@@ -857,6 +857,11 @@ void process_commands()
         #endif // LASER_FIRE_G1
         
         prepare_move();
+        
+        #ifdef LASER_FIRE_G1
+          laser_status = LASER_OFF;
+        #endif // LASER_FIRE_G1
+        
         //ClearToSend();
         return;
       }
