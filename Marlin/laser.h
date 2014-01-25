@@ -28,11 +28,6 @@
 #define LASER_PPM 1
 #define LASER_RASTER 2
 
-extern uint8_t laserPower;
-extern bool laserAccOn;
-extern bool laserOn;
-extern bool laserAok;
-
 static float laser_pwm = 0;
 static float laser_intensity = 100;
 static float laser_ppm = 0;
@@ -44,5 +39,6 @@ void laser_setup();
 void laser_peripherals_on();
 void waitForLaserAok();
 void laser_peripherals_off();
+bool laser_peripherals_ok();
 
 #endif

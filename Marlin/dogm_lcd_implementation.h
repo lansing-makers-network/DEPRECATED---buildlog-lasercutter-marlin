@@ -183,15 +183,15 @@ static void lcd_implementation_status_screen()
  if ((blink % 2) &&  fanSpeed )	u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen0_bmp);
 	else u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen1_bmp);
 #else
- if (laserAccOn) {
+ if (laser_peripherals_ok()) {
 	 u8g.drawBitmapP(29,4, LASERENABLE_BYTEWIDTH, LASERENABLE_HEIGHT, laserenable_bmp);
  }
  u8g.setFont(FONT_STATUSMENU);
  u8g.setColorIndex(1);
  u8g.setPrintPos(3,6);
- if (laserOn) {
+ if (current_block->laser_status == LASER_ON) {
 	 u8g.drawBitmapP(5,14, ICON_BYTEWIDTH, ICON_HEIGHT, laseron_bmp);
-	 u8g.print(itostr3(laserPower));
+	 u8g.print(itostr3(current_block->laser_intensity));
 	 lcd_printPGM(PSTR("%"));
  } else {
 	 u8g.drawBitmapP(5,14, ICON_BYTEWIDTH, ICON_HEIGHT, laseroff_bmp);

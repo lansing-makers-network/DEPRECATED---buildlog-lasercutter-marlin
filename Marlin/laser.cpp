@@ -24,12 +24,6 @@
 #include <Arduino.h>
 #include "Marlin.h"
 
-
-uint8_t laserPower = 0;
-bool laserOn = false;
-bool laserAccOn = false;
-bool laserAok = false;
-
 void laser_setup()
 {
   pinMode(LASER_FIRING_PIN, OUTPUT);
@@ -62,6 +56,9 @@ void laser_setup()
 }
 
 #ifdef LASER_PERIPHERALS
+bool laser_peripherals_ok(){
+	return !digitalRead(LASER_AOK_PIN);
+}
 void laser_peripherals_on(){
 	digitalWrite(LASER_ACC_PIN, LOW);
 	SERIAL_ECHO_START;
@@ -81,7 +78,6 @@ void waitForLaserAok() {
 			SERIAL_ERRORLNPGM("Power supply failed to indicate AOK");
 
 			Stop();
-			laserAok = false;
 			break;
 		}
 		if (first_loop) {
@@ -90,6 +86,5 @@ void waitForLaserAok() {
 			first_loop = false;
 		}
 	}
-	laserAok = true;
 }
 #endif // LASER_PERIPHERALS

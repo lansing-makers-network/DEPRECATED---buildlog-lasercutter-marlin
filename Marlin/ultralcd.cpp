@@ -733,7 +733,7 @@ static void lcd_laser_menu()
 	MENU_ITEM(back, MSG_MAIN, lcd_main_menu);
 	MENU_ITEM(submenu, "Set Focus", lcd_laser_focus_menu);
 	MENU_ITEM(submenu, "Test Fire", lcd_laser_test_fire_menu);
-	if (!laserAccOn) {
+	if (laser_peripherals_ok()) {
 		MENU_ITEM(function, "Turn On Pumps/Fans", action_laser_acc_on);
 	} else if (!(movesplanned() || IS_SD_PRINTING)) {
 		MENU_ITEM(function, "Turn Off Pumps/Fans", action_laser_acc_off);
