@@ -31,9 +31,10 @@
 static float laser_pwm = 0;
 static float laser_intensity = 100;
 static float laser_ppm = 0;
-static uint8_t laser_duration = 0;
+static uint16_t laser_duration = 0; // laser firing duration in microseconds
 static bool laser_status = LASER_OFF;
 static uint8_t laser_mode = LASER_CONTINUOUS;
+static uint16_t laser_last_firing = 0; // microseconds since last laser firing
 
 void laser_setup();
 bool laser_peripherals_ok();

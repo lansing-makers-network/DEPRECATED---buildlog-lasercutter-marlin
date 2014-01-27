@@ -74,7 +74,7 @@ typedef struct {
     int laser_intensity; // PWM interrupt counter in clock cycles - in raster mode this is an array
     float laser_ppm; // number of pulses per millimeter
     uint8_t laser_duration; // in tenths of a millisecond - if non-zero, use ppm
-    long steps_l; // number of laser pulses in this segment
+    long steps_l; // step count between firings on the L axis
   #endif // LASER
   volatile char busy;
 } block_t;

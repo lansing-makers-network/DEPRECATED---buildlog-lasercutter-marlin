@@ -356,7 +356,11 @@ ISR(TIMER1_COMPA_vect)
 	#ifdef LASER
 	if (current_block->laser_mode == LASER_CONTINUOUS && current_block->laser_status == LASER_ON) {
 	  laser_fire(current_block->laser_intensity);
-    } else {
+    }
+    if (laser_duration > 0 && ((uint16_t)micros() - laser_last_firing) >= laser_duration) {
+	  laser_extinguish();
+	}
+    if (current_block->laser_status == LASER_OFF) {
       laser_extinguish();
     }
     #endif // LASER
@@ -629,28 +633,22 @@ ISR(TIMER1_COMPA_vect)
         }
       #endif //!ADVANCE
       
-      // steps_l > 0: PPM and RASTER happen here
+      // steps_l = step count between firings on the L axis
+      // 
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
-			if (current_block->laser_mode == LASER_PPM && current_block->laser_status == LASER_ON){ // PPM Firing Mode
-		  	  laser_fire(current_block->laser_intensity);
-		  	  		  	  
-			  uint16_t micros_now = (uint16_t)micros();
-			  uint8_t millis_delay = current_block->laser_duration;
-			  while (millis_delay > 0) {
-				if (((uint16_t)micros() - micros_now) >= 100) {
-				millis_delay--;
-				micros_now += 100;
-				}
-				#ifndef AT90USB
-				MSerial.checkRx(); // Check for serial chars.
-				#endif
-			  }
-			  
+			if (current_block->laser_mode == LASER_PPM && current_block->laser_status == LASER_ON) { // PPM Firing Mode
 			  laser_extinguish();
-			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON){ // Raster Firing Mode
-				
+			  laser_last_firing = (uint16_t)micros(); // microseconds since last laser firing
+		  	  laser_fire(current_block->laser_intensity);
+			  }
+			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
+			  laser_extinguish();
+			  // read next raster datum
+			  laser_last_firing = (uint16_t)micros(); // microseconds since last laser firing
+		  	  laser_fire(current_block->laser_intensity);
+			  }
 			}
 		  counter_l -= current_block->step_event_count;
 		  }

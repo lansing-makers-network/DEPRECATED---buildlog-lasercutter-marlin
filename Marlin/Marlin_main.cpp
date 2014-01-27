@@ -2744,7 +2744,12 @@ void manage_inactivity()
       memcpy(destination,current_position,sizeof(destination));
       prepare_move(); 
     }
-  #endif  
+  #endif
+  #ifdef LASER
+  if (laser_duration > 0 && ((uint16_t)micros() - laser_last_firing) >= laser_duration) {
+    laser_extinguish();
+  }
+  #endif // LASER
   check_axes_activity();
 }
 
