@@ -262,9 +262,6 @@ FORCE_INLINE unsigned short calc_timer(unsigned short step_rate) {
   }
 
   if(step_rate < (F_CPU/500000)) step_rate = (F_CPU/500000);
-  #ifdef LASER
-    if(step_rate < abs(1 / (current_block->laser_duration / 10000))) step_rate = abs(1 / (current_block->laser_duration / 10000));
-  #endif // LASER
   step_rate -= (F_CPU/500000); // Correct for minimal speed
   if(step_rate >= (8*256)){ // higher step rate
     unsigned short table_address = (unsigned short)&speed_lookuptable_fast[(unsigned char)(step_rate>>8)][0];
