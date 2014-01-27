@@ -639,14 +639,12 @@ ISR(TIMER1_COMPA_vect)
 			  laser_extinguish();
 			  laser_last_firing = (uint16_t)micros(); // microseconds since last laser firing
 		  	  laser_fire(current_block->laser_intensity);
-			  }
 			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
 			  laser_extinguish();
 			  // read next raster datum
 			  laser_last_firing = (uint16_t)micros(); // microseconds since last laser firing
 		  	  laser_fire(current_block->laser_intensity);
 			  }
-			}
 		  counter_l -= current_block->step_event_count;
 		  }
       #endif // LASER
