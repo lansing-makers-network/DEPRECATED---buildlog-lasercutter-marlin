@@ -42,7 +42,11 @@
 
 #ifdef LASER
 #include "laser.h"
-#endif
+#endif // LASER
+
+#ifdef LASER_RASTER
+#include "Base64.h"
+#endif // LASER_RASTER
 
 #if NUM_SERVOS > 0
 #include "Servo.h"
@@ -899,22 +903,23 @@ void process_commands()
         SERIAL_ECHO_START;
         SERIAL_ECHOLN("Positive Raster Line");
       }
-      laser_raster_increment = laser_raster_mm_per_dot * DIR;
+      laser_raster_increment = laser_raster_mm_per_dot;
 	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser_raster_mm_per_dot *1.33);
 	  prepare_move();
 	  
-	  static char pixels[MAX_RASTER_LINE];
 	  int numLength;
 	  int numPixels;
 	  if (code_seen('L')) {
 		numLength = int(code_value());
 		if (code_seen('D')) {
-		  numPixels = base64_decode(pixels, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], numLength);
+		  numPixels = base64_decode(laser_raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], numLength);
 	      for (int i = 0; i<numPixels; i++) {
-			if (pixels[i] > 15) {
+			if (laser_raster_data[i] > 15) {
+			  if (laser_diagnostics == true) {
 			  SERIAL_ECHO("Pixel: ");
-			  SERIAL_ECHOLN(itostr3(pixels[i]));
-				fireLaser((float(pixels[i])/255.0)*100.0, RASTER_DURATION);
+			  SERIAL_ECHOLN(itostr3(laser_raster_data[i]));
+		      }
+				//fireLaser((float(laser_raster_data[i])/255.0)*100.0, RASTER_DURATION);
 				}
 			  destination[X_AXIS] += laser_raster_increment;
 			  prepare_move();
