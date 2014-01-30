@@ -90,7 +90,7 @@
   #define LASER
   #define LASER_FIRE_G1
   #define LASER_FIRE_SPINDLE
-  #define LASER_RASTER_RATIO 1.33
+  #define LASER_RASTER
 #endif
 
 // Uncomment this if the laser cutter is equipped with a peripheral control board

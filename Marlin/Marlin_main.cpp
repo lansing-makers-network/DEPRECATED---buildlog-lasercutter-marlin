@@ -893,23 +893,53 @@ void process_commands()
         lcd_update();
       }
       break;
-    #ifdef LASER
+    #ifdef LASER_RASTER
     case 7: //G7 Execute X+ raster line
-      SERIAL_ECHO_START;
-      SERIAL_ECHOLN("Positive Raster Line");
+      if (laser_diagnostics == true) {
+        SERIAL_ECHO_START;
+        SERIAL_ECHOLN("Positive Raster Line");
+      }
+      laser_raster_increment = laser_raster_mm_per_dot * DIR;
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser_raster_mm_per_dot *1.33);
+	  prepare_move();
+	  
+	  static char pixels[MAX_RASTER_LINE];
+	  int numLength;
+	  int numPixels;
+	  if (code_seen('L')) {
+		numLength = int(code_value());
+		if (code_seen('D')) {
+		  numPixels = base64_decode(pixels, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], numLength);
+	      for (int i = 0; i<numPixels; i++) {
+			if (pixels[i] > 15) {
+			  SERIAL_ECHO("Pixel: ");
+			  SERIAL_ECHOLN(itostr3(pixels[i]));
+				fireLaser((float(pixels[i])/255.0)*100.0, RASTER_DURATION);
+				}
+			  destination[X_AXIS] += laser_raster_increment;
+			  prepare_move();
+			}
+		}
+	  }
 
       break;
     case 8: //G8 Execute X- raster line
-   	  SERIAL_ECHO_START;
-      SERIAL_ECHOLN("Negative Raster Line");
- 
+      if (laser_diagnostics == true) {
+   	    SERIAL_ECHO_START;
+        SERIAL_ECHOLN("Negative Raster Line");
+	  }
+	  
+
       break;
     case 9: //Continue previous raster line
-      SERIAL_ECHO_START;
-      SERIAL_ECHOLN("Continue Raster Line");
+      if (laser_diagnostics == true) {
+        SERIAL_ECHO_START;
+        SERIAL_ECHOLN("Continue Raster Line");
+	  }
+	  
 
 	  break;
-	#endif // LASER
+	#endif // LASER_RASTER
 
     #ifdef FWRETRACT
     case 10: // G10 retract
