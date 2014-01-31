@@ -41,9 +41,11 @@ static bool laser_diagnostics = true;
   #define LASER_MAX_RASTER_LINE 60
   
   static char laser_raster_data[LASER_MAX_RASTER_LINE];
-  static float laser_raster_ratio = 1.33;
+  static float laser_raster_aspect_ratio = 1.33;
   static float laser_raster_mm_per_dot = 0.2;
   static float laser_raster_increment = 0.2;
+  static int laser_raster_raw_length;
+  static int laser_raster_num_pixels;
 #endif // LASER_RASTER
 
 void laser_setup();

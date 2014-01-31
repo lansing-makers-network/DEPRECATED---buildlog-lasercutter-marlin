@@ -903,17 +903,18 @@ void process_commands()
         SERIAL_ECHO_START;
         SERIAL_ECHOLN("Positive Raster Line");
       }
+      
+      laser_mode = LASER_RASTER;
+      laser_status = LASER_ON;
+      
+      if (code_seen('L')) laser_raster_raw_length = int(code_value());
+      if (code_seen('D')) laser_raster_num_pixels = base64_decode(laser_raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser_raster_raw_length);
+      
       laser_raster_increment = laser_raster_mm_per_dot;
-	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser_raster_mm_per_dot *1.33);
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser_raster_mm_per_dot * laser_raster_aspect_ratio);
 	  prepare_move();
 	  
-	  int numLength;
-	  int numPixels;
-	  if (code_seen('L')) {
-		numLength = int(code_value());
-		if (code_seen('D')) {
-		  numPixels = base64_decode(laser_raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], numLength);
-	      for (int i = 0; i<numPixels; i++) {
+	      for (int i = 0; i<laser_raster_num_pixels; i++) {
 			if (laser_raster_data[i] > 15) {
 			  if (laser_diagnostics == true) {
 			  SERIAL_ECHO("Pixel: ");
@@ -924,8 +925,6 @@ void process_commands()
 			  destination[X_AXIS] += laser_raster_increment;
 			  prepare_move();
 			}
-		}
-	  }
 
       break;
     case 8: //G8 Execute X- raster line
