@@ -20,6 +20,7 @@
 */
 
 #include <inttypes.h>
+#include "Configuration.h"
 
 #define LASER_OFF 0
 #define LASER_ON 1
@@ -28,25 +29,26 @@
 #define LASER_PPM 1
 #define LASER_RASTER 2
 
-static float laser_pwm = 0;
-static float laser_intensity = 100;
-static float laser_ppm = 0;
-static uint16_t laser_duration = 0; // laser firing duration in microseconds
-static bool laser_status = LASER_OFF;
-static uint8_t laser_mode = LASER_CONTINUOUS;
-static uint16_t laser_last_firing = 0; // microseconds since last laser firing
-static bool laser_diagnostics = true;
+typedef struct {
+  static float pwm;
+  static float intensity;
+  static float ppm;
+  static uint16_t duration; // laser firing duration in microseconds
+  static bool status;
+  static uint8_t mode;
+  static uint16_t last_firing; // microseconds since last laser firing
+  static bool diagnostics;
+  #ifdef LASER_RASTER
+    static char raster_data[LASER_MAX_RASTER_LINE];
+    static float raster_aspect_ratio;
+    static float raster_mm_per_dot;
+    static float raster_increment;
+    static int raster_raw_length;
+    static int raster_num_pixels;
+  #endif // LASER_RASTER
+} laser_t;
 
-#ifdef LASER_RASTER
-  #define LASER_MAX_RASTER_LINE 60
-  
-  static char laser_raster_data[LASER_MAX_RASTER_LINE];
-  static float laser_raster_aspect_ratio = 1.33;
-  static float laser_raster_mm_per_dot = 0.2;
-  static float laser_raster_increment = 0.2;
-  static int laser_raster_raw_length;
-  static int laser_raster_num_pixels;
-#endif // LASER_RASTER
+laser_t *laser;
 
 void laser_setup();
 bool laser_peripherals_ok();

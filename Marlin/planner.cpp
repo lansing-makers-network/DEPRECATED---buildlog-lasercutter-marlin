@@ -513,7 +513,7 @@ float junction_deviation = 0.1;
 // Add a new linear movement to the buffer. steps_x, _y and _z is the absolute position in 
 // mm. Microseconds specify how many microseconds the move should take to perform. To aid acceleration
 // calculation the caller must also provide the physical length of the line in millimeters.
-void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_status, uint8_t laser_mode, int laser_intensity, float laser_ppm, uint8_t laser_duration)
+void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder)
 {
   // Calculate the buffer head after we push this byte
   int next_buffer_head = next_block_index(block_buffer_head);
@@ -677,17 +677,17 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   }
   
   #ifdef LASER
-    block->laser_intensity = int(laser_intensity / 100.0 * labs(F_CPU / LASER_PWM));
-    block->laser_duration = laser_duration;
-    block->laser_status = laser_status;
-    block->laser_mode = laser_mode;
-    if (laser_mode == LASER_PPM) {
+    block->laser_intensity = int(laser->intensity / 100.0 * labs(F_CPU / LASER_PWM));
+    block->laser_duration = laser->duration;
+    block->laser_status = laser->status;
+    block->laser_mode = laser->mode;
+    if (laser->mode == LASER_PPM) {
 	  // time = block->millimeters / block->nominal_speed
 	  // number of pulses = block->millimeters * laser_ppm
 	  // cycles between laser firing events = calc_timer(something HZ)
 	  //   
-      block->steps_l = labs(block->millimeters*laser_ppm);
-    } else if (laser_mode == LASER_RASTER) {
+      block->steps_l = labs(block->millimeters*laser->ppm);
+    } else if (laser->mode == LASER_RASTER) {
   
     } else {
       block->steps_l = 0;

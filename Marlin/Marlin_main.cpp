@@ -857,13 +857,13 @@ void process_commands()
         get_coordinates(); // For X Y Z E F
         
         #ifdef LASER_FIRE_G1
-          laser_status = LASER_ON;
+          laser->status = LASER_ON;
         #endif // LASER_FIRE_G1
         
         prepare_move();
         
         #ifdef LASER_FIRE_G1
-          laser_status = LASER_OFF;
+          laser->status = LASER_OFF;
         #endif // LASER_FIRE_G1
         
         //ClearToSend();
@@ -899,36 +899,36 @@ void process_commands()
       break;
     #ifdef LASER_RASTER
     case 7: //G7 Execute X+ raster line
-      if (laser_diagnostics == true) {
+      if (laser->diagnostics == true) {
         SERIAL_ECHO_START;
         SERIAL_ECHOLN("Positive Raster Line");
       }
       
-      laser_mode = LASER_RASTER;
-      laser_status = LASER_ON;
-      
-      if (code_seen('L')) laser_raster_raw_length = int(code_value());
-      if (code_seen('D')) laser_raster_num_pixels = base64_decode(laser_raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser_raster_raw_length);
-      
-      laser_raster_increment = laser_raster_mm_per_dot;
-	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser_raster_mm_per_dot * laser_raster_aspect_ratio);
+      if (code_seen('L')) laser->raster_raw_length = int(code_value());
+      if (code_seen('D')) laser->raster_num_pixels = base64_decode(laser->raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser->raster_raw_length);
+      laser->raster_increment = laser->raster_mm_per_dot;
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser->raster_mm_per_dot * laser->raster_aspect_ratio);
+	  laser->mode = LASER_RASTER;
+      laser->status = LASER_ON;
 	  prepare_move();
+
 	  
-	      for (int i = 0; i<laser_raster_num_pixels; i++) {
-			if (laser_raster_data[i] > 15) {
-			  if (laser_diagnostics == true) {
+	      for (int i = 0; i<laser->raster_num_pixels; i++) {
+			if (laser->raster_data[i] > 15) {
+			  if (laser->diagnostics == true) {
 			  SERIAL_ECHO("Pixel: ");
-			  SERIAL_ECHOLN(itostr3(laser_raster_data[i]));
+			  SERIAL_ECHOLN(itostr3(laser->raster_data[i]));
 		      }
 				//fireLaser((float(laser_raster_data[i])/255.0)*100.0, RASTER_DURATION);
 				}
-			  destination[X_AXIS] += laser_raster_increment;
+			  destination[X_AXIS] += laser->raster_increment;
 			  prepare_move();
 			}
 
+
       break;
     case 8: //G8 Execute X- raster line
-      if (laser_diagnostics == true) {
+      if (laser->diagnostics == true) {
    	    SERIAL_ECHO_START;
         SERIAL_ECHOLN("Negative Raster Line");
 	  }
@@ -936,7 +936,7 @@ void process_commands()
 
       break;
     case 9: //Continue previous raster line
-      if (laser_diagnostics == true) {
+      if (laser->diagnostics == true) {
         SERIAL_ECHO_START;
         SERIAL_ECHOLN("Continue Raster Line");
 	  }
@@ -1184,26 +1184,26 @@ void process_commands()
 #ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
       if (code_seen('S') && (!IsStopped())) {
-    	float laser_intensity = code_value();
+    	float laser->intensity = code_value();
 	  } else {
-		float laser_intensity = 100;
+		float laser->intensity = 100;
 	  }
       if (code_seen('P') && (!IsStopped())) {
-    	uint8_t laser_duration = code_value();
+    	uint8_t laser->duration = code_value();
       } else {
-		float laser_duration = 0;
+		float laser->duration = 0;
 	  }
       if (code_seen('Q') && (!IsStopped())) {
-        float laser_ppm = code_value();
+        float laser->ppm = code_value();
       } else {
-		float laser_ppm = 0;
+		float laser->ppm = 0;
 	  }
 	  
-      laser_status = LASER_ON;
+      laser->status = LASER_ON;
     	
       break;
     case 5:  //M5 stop firing laser
-	  laser_status = LASER_OFF;
+	  laser->status = LASER_OFF;
       break;
 #endif // LASER_FIRE_SPINDLE
     case 17:
@@ -2643,11 +2643,7 @@ void prepare_move()
       #endif // MUVE
   }
   else {
-	#ifdef LASER
-    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder, laser_status, laser_mode, laser_intensity, laser_ppm, laser_duration);
-    #else
     plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
-    #endif // LASER
   }
 #endif //else DELTA
   for(int8_t i=0; i < NUM_AXIS; i++) {
@@ -2780,7 +2776,7 @@ void manage_inactivity()
     }
   #endif
   #ifdef LASER
-  if (laser_duration > 0 && ((uint16_t)micros() - laser_last_firing) >= laser_duration) {
+  if (current_block->laser_duration > 0 && ((uint16_t)micros() - laser->last_firing) >= current_block->laser_duration) {
     laser_extinguish();
   }
   #endif // LASER

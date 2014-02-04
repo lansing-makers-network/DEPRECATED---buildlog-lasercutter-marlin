@@ -53,8 +53,26 @@ void laser_setup()
   digitalWrite(LASER_AOK_PIN, HIGH);  // Set the AOK pin to pull-up.
   pinMode(LASER_AOK_PIN, INPUT_PULLUP);
   #endif // LASER_PERIPHERALS
+  
+  laser->pwm = 0;
+  laser->intensity = 100;
+  laser->ppm = 0;
+  laser->duration = 0; // laser firing duration in microseconds
+  laser->status = LASER_OFF;
+  laser->mode = LASER_CONTINUOUS;
+  laser->last_firing = 0; // microseconds since last laser firing
+  laser->diagnostics = true;
+  #ifdef LASER_RASTER
+    laser->raster_data[LASER_MAX_RASTER_LINE];
+    laser->raster_aspect_ratio = 1.33;
+    laser->raster_mm_per_dot = 0.2;
+    laser->raster_increment = 0.2;
+    laser->raster_raw_length;
+    laser->raster_num_pixels;
+  #endif // LASER_RASTER
 }
 void laser_fire(int intensity){
+	laser->last_firing = (uint16_t)micros(); // microseconds since last laser firing
 	#ifdef LASER_INTENSITY_PIN
     analogWrite(LASER_INTENSITY_PIN, intensity);
     #endif // LASER_INTENSITY_PIN

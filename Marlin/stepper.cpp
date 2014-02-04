@@ -354,7 +354,7 @@ ISR(TIMER1_COMPA_vect)
 	if (current_block->laser_mode == LASER_CONTINUOUS && current_block->laser_status == LASER_ON) {
 	  laser_fire(current_block->laser_intensity);
     }
-    if (laser_duration > 0 && ((uint16_t)micros() - laser_last_firing) >= laser_duration) {
+    if (current_block->laser_duration > 0 && ((uint16_t)micros() - laser->last_firing) >= current_block->laser_duration) {
 	  laser_extinguish();
 	}
     if (current_block->laser_status == LASER_OFF) {
@@ -635,16 +635,13 @@ ISR(TIMER1_COMPA_vect)
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
+			laser_extinguish();
 			if (current_block->laser_mode == LASER_PPM && current_block->laser_status == LASER_ON) { // PPM Firing Mode
-			  laser_extinguish();
-			  laser_last_firing = (uint16_t)micros(); // microseconds since last laser firing
 		  	  laser_fire(current_block->laser_intensity);
 			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
-			  laser_extinguish();
 			  // read next raster datum
-			  laser_last_firing = (uint16_t)micros(); // microseconds since last laser firing
-		  	  laser_fire(current_block->laser_intensity);
-			  }
+			  laser_fire(current_block->laser_intensity);
+			}
 		  counter_l -= current_block->step_event_count;
 		  }
       #endif // LASER

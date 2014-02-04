@@ -76,6 +76,9 @@ typedef struct {
     uint8_t laser_duration; // in tenths of a millisecond - if non-zero, use ppm
     long steps_l; // step count between firings on the L axis
   #endif // LASER
+  #ifdef LASER_RASTER
+    char laser_raster_data[LASER_MAX_RASTER_LINE];
+  #endif // LASER_RASTER
   volatile char busy;
 } block_t;
 
@@ -84,11 +87,7 @@ void plan_init();
 
 // Add a new linear movement to the buffer. x, y and z is the signed, absolute target position in 
 // millimaters. Feed rate specifies the speed of the motion.
-#ifdef LASER
-void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder, bool laser_status = LASER_OFF, uint8_t laser_mode = LASER_CONTINUOUS, int laser_intensity = 560, float laser_ppm = 0, uint8_t laser_duration = 0);
-#else
 void plan_buffer_line(const float &x, const float &y, const float &z, const float &e, float feed_rate, const uint8_t &extruder);
-#endif // LASER
 
 // Set position. Used for G92 instructions.
 void plan_set_position(const float &x, const float &y, const float &z, const float &e);

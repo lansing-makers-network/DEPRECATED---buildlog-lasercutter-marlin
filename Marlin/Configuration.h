@@ -92,6 +92,10 @@
   #define LASER_RASTER
 #endif
 
+#ifdef LASER_RASTER
+  #define LASER_MAX_RASTER_LINE 60
+#endif // LASER_RASTER
+
 // Uncomment this if the laser cutter is equipped with a peripheral control board
 #define LASER_PERIPHERALS
 
