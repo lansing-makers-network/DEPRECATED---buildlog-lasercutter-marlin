@@ -82,7 +82,7 @@ void laser_fire(int intensity){
     digitalWrite(LASER_FIRING_PIN, HIGH);
 }
 void laser_extinguish(){
-	if (laser.status == LASER_ON) {
+	if (digitalRead(LASER_FIRING_PIN == HIGH) {
 	  digitalWrite(LASER_FIRING_PIN, LOW);
 	  laser.time += micros() - laser.last_firing;
 	  if (laser.time > 60000000) {
