@@ -338,6 +338,12 @@ ISR(TIMER1_COMPA_vect)
           return;
         }
       #endif
+      
+      #ifdef LASER_RASTER
+        if (current_block->laser_mode == LASER_RASTER) {
+			laser.raster_position = 0;
+		}
+	  #endif // LASER_RASTER
 
 //      #ifdef ADVANCE
 //      e_steps[current_block->active_extruder] = 0;
@@ -646,7 +652,7 @@ ISR(TIMER1_COMPA_vect)
 			    SERIAL_ECHO("Pixel: ");
 			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[laser.raster_position]));
 		      }
-		      laser.raster_position++;
+		      laser.raster_position++; 
 			}
 		  counter_l -= current_block->step_event_count;
 		  }
