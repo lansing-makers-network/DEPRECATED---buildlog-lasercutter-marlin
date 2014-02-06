@@ -2244,22 +2244,22 @@ void process_commands()
       st_synchronize();
       if(code_seen('D')) laser.peel_distance = (float) code_value();
       else {
-          laser.peel_distance=2;
+          laser.peel_distance=2.0;
         }
  
       if(code_seen('S')) laser.peel_speed = (float) code_value();
       else {
-          laser.peel_speed=2;
+          laser.peel_speed=2.0;
         }
     
       if(code_seen('P')) laser.peel_pause = (float) code_value();
       else {
-          laser.peel_pause=0;
+          laser.peel_pause=0.0;
         }
       
       if(code_seen('L')) laser.intensity = (float) code_value();
       else {
-          laser.intensity=100;
+          laser.intensity=100.0;
         }
       if(code_seen('Q')) laser.ppm = (float) code_value();
       else {
