@@ -164,7 +164,7 @@ void Config_PrintSettings()
 	SERIAL_ECHO_START;
 	SERIAL_ECHOLNPGM("Laser lifetime usage (minutes):");
 	SERIAL_ECHO_START;
-    SERIAL_ECHOPAIR("  ",laser.lifetime );
+    SERIAL_ECHOLN(laser.lifetime);
     SERIAL_ECHOLN("");
 #endif
 #ifdef PIDTEMP

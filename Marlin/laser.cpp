@@ -19,6 +19,7 @@
 
 #include "laser.h"
 #include "Configuration.h"
+#include "ConfigurationStore.h"
 #include "pins.h"
 #include <avr/interrupt.h>
 #include <Arduino.h>
@@ -64,6 +65,7 @@ void laser_setup()
   laser.mode = LASER_CONTINUOUS;
   laser.last_firing = 0;
   laser.diagnostics = true;
+  laser.time = 0;
   #ifdef LASER_RASTER
     laser.raster_aspect_ratio = LASER_RASTER_ASPECT_RATIO;
     laser.raster_mm_per_dot = LASER_RASTER_MM_PER_DOT;
@@ -82,7 +84,12 @@ void laser_fire(int intensity){
 }
 void laser_extinguish(){
 	digitalWrite(LASER_FIRING_PIN, LOW);
-	// update laser-on counter here
+	laser.time += micros() - laser.last_firing;
+	if (laser.time > 60000000) {
+		laser.time = 0;
+		laser.lifetime++;
+		Config_StoreSettings();
+	}
 }
 
 #ifdef LASER_PERIPHERALS
