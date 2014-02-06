@@ -56,7 +56,7 @@ void laser_setup()
   pinMode(LASER_AOK_PIN, INPUT_PULLUP);
   #endif // LASER_PERIPHERALS
   
-  laser.pwm = 0;
+  // initialize state to some sane defaults
   laser.intensity = 100;
   laser.ppm = 0;
   laser.duration = 0;
@@ -65,19 +65,16 @@ void laser_setup()
   laser.last_firing = 0;
   laser.diagnostics = true;
   #ifdef LASER_RASTER
-    laser.raster_data[LASER_MAX_RASTER_LINE];
-    laser.raster_aspect_ratio = 1.33;
-    laser.raster_mm_per_dot = 0.2;
-    laser.raster_increment = 0.2;
-    laser.raster_raw_length;
-    laser.raster_num_pixels;
+    laser.raster_aspect_ratio = LASER_RASTER_ASPECT_RATIO;
+    laser.raster_mm_per_dot = LASER_RASTER_MM_PER_DOT;
+    laser.raster_position = 0;
   #endif // LASER_RASTER
 }
 void laser_fire(int intensity){
 	laser.last_firing = micros(); // microseconds since last laser firing
 	
 	#ifdef LASER_INTENSITY_PIN
-    analogWrite(LASER_INTENSITY_PIN, intensity);
+    analogWrite(LASER_INTENSITY_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
     #endif // LASER_INTENSITY_PIN
     
     digitalWrite(LASER_FIRING_PIN, HIGH);

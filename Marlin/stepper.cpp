@@ -633,17 +633,20 @@ ISR(TIMER1_COMPA_vect)
         }
       #endif //!ADVANCE
       
-      // steps_l = step count between firings on the L axis
+      // steps_l = step count between laser firings
       // 
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
-			laser_extinguish();
 			if (current_block->laser_mode == LASER_PULSED && current_block->laser_status == LASER_ON) { // Pulsed Firing Mode
 		  	  laser_fire(current_block->laser_intensity);
 			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
-			  // read next raster datum
-			  laser_fire(current_block->laser_intensity);
+			  laser_fire(current_block->laser_raster_data[laser.raster_position]/255.0*100.0);
+			  laser.raster_position++;
+			  if (laser.diagnostics == true) {
+			    SERIAL_ECHO("Pixel: ");
+			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[laser.raster_position]));
+		      }
 			}
 		  counter_l -= current_block->step_event_count;
 		  }

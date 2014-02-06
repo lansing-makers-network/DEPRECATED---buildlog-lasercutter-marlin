@@ -24,7 +24,6 @@
 #include "Configuration.h"
 
 typedef struct {
-  float pwm; // PWM frequency used to control laser intensity in HZ
   float intensity; // Laser firing instensity 0.0 - 100.0
   float ppm; // pulses per millimeter, for pulsed firing mode
   unsigned long duration; // laser firing duration in microseconds, for pulsed firing mode
@@ -36,9 +35,9 @@ typedef struct {
     char raster_data[LASER_MAX_RASTER_LINE];
     float raster_aspect_ratio;
     float raster_mm_per_dot;
-    float raster_increment;
     int raster_raw_length;
     int raster_num_pixels;
+    int raster_position;
   #endif // LASER_RASTER
 } laser_t;
 

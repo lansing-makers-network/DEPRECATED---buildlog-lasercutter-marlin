@@ -902,26 +902,14 @@ void process_commands()
       
       if (code_seen('L')) laser.raster_raw_length = int(code_value());
       if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
-      laser.raster_increment = laser.raster_mm_per_dot;
 	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio);
+	  destination[X_AXIS] = current_position[X_AXIS] + (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	  laser.ppm = laser.raster_mm_per_dot;
+	  laser.raster_position = 0;
 	  laser.mode = LASER_RASTER;
       laser.status = LASER_ON;
 	  prepare_move();
-
 	  
-	      for (int i = 0; i<laser.raster_num_pixels; i++) {
-			if (laser.raster_data[i] > 15) {
-			  if (laser.diagnostics == true) {
-			  SERIAL_ECHO("Pixel: ");
-			  SERIAL_ECHOLN(itostr3(laser.raster_data[i]));
-		      }
-				//fireLaser((float(laser_raster_data[i])/255.0)*100.0, RASTER_DURATION);
-				}
-			  destination[X_AXIS] += laser.raster_increment;
-			  prepare_move();
-			}
-
-
       break;
     case 8: //G8 Execute X- raster line
       if (laser.diagnostics == true) {
@@ -929,6 +917,15 @@ void process_commands()
         SERIAL_ECHOLN("Negative Raster Line");
 	  }
 	  
+      if (code_seen('L')) laser.raster_raw_length = int(code_value());
+      if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio);
+	  destination[X_AXIS] = current_position[X_AXIS] - (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	  laser.ppm = laser.raster_mm_per_dot;
+	  laser.raster_position = 0;
+	  laser.mode = LASER_RASTER;
+      laser.status = LASER_ON;
+	  prepare_move();
 
       break;
     case 9: //Continue previous raster line
@@ -1179,11 +1176,13 @@ void process_commands()
 #endif
 #ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
+      #ifdef LASER_INTENSITY_PIN
       if (code_seen('S') && (!IsStopped())) {
     	laser.intensity = code_value();
 	  } else {
-		laser.intensity = 100;
+		laser.intensity = 100.0;
 	  }
+	  #endif // LASER_INTENSITY_PIN
       if (code_seen('P') && (!IsStopped())) {
     	laser.duration = (unsigned long)labs(code_value());
       } else {

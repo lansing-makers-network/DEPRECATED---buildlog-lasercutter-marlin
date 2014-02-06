@@ -94,6 +94,8 @@
 
 #ifdef LASER_RASTER
   #define LASER_MAX_RASTER_LINE 60
+  #define LASER_RASTER_ASPECT_RATIO 1.33
+  #define LASER_RASTER_MM_PER_DOT 0.2
 #endif // LASER_RASTER
 
 // Uncomment this if the laser cutter is equipped with a peripheral control board
