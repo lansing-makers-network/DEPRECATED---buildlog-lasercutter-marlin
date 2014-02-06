@@ -357,9 +357,9 @@ ISR(TIMER1_COMPA_vect)
 	if (current_block->laser_mode == LASER_CONTINUOUS && current_block->laser_status == LASER_ON) {
 	  laser_fire(current_block->laser_intensity);
     }
-    //if (current_block->laser_duration > 0 && ((uint16_t)micros() - laser.last_firing) >= current_block->laser_duration) {
-	//  laser_extinguish();
-	//}
+    if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= current_block->laser_duration) {
+	  laser_extinguish();
+	}
     if (current_block->laser_status == LASER_OFF) {
       laser_extinguish();
     }

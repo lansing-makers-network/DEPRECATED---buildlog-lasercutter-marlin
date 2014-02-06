@@ -74,7 +74,7 @@ void laser_setup()
   #endif // LASER_RASTER
 }
 void laser_fire(int intensity){
-	laser.last_firing = (uint16_t)micros(); // microseconds since last laser firing
+	laser.last_firing = micros(); // microseconds since last laser firing
 	
 	#ifdef LASER_INTENSITY_PIN
     analogWrite(LASER_INTENSITY_PIN, intensity);

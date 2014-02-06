@@ -25,12 +25,12 @@
 
 typedef struct {
   float pwm; // PWM frequency used to control laser intensity in HZ
-  float intensity; // 0.0 - 100.0
+  float intensity; // Laser firing instensity 0.0 - 100.0
   float ppm; // pulses per millimeter, for pulsed firing mode
-  uint16_t duration; // laser firing duration in microseconds
+  uint16_t duration; // laser firing duration in microseconds, for pulsed firing mode
   bool status; // LASER_ON / LASER_OFF
   uint8_t mode; // LASER_CONTINUOUS, LASER_PULSED, LASER_RASTER
-  uint16_t last_firing; // microseconds since last laser firing
+  unsigned long last_firing; // microseconds since last laser firing
   bool diagnostics; // Verbose debugging output over serial
   #ifdef LASER_RASTER
     char raster_data[LASER_MAX_RASTER_LINE];
