@@ -24,6 +24,8 @@
 #include <Arduino.h>
 #include "Marlin.h"
 
+laser_t laser;
+
 void laser_setup()
 {
   pinMode(LASER_FIRING_PIN, OUTPUT);

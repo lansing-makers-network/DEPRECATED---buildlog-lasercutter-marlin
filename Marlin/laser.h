@@ -24,25 +24,23 @@
 #include "Configuration.h"
 
 typedef struct {
-  static float pwm; // PWM frequency used to control laser intensity in HZ
-  static float intensity; // 0.0 - 100.0
-  static float ppm; // pulses per millimeter, for pulsed firing mode
-  static uint16_t duration; // laser firing duration in microseconds
-  static bool status; // LASER_ON / LASER_OFF
-  static uint8_t mode; // LASER_CONTINUOUS, LASER_PULSED, LASER_RASTER
-  static uint16_t last_firing; // microseconds since last laser firing
-  static bool diagnostics; // Verbose debugging output over serial
+  float pwm; // PWM frequency used to control laser intensity in HZ
+  float intensity; // 0.0 - 100.0
+  float ppm; // pulses per millimeter, for pulsed firing mode
+  uint16_t duration; // laser firing duration in microseconds
+  bool status; // LASER_ON / LASER_OFF
+  uint8_t mode; // LASER_CONTINUOUS, LASER_PULSED, LASER_RASTER
+  uint16_t last_firing; // microseconds since last laser firing
+  bool diagnostics; // Verbose debugging output over serial
   #ifdef LASER_RASTER
-    static char raster_data[LASER_MAX_RASTER_LINE];
-    static float raster_aspect_ratio;
-    static float raster_mm_per_dot;
-    static float raster_increment;
-    static int raster_raw_length;
-    static int raster_num_pixels;
+    char raster_data[LASER_MAX_RASTER_LINE];
+    float raster_aspect_ratio;
+    float raster_mm_per_dot;
+    float raster_increment;
+    int raster_raw_length;
+    int raster_num_pixels;
   #endif // LASER_RASTER
 } laser_t;
-
-laser_t laser;
 
 extern laser_t laser;
 

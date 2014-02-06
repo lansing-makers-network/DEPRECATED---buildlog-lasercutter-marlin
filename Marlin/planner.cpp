@@ -87,10 +87,6 @@ float autotemp_factor=0.1;
 bool autotemp_enabled=false;
 #endif
 
-#ifdef LASER
-  //extern laser_t laser;
-#endif // LASER
-
 //===========================================================================
 //=================semi-private variables, used in inline  functions    =====
 //===========================================================================
