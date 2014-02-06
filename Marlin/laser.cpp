@@ -72,7 +72,7 @@ void laser_setup()
     laser.raster_direction = 1;
   #endif // LASER_RASTER
 }
-void laser_fire(int intensity){
+void laser_fire(int intensity = 100){
 	laser.last_firing = micros(); // microseconds since last laser firing
 	
 	#ifdef LASER_INTENSITY_PIN
@@ -82,7 +82,7 @@ void laser_fire(int intensity){
     digitalWrite(LASER_FIRING_PIN, HIGH);
 }
 void laser_extinguish(){
-	if (digitalRead(LASER_FIRING_PIN == HIGH) {
+	if (digitalRead(LASER_FIRING_PIN) == HIGH) {
 	  digitalWrite(LASER_FIRING_PIN, LOW);
 	  laser.time += micros() - laser.last_firing;
 	  if (laser.time > 60000000) {
