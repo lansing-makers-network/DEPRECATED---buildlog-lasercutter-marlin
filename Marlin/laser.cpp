@@ -83,12 +83,14 @@ void laser_fire(int intensity){
     digitalWrite(LASER_FIRING_PIN, HIGH);
 }
 void laser_extinguish(){
-	digitalWrite(LASER_FIRING_PIN, LOW);
-	laser.time += micros() - laser.last_firing;
-	if (laser.time > 60000000) {
+	if (laser.status == LASER_ON) {
+	  digitalWrite(LASER_FIRING_PIN, LOW);
+	  laser.time += micros() - laser.last_firing;
+	  if (laser.time > 60000000) {
 		laser.time = 0;
 		laser.lifetime++;
 		Config_StoreSettings();
+	  }
 	}
 }
 
