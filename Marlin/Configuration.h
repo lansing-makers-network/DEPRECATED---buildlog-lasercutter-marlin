@@ -73,6 +73,8 @@
 // This section determines whether or not the firmware is controlling a laser
 // Laser control is required for the mUVe1 3D printer, and buildlog.net laser cutter
 
+#define LASER
+
 // #define MUVE
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_PWM 8000 // hertz
@@ -81,12 +83,13 @@
 
 #define BUILDLOG
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
+#define LASER_WATTS 40 // watts
+#define LASER_DIAMETER 0.1 // milimeters
 #define LASER_PWM 25000 // hertz
 #define LASER_FOCAL_HEIGHT 91.67 // millimeters
 #define LASER_AOK_TIMEOUT 30000  // Number of millis to wait for AOK from Relay board
 
 #if defined MUVE or defined BUILDLOG
-  #define LASER
   #define LASER_FIRE_G1
   #define LASER_FIRE_SPINDLE
   #define LASER_RASTER
