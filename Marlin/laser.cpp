@@ -69,7 +69,6 @@ void laser_setup()
   #ifdef LASER_RASTER
     laser.raster_aspect_ratio = LASER_RASTER_ASPECT_RATIO;
     laser.raster_mm_per_dot = LASER_RASTER_MM_PER_DOT;
-    laser.raster_position = 0;
     laser.raster_direction = 1;
   #endif // LASER_RASTER
 }

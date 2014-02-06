@@ -916,7 +916,6 @@ void process_commands()
 	  }
 	  laser.ppm = 1 / laser.raster_mm_per_dot;
 	  laser.duration = labs(1 / (feedrate * laser.ppm) * 1000000);
-	  laser.raster_position = 0;
 	  laser.mode = LASER_RASTER;
 	  laser.status = LASER_ON;
 	  prepare_move();

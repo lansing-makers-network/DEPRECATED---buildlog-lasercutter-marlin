@@ -39,7 +39,6 @@ typedef struct {
     float raster_mm_per_dot;
     int raster_raw_length;
     int raster_num_pixels;
-    int raster_position;
     bool raster_direction;
   #endif // LASER_RASTER
 } laser_t;
