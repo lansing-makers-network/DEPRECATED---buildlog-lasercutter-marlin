@@ -1185,7 +1185,7 @@ void process_commands()
 		laser.intensity = 100;
 	  }
       if (code_seen('P') && (!IsStopped())) {
-    	laser.duration = code_value();
+    	laser.duration = (unsigned long)labs(code_value());
       } else {
 		laser.duration = 0;
 	  }
@@ -2773,7 +2773,7 @@ void manage_inactivity()
   #endif
 
   #ifdef LASER
-  if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= current_block->laser_duration) {
+  if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= (unsigned long)current_block->laser_duration) {
     laser_extinguish();
   }  
   #endif // LASER
