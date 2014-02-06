@@ -70,6 +70,7 @@ void laser_setup()
     laser.raster_aspect_ratio = LASER_RASTER_ASPECT_RATIO;
     laser.raster_mm_per_dot = LASER_RASTER_MM_PER_DOT;
     laser.raster_direction = 1;
+    laser.raster_position = 0;
   #endif // LASER_RASTER
 }
 void laser_fire(int intensity = 100){

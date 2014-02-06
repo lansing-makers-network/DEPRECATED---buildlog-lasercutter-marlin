@@ -40,6 +40,7 @@ typedef struct {
     int raster_raw_length;
     int raster_num_pixels;
     bool raster_direction;
+    int raster_position;
   #endif // LASER_RASTER
 } laser_t;
 
