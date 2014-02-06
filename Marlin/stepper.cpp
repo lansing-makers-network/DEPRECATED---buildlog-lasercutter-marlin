@@ -641,10 +641,10 @@ ISR(TIMER1_COMPA_vect)
 			if (current_block->laser_mode == LASER_PULSED && current_block->laser_status == LASER_ON) { // Pulsed Firing Mode
 		  	  laser_fire(current_block->laser_intensity);
 			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
-			  laser_fire(current_block->laser_raster_data[laser.raster_num_pixels - counter_l]/255.0*100.0);
+			  laser_fire(current_block->laser_raster_data[current_block->steps_l - counter_l]/255.0*100.0);
 			  if (laser.diagnostics == true) {
 			    SERIAL_ECHO("Pixel: ");
-			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[laser.raster_num_pixels - counter_l]));
+			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[current_block->steps_l - counter_l]));
 		      }
 			}
 		  counter_l -= current_block->step_event_count;
