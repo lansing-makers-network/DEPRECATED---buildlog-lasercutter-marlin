@@ -27,8 +27,8 @@
 #include "Marlin.h"
 
 #ifdef LASER
-  #include "laser.h"
-#endif // LASER
+#include "laser.h"
+#endif
 
 // This struct is used when buffering the setup for each linear movement "nominal" values are as specified in 
 // the source g-code and may never actually be reached if acceleration management is active.
@@ -69,7 +69,7 @@ typedef struct {
     unsigned long e_to_p_pressure;
   #endif // BARICUDA
   #ifdef LASER
-	uint8_t laser_mode; // LASER_CONTINUOUS, LASER_PPM, LASER_RASTER
+	uint8_t laser_mode; // LASER_CONTINUOUS, LASER_PULSED, LASER_RASTER
 	bool laser_status; // LASER_OFF, LASER_ON
     int laser_intensity; // PWM interrupt counter in clock cycles - in raster mode this is an array
     float laser_ppm; // number of pulses per millimeter

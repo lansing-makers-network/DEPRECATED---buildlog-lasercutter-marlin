@@ -5,7 +5,7 @@
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  version 3 of the License, or (at your option) any later version.
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -54,32 +54,35 @@ void laser_setup()
   pinMode(LASER_AOK_PIN, INPUT_PULLUP);
   #endif // LASER_PERIPHERALS
   
-  laser->pwm = 0;
-  laser->intensity = 100;
-  laser->ppm = 0;
-  laser->duration = 0; // laser firing duration in microseconds
-  laser->status = LASER_OFF;
-  laser->mode = LASER_CONTINUOUS;
-  laser->last_firing = 0; // microseconds since last laser firing
-  laser->diagnostics = true;
+  laser.pwm = 0;
+  laser.intensity = 100;
+  laser.ppm = 0;
+  laser.duration = 0;
+  laser.status = LASER_OFF;
+  laser.mode = LASER_CONTINUOUS;
+  laser.last_firing = 0;
+  laser.diagnostics = true;
   #ifdef LASER_RASTER
-    laser->raster_data[LASER_MAX_RASTER_LINE];
-    laser->raster_aspect_ratio = 1.33;
-    laser->raster_mm_per_dot = 0.2;
-    laser->raster_increment = 0.2;
-    laser->raster_raw_length;
-    laser->raster_num_pixels;
+    laser.raster_data[LASER_MAX_RASTER_LINE];
+    laser.raster_aspect_ratio = 1.33;
+    laser.raster_mm_per_dot = 0.2;
+    laser.raster_increment = 0.2;
+    laser.raster_raw_length;
+    laser.raster_num_pixels;
   #endif // LASER_RASTER
 }
 void laser_fire(int intensity){
-	laser->last_firing = (uint16_t)micros(); // microseconds since last laser firing
+	laser.last_firing = (uint16_t)micros(); // microseconds since last laser firing
+	
 	#ifdef LASER_INTENSITY_PIN
     analogWrite(LASER_INTENSITY_PIN, intensity);
     #endif // LASER_INTENSITY_PIN
+    
     digitalWrite(LASER_FIRING_PIN, HIGH);
 }
 void laser_extinguish(){
 	digitalWrite(LASER_FIRING_PIN, LOW);
+	// update laser-on counter here
 }
 
 #ifdef LASER_PERIPHERALS
@@ -88,28 +91,32 @@ bool laser_peripherals_ok(){
 }
 void laser_peripherals_on(){
 	digitalWrite(LASER_ACC_PIN, LOW);
-	SERIAL_ECHO_START;
-	SERIAL_ECHOLNPGM("POWER: Laser Peripherals Enabled");
+	if (laser.diagnostics == true) {
+	  SERIAL_ECHO_START;
+	  SERIAL_ECHOLNPGM("POWER: Laser Peripherals Enabled");
+    }
 }
 void laser_peripherals_off(){
 	digitalWrite(LASER_ACC_PIN, HIGH);
-	SERIAL_ECHO_START;
-	SERIAL_ECHOLNPGM("POWER: Laser Peripherals Disabled");
+	if (laser.diagnostics == true) {
+	  SERIAL_ECHO_START;
+	  SERIAL_ECHOLNPGM("POWER: Laser Peripherals Disabled");
+    }
 }
 void laser_wait_for_peripherals() {
-	uint32_t timeout = millis() + LASER_AOK_TIMEOUT;
-	bool first_loop = true;
+	unsigned long timeout = millis() + LASER_AOK_TIMEOUT;
+	if (laser.diagnostics == true) {
+	  SERIAL_ECHO_START;
+	  SERIAL_ECHOLNPGM("POWER: Waiting for relay board AOK...");
+	}
 	while(!laser_peripherals_ok()) {
 		if (millis() > timeout) {
-			SERIAL_ERROR_START;
-			SERIAL_ERRORLNPGM("Power supply failed to indicate AOK");
+			if (laser.diagnostics == true) {
+			  SERIAL_ERROR_START;
+			  SERIAL_ERRORLNPGM("Power supply failed to indicate AOK");
+			}
 			Stop();
 			break;
-		}
-		if (first_loop) {
-			SERIAL_ECHO_START;
-			SERIAL_ECHOLNPGM("POWER: Waiting for relay board AOK...");
-			first_loop = false;
 		}
 	}
 }

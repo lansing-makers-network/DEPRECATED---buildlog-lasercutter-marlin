@@ -99,6 +99,14 @@
 // Uncomment this if the laser cutter is equipped with a peripheral control board
 #define LASER_PERIPHERALS
 
+// Laser constants
+#define LASER_OFF 0
+#define LASER_ON 1
+
+#define LASER_CONTINUOUS 0
+#define LASER_PULSED 1
+#define LASER_RASTER 2
+
 //===========================================================================
 //=============================Thermal Settings  ============================
 //===========================================================================

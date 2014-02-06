@@ -40,10 +40,6 @@
 #include "language.h"
 #include "pins_arduino.h"
 
-#ifdef LASER
-#include "laser.h"
-#endif // LASER
-
 #ifdef LASER_RASTER
 #include "Base64.h"
 #endif // LASER_RASTER
@@ -221,6 +217,10 @@ int EtoPPressure=0;
 #ifdef DELTA
 float delta[3] = {0.0, 0.0, 0.0};
 #endif
+
+#ifdef LASER
+extern laser_t laser;
+#endif // LASER
 
 //===========================================================================
 //=============================private variables=============================
@@ -857,13 +857,13 @@ void process_commands()
         get_coordinates(); // For X Y Z E F
         
         #ifdef LASER_FIRE_G1
-          laser->status = LASER_ON;
+          laser.status = LASER_ON;
         #endif // LASER_FIRE_G1
         
         prepare_move();
         
         #ifdef LASER_FIRE_G1
-          laser->status = LASER_OFF;
+          laser.status = LASER_OFF;
         #endif // LASER_FIRE_G1
         
         //ClearToSend();
@@ -899,36 +899,36 @@ void process_commands()
       break;
     #ifdef LASER_RASTER
     case 7: //G7 Execute X+ raster line
-      if (laser->diagnostics == true) {
+      if (laser.diagnostics == true) {
         SERIAL_ECHO_START;
         SERIAL_ECHOLN("Positive Raster Line");
       }
       
-      if (code_seen('L')) laser->raster_raw_length = int(code_value());
-      if (code_seen('D')) laser->raster_num_pixels = base64_decode(laser->raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser->raster_raw_length);
-      laser->raster_increment = laser->raster_mm_per_dot;
-	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser->raster_mm_per_dot * laser->raster_aspect_ratio);
-	  laser->mode = LASER_RASTER;
-      laser->status = LASER_ON;
+      if (code_seen('L')) laser.raster_raw_length = int(code_value());
+      if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
+      laser.raster_increment = laser.raster_mm_per_dot;
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio);
+	  laser.mode = LASER_RASTER;
+      laser.status = LASER_ON;
 	  prepare_move();
 
 	  
-	      for (int i = 0; i<laser->raster_num_pixels; i++) {
-			if (laser->raster_data[i] > 15) {
-			  if (laser->diagnostics == true) {
+	      for (int i = 0; i<laser.raster_num_pixels; i++) {
+			if (laser.raster_data[i] > 15) {
+			  if (laser.diagnostics == true) {
 			  SERIAL_ECHO("Pixel: ");
-			  SERIAL_ECHOLN(itostr3(laser->raster_data[i]));
+			  SERIAL_ECHOLN(itostr3(laser.raster_data[i]));
 		      }
 				//fireLaser((float(laser_raster_data[i])/255.0)*100.0, RASTER_DURATION);
 				}
-			  destination[X_AXIS] += laser->raster_increment;
+			  destination[X_AXIS] += laser.raster_increment;
 			  prepare_move();
 			}
 
 
       break;
     case 8: //G8 Execute X- raster line
-      if (laser->diagnostics == true) {
+      if (laser.diagnostics == true) {
    	    SERIAL_ECHO_START;
         SERIAL_ECHOLN("Negative Raster Line");
 	  }
@@ -936,7 +936,7 @@ void process_commands()
 
       break;
     case 9: //Continue previous raster line
-      if (laser->diagnostics == true) {
+      if (laser.diagnostics == true) {
         SERIAL_ECHO_START;
         SERIAL_ECHOLN("Continue Raster Line");
 	  }
@@ -1184,26 +1184,26 @@ void process_commands()
 #ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
       if (code_seen('S') && (!IsStopped())) {
-    	float laser->intensity = code_value();
+    	laser.intensity = code_value();
 	  } else {
-		float laser->intensity = 100;
+		laser.intensity = 100;
 	  }
       if (code_seen('P') && (!IsStopped())) {
-    	uint8_t laser->duration = code_value();
+    	laser.duration = code_value();
       } else {
-		float laser->duration = 0;
+		laser.duration = 0;
 	  }
       if (code_seen('Q') && (!IsStopped())) {
-        float laser->ppm = code_value();
+        laser.ppm = code_value();
       } else {
-		float laser->ppm = 0;
+		laser.ppm = 0;
 	  }
 	  
-      laser->status = LASER_ON;
+      laser.status = LASER_ON;
     	
       break;
     case 5:  //M5 stop firing laser
-	  laser->status = LASER_OFF;
+	  laser.status = LASER_OFF;
       break;
 #endif // LASER_FIRE_SPINDLE
     case 17:
@@ -2775,11 +2775,13 @@ void manage_inactivity()
       prepare_move(); 
     }
   #endif
+
   #ifdef LASER
-  if (current_block->laser_duration > 0 && ((uint16_t)micros() - laser->last_firing) >= current_block->laser_duration) {
+  if (current_block->laser_duration > 0 && ((uint16_t)micros() - laser.last_firing) >= current_block->laser_duration) {
     laser_extinguish();
-  }
+  }  
   #endif // LASER
+  
   check_axes_activity();
 }
 

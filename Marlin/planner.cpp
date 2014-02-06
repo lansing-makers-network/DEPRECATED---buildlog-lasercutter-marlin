@@ -87,6 +87,10 @@ float autotemp_factor=0.1;
 bool autotemp_enabled=false;
 #endif
 
+#ifdef LASER
+  //extern laser_t laser;
+#endif // LASER
+
 //===========================================================================
 //=================semi-private variables, used in inline  functions    =====
 //===========================================================================
@@ -677,17 +681,17 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   }
   
   #ifdef LASER
-    block->laser_intensity = int(laser->intensity / 100.0 * labs(F_CPU / LASER_PWM));
-    block->laser_duration = laser->duration;
-    block->laser_status = laser->status;
-    block->laser_mode = laser->mode;
-    if (laser->mode == LASER_PPM) {
+    block->laser_intensity = int(laser.intensity / 100.0 * labs(F_CPU / LASER_PWM));
+    block->laser_duration = laser.duration;
+    block->laser_status = laser.status;
+    block->laser_mode = laser.mode;
+    if (laser.mode == LASER_PULSED) {
 	  // time = block->millimeters / block->nominal_speed
-	  // number of pulses = block->millimeters * laser_ppm
+	  // number of pulses = block->millimeters * LASER_PULSED
 	  // cycles between laser firing events = calc_timer(something HZ)
 	  //   
-      block->steps_l = labs(block->millimeters*laser->ppm);
-    } else if (laser->mode == LASER_RASTER) {
+      block->steps_l = labs(block->millimeters*laser.ppm);
+    } else if (laser.mode == LASER_RASTER) {
   
     } else {
       block->steps_l = 0;
