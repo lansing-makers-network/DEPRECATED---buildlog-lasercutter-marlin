@@ -902,9 +902,11 @@ void process_commands()
       
       if (code_seen('L')) laser.raster_raw_length = int(code_value());
       if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
-	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio);
+	  laser.raster_direction = 1;
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio); // increment Y axis
 	  destination[X_AXIS] = current_position[X_AXIS] + (laser.raster_mm_per_dot * laser.raster_num_pixels);
-	  laser.ppm = laser.raster_mm_per_dot;
+	  laser.ppm = 1 / laser.raster_mm_per_dot;
+	  laser.duration = labs(1 / (feedrate * laser.ppm) * 1000000);
 	  laser.raster_position = 0;
 	  laser.mode = LASER_RASTER;
       laser.status = LASER_ON;
@@ -919,9 +921,11 @@ void process_commands()
 	  
       if (code_seen('L')) laser.raster_raw_length = int(code_value());
       if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
-	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio);
+	  laser.raster_direction = 0;
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio); // increment Y axis
 	  destination[X_AXIS] = current_position[X_AXIS] - (laser.raster_mm_per_dot * laser.raster_num_pixels);
-	  laser.ppm = laser.raster_mm_per_dot;
+	  laser.ppm = 1 / laser.raster_mm_per_dot;
+	  laser.duration = labs(1 / (feedrate * laser.ppm) * 1000000);
 	  laser.raster_position = 0;
 	  laser.mode = LASER_RASTER;
       laser.status = LASER_ON;
@@ -933,7 +937,21 @@ void process_commands()
         SERIAL_ECHO_START;
         SERIAL_ECHOLN("Continue Raster Line");
 	  }
-	  
+
+	  if (code_seen('L')) laser.raster_raw_length = int(code_value());
+      if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
+	  destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio); // increment Y axis
+	  if (laser.raster_direction == 0) {
+	    destination[X_AXIS] = current_position[X_AXIS] - (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	  } else {
+	    destination[X_AXIS] = current_position[X_AXIS] + (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	  }
+	  laser.ppm = 1 / laser.raster_mm_per_dot;
+	  laser.duration = labs(1 / (feedrate * laser.ppm) * 1000000);
+	  laser.raster_position = 0;
+	  laser.mode = LASER_RASTER;
+      laser.status = LASER_ON;
+	  prepare_move();
 
 	  break;
 	#endif // LASER_RASTER
