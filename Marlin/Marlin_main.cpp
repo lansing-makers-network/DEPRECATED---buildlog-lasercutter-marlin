@@ -894,44 +894,34 @@ void process_commands()
       }
       break;
     #ifdef LASER_RASTER
-    case 7: //G7 Execute X+ raster line
-      if (laser.diagnostics == true) {
-        SERIAL_ECHO_START;
-        SERIAL_ECHOLN("Positive Raster Line");
-      }
-      
+    case 7: //G7 Execute raster line
       if (code_seen('L')) laser.raster_raw_length = int(code_value());
-      if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
-	  laser.raster_direction = 1;
-	  laser_prepare_raster_line();
+	  if (code_seen('D')) {
+		laser.raster_direction = bool(code_value());
+		destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio); // increment Y axis
+	  }
+      if (code_seen('P')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
+	  if (laser.raster_direction == 0) {
+	    destination[X_AXIS] = current_position[X_AXIS] - (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	    if (laser.diagnostics == true) {
+          SERIAL_ECHO_START;
+          SERIAL_ECHOLN("Negative Raster Line");
+        }
+	  } else {
+	    destination[X_AXIS] = current_position[X_AXIS] + (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	    if (laser.diagnostics == true) {
+          SERIAL_ECHO_START;
+          SERIAL_ECHOLN("Positive Raster Line");
+        }
+	  }
+	  laser.ppm = 1 / laser.raster_mm_per_dot;
+	  laser.duration = labs(1 / (feedrate * laser.ppm) * 1000000);
+	  laser.raster_position = 0;
+	  laser.mode = LASER_RASTER;
+	  laser.status = LASER_ON;
 	  prepare_move();
 	  
       break;
-    case 8: //G8 Execute X- raster line
-      if (laser.diagnostics == true) {
-   	    SERIAL_ECHO_START;
-        SERIAL_ECHOLN("Negative Raster Line");
-	  }
-	  
-      if (code_seen('L')) laser.raster_raw_length = int(code_value());
-      if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
-	  laser.raster_direction = 0;
-	  laser_prepare_raster_line();
-	  prepare_move();
-
-      break;
-    case 9: //Continue previous raster line
-      if (laser.diagnostics == true) {
-        SERIAL_ECHO_START;
-        SERIAL_ECHOLN("Continue Raster Line");
-	  }
-
-	  if (code_seen('L')) laser.raster_raw_length = int(code_value());
-      if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
-	  laser_prepare_raster_line();
-	  prepare_move();
-
-	  break;
 	#endif // LASER_RASTER
 
     #ifdef FWRETRACT

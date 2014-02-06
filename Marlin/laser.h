@@ -47,6 +47,9 @@ extern laser_t laser;
 void laser_setup();
 void laser_fire(int intensity);
 void laser_extinguish();
+#ifdef LASER_RASTER
+  void laser_prepare_raster_line();
+#endif // LASER_RASTER
 #ifdef LASER_PERIPHERALS
   bool laser_peripherals_ok();
   void laser_peripherals_on();
