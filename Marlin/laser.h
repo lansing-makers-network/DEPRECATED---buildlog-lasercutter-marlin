@@ -31,6 +31,7 @@ typedef struct {
   uint8_t mode; // LASER_CONTINUOUS, LASER_PULSED, LASER_RASTER
   unsigned long last_firing; // microseconds since last laser firing
   bool diagnostics; // Verbose debugging output over serial
+  unsigned long lifetime; // laser lifetime firing counter
   #ifdef LASER_RASTER
     char raster_data[LASER_MAX_RASTER_LINE];
     float raster_aspect_ratio;

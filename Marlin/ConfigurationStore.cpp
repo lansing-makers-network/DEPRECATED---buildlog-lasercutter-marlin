@@ -37,7 +37,7 @@ void _EEPROM_readData(int &pos, uint8_t* value, uint8_t size)
 // the default values are used whenever there is a change to the data, to prevent
 // wrong data being written to the variables.
 // ALSO:  always make sure the variables in the Store and retrieve sections are in the same order.
-#define EEPROM_VERSION "V09"
+#define EEPROM_VERSION "V10"
 
 #ifdef EEPROM_SETTINGS
 void Config_StoreSettings() 
@@ -59,6 +59,9 @@ void Config_StoreSettings()
   EEPROM_WRITE_VAR(i,add_homeing);
   #ifdef DELTA
   EEPROM_WRITE_VAR(i,endstop_adj);
+  #endif
+  #ifdef LASER
+  EEPROM_WRITE_VAR(i,laser.lifetime);
   #endif
   #ifndef ULTIPANEL
   int plaPreheatHotendTemp = PLA_PREHEAT_HOTEND_TEMP, plaPreheatHPBTemp = PLA_PREHEAT_HPB_TEMP, plaPreheatFanSpeed = PLA_PREHEAT_FAN_SPEED;
@@ -157,6 +160,13 @@ void Config_PrintSettings()
     SERIAL_ECHOPAIR(" Z" ,endstop_adj[2] );
     SERIAL_ECHOLN("");
 #endif
+#ifdef LASER
+	SERIAL_ECHO_START;
+	SERIAL_ECHOLNPGM("Laser lifetime usage (minutes):");
+	SERIAL_ECHO_START;
+    SERIAL_ECHOPAIR("  ",laser.lifetime );
+    SERIAL_ECHOLN("");
+#endif
 #ifdef PIDTEMP
     SERIAL_ECHO_START;
     SERIAL_ECHOLNPGM("PID settings:");
@@ -199,6 +209,9 @@ void Config_RetrieveSettings()
         EEPROM_READ_VAR(i,add_homeing);
         #ifdef DELTA
         EEPROM_READ_VAR(i,endstop_adj);
+        #endif
+        #ifdef LASER
+        EEPROM_READ_VAR(i,laser.lifetime);
         #endif
         #ifndef ULTIPANEL
         int plaPreheatHotendTemp, plaPreheatHPBTemp, plaPreheatFanSpeed;
