@@ -40,8 +40,12 @@ typedef struct {
     int raster_raw_length;
     int raster_num_pixels;
     bool raster_direction;
-    int raster_position;
   #endif // LASER_RASTER
+  #ifdef MUVE_Z_PEEL
+    float peel_distance;
+    float peel_speed;
+    float peel_pause;
+  #endif // MUVE_Z_PEEL
 } laser_t;
 
 extern laser_t laser;

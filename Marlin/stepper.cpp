@@ -58,6 +58,10 @@ static long counter_x,       // Counter variables for the bresenham line tracer
 static long counter_l;
 #endif // LASER
 
+#ifdef LASER_RASTER
+static int counter_raster;
+#endif // LASER_RASTER
+
 volatile static unsigned long step_events_completed; // The number of step events executed in the current block
 #ifdef ADVANCE
   static long advance_rate, advance, final_advance = 0;
@@ -341,7 +345,7 @@ ISR(TIMER1_COMPA_vect)
       
       #ifdef LASER_RASTER
         if (current_block->laser_mode == LASER_RASTER) {
-			laser.raster_position = 0;
+			counter_raster = 0;
 		}
 	  #endif // LASER_RASTER
 
@@ -647,12 +651,12 @@ ISR(TIMER1_COMPA_vect)
 			if (current_block->laser_mode == LASER_PULSED && current_block->laser_status == LASER_ON) { // Pulsed Firing Mode
 		  	  laser_fire(current_block->laser_intensity);
 			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
-			  laser_fire(current_block->laser_raster_data[laser.raster_position]/255.0*100.0);
+			  laser_fire(current_block->laser_raster_data[counter_raster]/255.0*100.0);
 			  if (laser.diagnostics == true) {
 			    SERIAL_ECHO("Pixel: ");
-			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[laser.raster_position]));
+			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[counter_raster]));
 		      }
-		      laser.raster_position++; 
+		      counter_raster++; 
 			}
 		  counter_l -= current_block->step_event_count;
 		  }

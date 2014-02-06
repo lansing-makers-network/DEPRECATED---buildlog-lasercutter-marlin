@@ -2236,8 +2236,65 @@ void process_commands()
         delayed_move_time = 0;
     }
     break;
-    #endif //DUAL_X_CARRIAGE         
-
+    #endif //DUAL_X_CARRIAGE
+    
+    #ifdef MUVE_Z_PEEL
+    case 650: // M650 set peel distance
+    {
+      st_synchronize();
+      if(code_seen('D')) laser.peel_distance = (float) code_value();
+      else {
+          laser.peel_distance=2;
+        }
+ 
+      if(code_seen('S')) laser.peel_speed = (float) code_value();
+      else {
+          laser.peel_speed=2;
+        }
+    
+      if(code_seen('P')) laser.peel_pause = (float) code_value();
+      else {
+          laser.peel_pause=0;
+        }
+      
+      if(code_seen('L')) laser.power = (float) code_value();
+      else {
+          laser.intensity=100;
+        }
+      if(code_seen('Q')) laser.ppm = (float) code_value();
+      else {
+		  laser.ppm=10;
+		}
+	  if(code_seen('C')) laser.duration = (unsigned long) code_value();
+	  else {
+		  laser.duration=3;
+		}
+    }
+    break;
+    
+    case 651: // M651 run peel move
+    {
+      if(laser.peel_distance > 0);
+        plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS] + laser.peel_distance, destination[Z_AXIS], laser.peel_speed, active_extruder);
+        plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS] + laser.peel_distance, destination[Z_AXIS] + laser.peel_distance, laser.peel_speed, active_extruder);
+        st_synchronize();
+      if(laser.peel_pause > 0);
+        st_synchronize();
+        codenum = laser.peel_pause;
+        codenum += millis();  // keep track of when we started waiting
+        previous_millis_cmd = millis();
+        while(millis()  < codenum ){
+        manage_heater();
+        manage_inactivity();
+        lcd_update();      
+      }
+    
+        plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[Z_AXIS], 30, active_extruder);
+        st_synchronize();
+    }
+    break;
+    #endif // MUVE_Z_PEEL
+    
     case 907: // M907 Set digital trimpot motor current using axis codes.
     {
       #if defined(DIGIPOTSS_PIN) && DIGIPOTSS_PIN > -1
