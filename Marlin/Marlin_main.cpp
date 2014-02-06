@@ -897,7 +897,7 @@ void process_commands()
     case 7: //G7 Execute raster line
       if (code_seen('L')) laser.raster_raw_length = int(code_value());
 	  if (code_seen('N')) {
-		laser.raster_direction = bool(code_value());
+		laser.raster_direction = (bool)code_value();
 		destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio); // increment Y axis
 	  }
       if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
