@@ -58,8 +58,8 @@ void laser_setup()
   #endif // LASER_PERIPHERALS
   
   // initialize state to some sane defaults
-  laser.intensity = 100;
-  laser.ppm = 0;
+  laser.intensity = 100.0;
+  laser.ppm = 0.0;
   laser.duration = 0;
   laser.status = LASER_OFF;
   laser.mode = LASER_CONTINUOUS;
@@ -77,7 +77,7 @@ void laser_setup()
     laser.peel_pause = 0.0;
   #endif // MUVE_Z_PEEL
 }
-void laser_fire(int intensity = 100){
+void laser_fire(int intensity = 100.0){
 	laser.last_firing = micros(); // microseconds since last laser firing
 	
 	#ifdef LASER_INTENSITY_PIN

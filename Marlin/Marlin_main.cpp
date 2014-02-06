@@ -2257,7 +2257,7 @@ void process_commands()
           laser.peel_pause=0;
         }
       
-      if(code_seen('L')) laser.power = (float) code_value();
+      if(code_seen('L')) laser.intensity = (float) code_value();
       else {
           laser.intensity=100;
         }
