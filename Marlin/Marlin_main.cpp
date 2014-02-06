@@ -2263,11 +2263,11 @@ void process_commands()
         }
       if(code_seen('Q')) laser.ppm = (float) code_value();
       else {
-		  laser.ppm=10;
+		  laser.ppm=10.0;
 		}
 	  if(code_seen('C')) laser.duration = (unsigned long) code_value();
 	  else {
-		  laser.duration=3;
+		  laser.duration=3000;
 		}
     }
     break;
