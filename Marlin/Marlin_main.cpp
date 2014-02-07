@@ -2807,7 +2807,8 @@ void manage_inactivity()
 		  laser_update_lifetime();
 	    #endif // LASER
 		#ifdef LASER_PERIPHERALS
-            laser_peripherals_off();
+		  laser.lifetime += laser.time / 60000; // convert to minutes
+		  Config_StoreSettings();
 		#endif
       }
     }

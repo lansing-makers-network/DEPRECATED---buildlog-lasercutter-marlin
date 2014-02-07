@@ -90,17 +90,9 @@ void laser_fire(int intensity = 100.0){
 void laser_extinguish(){
 	if (digitalRead(LASER_FIRING_PIN) == HIGH) {
 	  digitalWrite(LASER_FIRING_PIN, LOW);
-	  laser.time += micros() - laser.last_firing;
-	  if (laser.time > 4200000000) laser_update_lifetime(); // 70 minutes, nearing overflow of unsigned long
+	  laser.time += millis() - (laser.last_firing / 1000);
 	}
 }
-
-void laser_update_lifetime(){
-	laser.lifetime += laser.time / 60000000; // convert to minutes
-	laser.time = 0;
-    Config_StoreSettings();
-}
-
 #ifdef LASER_PERIPHERALS
 bool laser_peripherals_ok(){
 	return !digitalRead(LASER_AOK_PIN);
