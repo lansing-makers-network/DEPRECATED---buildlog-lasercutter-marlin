@@ -78,7 +78,7 @@ void laser_setup()
   #endif // MUVE_Z_PEEL
 }
 void laser_fire(int intensity = 100.0){
-	laser.last_firing = micros(); // microseconds since last laser firing
+	laser.last_firing = micros(); // microseconds of last laser firing
 
 	#ifdef LASER_INTENSITY_PIN
       analogWrite(LASER_INTENSITY_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
