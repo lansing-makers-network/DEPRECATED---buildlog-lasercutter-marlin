@@ -38,7 +38,7 @@
 #include "dogm_font_data_marlin.h"
 #include "ultralcd.h"
 #include "ultralcd_st7920_u8glib_rrd.h"
-#define LASER 1
+#include "Configuration.h"
 
 #ifdef LASER
 #include "laserbitmaps.h"
@@ -183,9 +183,11 @@ static void lcd_implementation_status_screen()
  if ((blink % 2) &&  fanSpeed )	u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen0_bmp);
 	else u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen1_bmp);
 #else
+ #ifdef LASER_PERIPHERALS
  if (laser_peripherals_ok()) {
 	 u8g.drawBitmapP(29,4, LASERENABLE_BYTEWIDTH, LASERENABLE_HEIGHT, laserenable_bmp);
  }
+ #endif // LASER_PERIPHERALS
  u8g.setFont(FONT_STATUSMENU);
  u8g.setColorIndex(1);
  u8g.setPrintPos(3,6);

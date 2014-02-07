@@ -384,7 +384,7 @@ static void lcd_prepare_menu()
     MENU_ITEM(gcode, MSG_DISABLE_STEPPERS, PSTR("M84"));
     MENU_ITEM(gcode, "Enable Steppers", PSTR("M17"));
 #ifdef LASER
-    MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28 X Y F6000"));
+    MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28 X Y F2000"));
 #else
     MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28"));
 #endif
@@ -733,11 +733,13 @@ static void lcd_laser_menu()
 	MENU_ITEM(back, MSG_MAIN, lcd_main_menu);
 	MENU_ITEM(submenu, "Set Focus", lcd_laser_focus_menu);
 	MENU_ITEM(submenu, "Test Fire", lcd_laser_test_fire_menu);
+	#ifdef LASER_PERIPHERALS
 	if (laser_peripherals_ok()) {
 		MENU_ITEM(function, "Turn On Pumps/Fans", action_laser_acc_on);
 	} else if (!(movesplanned() || IS_SD_PRINTING)) {
 		MENU_ITEM(function, "Turn Off Pumps/Fans", action_laser_acc_off);
 	}
+	#endif // LASER_PERIPHERALS
 	END_MENU();
 }
 

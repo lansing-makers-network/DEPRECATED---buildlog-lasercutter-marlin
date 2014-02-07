@@ -2774,7 +2774,7 @@ void manage_inactivity()
         disable_e0();
         disable_e1();
         disable_e2();
-		#ifdef LASER
+		#ifdef LASER_PERIPHERALS
             laser_peripherals_off();
 		#endif
       }
@@ -2837,7 +2837,7 @@ void kill()
   disable_e0();
   disable_e1();
   disable_e2();
-#ifdef LASER
+#ifdef LASER_PERIPHERALS
   laser_peripherals_off();
 #endif
 
@@ -2856,6 +2856,8 @@ void Stop()
   disable_heater();
 #ifdef LASER
   digitalWrite(LASER_FIRING_PIN, LOW);
+#endif
+#ifdef LASER_PERIPHERALS
   laser_peripherals_off();
 #endif
   if(Stopped == false) {
