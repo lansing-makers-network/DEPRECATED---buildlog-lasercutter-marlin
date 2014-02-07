@@ -53,6 +53,7 @@ extern laser_t laser;
 void laser_setup();
 void laser_fire(int intensity);
 void laser_extinguish();
+void laser_update_lifetime();
 #ifdef LASER_PERIPHERALS
   bool laser_peripherals_ok();
   void laser_peripherals_on();

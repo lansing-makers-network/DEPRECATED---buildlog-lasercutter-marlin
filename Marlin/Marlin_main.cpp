@@ -2803,6 +2803,9 @@ void manage_inactivity()
         disable_e0();
         disable_e1();
         disable_e2();
+        #ifdef LASER
+		  laser_update_lifetime();
+	    #endif // LASER
 		#ifdef LASER_PERIPHERALS
             laser_peripherals_off();
 		#endif

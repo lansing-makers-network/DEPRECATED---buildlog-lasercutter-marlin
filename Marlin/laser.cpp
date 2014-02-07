@@ -91,12 +91,14 @@ void laser_extinguish(){
 	if (digitalRead(LASER_FIRING_PIN) == HIGH) {
 	  digitalWrite(LASER_FIRING_PIN, LOW);
 	  laser.time += micros() - laser.last_firing;
-	  if (laser.time > 60000000) {
-		laser.time = 0;
-		laser.lifetime++;
-		Config_StoreSettings();
-	  }
+	  if (laser.time > 4200000000) laser_update_lifetime(); // 70 minutes, nearing overflow of unsigned long
 	}
+}
+
+void laser_update_lifetime(){
+	laser.lifetime += laser.time / 60000000; // convert to minutes
+	laser.time = 0;
+    Config_StoreSettings();
 }
 
 #ifdef LASER_PERIPHERALS
