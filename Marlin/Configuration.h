@@ -79,13 +79,13 @@
 
 #define LASER
 
-// #define MUVE
+// #define MUVE // single pin for firing and intensity control
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_PWM 8000 // hertz
 // #define MUVE_Z_PEEL
-// #define LASER_FIRE_E
+// #define LASER_FIRE_E // warning: enabling this option may cause the other firing modes to misbehave
 
-#define BUILDLOG
+#define BUILDLOG // seperate laser firing and intensity pins
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
 #define LASER_WATTS 40 // watts
 #define LASER_DIAMETER 0.1 // milimeters
