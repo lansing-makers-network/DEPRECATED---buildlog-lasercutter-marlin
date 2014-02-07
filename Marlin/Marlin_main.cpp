@@ -2680,7 +2680,11 @@ void prepare_move()
       #endif // MUVE
   }
   else {
-    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
+	#ifdef MUVE
+	  plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[Z_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
+	#else
+      plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
+	#endif // MUVE
   }
 #endif //else DELTA
   for(int8_t i=0; i < NUM_AXIS; i++) {
