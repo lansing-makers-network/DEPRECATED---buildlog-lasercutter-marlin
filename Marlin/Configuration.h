@@ -70,8 +70,12 @@
 
 #define POWER_SUPPLY 1
 
-// This section determines whether or not the firmware is controlling a laser
-// Laser control is required for the mUVe1 3D printer, and buildlog.net laser cutter
+//===========================================================================
+//============================= Laser Settings ==============================
+//===========================================================================
+//
+// Laser control is used by the Muve1 3D printer and the Buildlog.net laser cutter
+// 
 
 #define LASER
 
