@@ -2694,7 +2694,7 @@ void prepare_move()
   #ifdef LASER_FIRE_E
   if (current_position[E_AXIS] != destination[E_AXIS]){
 	laser.status = LASER_ON;
-  else
+  } else {
     laser.status = LASER_OFF;
   }
   #endif
