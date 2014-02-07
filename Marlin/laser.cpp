@@ -81,10 +81,11 @@ void laser_fire(int intensity = 100.0){
 	laser.last_firing = micros(); // microseconds since last laser firing
 	
 	#ifdef LASER_INTENSITY_PIN
-    analogWrite(LASER_INTENSITY_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
+      analogWrite(LASER_INTENSITY_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
+      digitalWrite(LASER_FIRING_PIN, HIGH);
+    #else
+      analogWrite(LASER_FIRING_PIN, (intensity / 100.0)*255);
     #endif // LASER_INTENSITY_PIN
-    
-    digitalWrite(LASER_FIRING_PIN, HIGH);
 }
 void laser_extinguish(){
 	if (digitalRead(LASER_FIRING_PIN) == HIGH) {
