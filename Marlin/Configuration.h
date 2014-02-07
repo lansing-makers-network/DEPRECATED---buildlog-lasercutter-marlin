@@ -97,8 +97,9 @@
 
 #define LASER_FIRE_G1
 #define LASER_FIRE_SPINDLE
-#define LASER_RASTER
 
+// Raster mode allows the laser to etch bitmap data at high speeds.  Increases size of the command buffer substantially.
+#define LASER_RASTER
 #ifdef LASER_RASTER
   #define LASER_MAX_RASTER_LINE 60
   #define LASER_RASTER_ASPECT_RATIO 1.33
