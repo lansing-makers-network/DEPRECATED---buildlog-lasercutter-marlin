@@ -53,7 +53,7 @@ static long counter_x,       // Counter variables for the bresenham line tracer
             counter_y,
             counter_z,
             counter_e;
-            
+
 #ifdef LASER
 static long counter_l;
 #endif // LASER
@@ -342,7 +342,7 @@ ISR(TIMER1_COMPA_vect)
           return;
         }
       #endif
-      
+
       #ifdef LASER_RASTER
         if (current_block->laser_mode == LASER_RASTER) {
 			counter_raster = 0;
@@ -367,7 +367,7 @@ ISR(TIMER1_COMPA_vect)
 	if (current_block->laser_mode == LASER_CONTINUOUS && current_block->laser_status == LASER_ON) {
 	  laser_fire(current_block->laser_intensity);
     }
-    if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= (unsigned long)current_block->laser_duration) {
+    if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= current_block->laser_duration) {
 	  laser_extinguish();
 	}
     if (current_block->laser_status == LASER_OFF) {
@@ -390,7 +390,7 @@ ISR(TIMER1_COMPA_vect)
         }
       #else
         WRITE(X_DIR_PIN, INVERT_X_DIR);
-      #endif        
+      #endif
       count_direction[X_AXIS]=-1;
     }
     else{
@@ -407,7 +407,7 @@ ISR(TIMER1_COMPA_vect)
         }
       #else
         WRITE(X_DIR_PIN, !INVERT_X_DIR);
-      #endif        
+      #endif
       count_direction[X_AXIS]=1;
     }
     if((out_bits & (1<<Y_AXIS))!=0){
@@ -429,9 +429,9 @@ ISR(TIMER1_COMPA_vect)
       {
         #ifdef DUAL_X_CARRIAGE
         // with 2 x-carriages, endstops are only checked in the homing direction for the active extruder
-        if ((current_block->active_extruder == 0 && X_HOME_DIR == -1) 
+        if ((current_block->active_extruder == 0 && X_HOME_DIR == -1)
             || (current_block->active_extruder != 0 && X2_HOME_DIR == -1))
-        #endif          
+        #endif
         {
           #if defined(X_MIN_PIN) && X_MIN_PIN > -1
             bool x_min_endstop=(READ(X_MIN_PIN) != X_MIN_ENDSTOP_INVERTING);
@@ -450,9 +450,9 @@ ISR(TIMER1_COMPA_vect)
       {
         #ifdef DUAL_X_CARRIAGE
         // with 2 x-carriages, endstops are only checked in the homing direction for the active extruder
-        if ((current_block->active_extruder == 0 && X_HOME_DIR == 1) 
+        if ((current_block->active_extruder == 0 && X_HOME_DIR == 1)
             || (current_block->active_extruder != 0 && X2_HOME_DIR == 1))
-        #endif          
+        #endif
         {
           #if defined(X_MAX_PIN) && X_MAX_PIN > -1
             bool x_max_endstop=(READ(X_MAX_PIN) != X_MAX_ENDSTOP_INVERTING);
@@ -502,7 +502,7 @@ ISR(TIMER1_COMPA_vect)
 
     if ((out_bits & (1<<Z_AXIS)) != 0) {   // -direction
       WRITE(Z_DIR_PIN,INVERT_Z_DIR);
-      
+
       #ifdef Z_DUAL_STEPPER_DRIVERS
         WRITE(Z2_DIR_PIN,INVERT_Z_DIR);
       #endif
@@ -589,9 +589,9 @@ ISR(TIMER1_COMPA_vect)
           }
         #else
           WRITE(X_STEP_PIN, !INVERT_X_STEP_PIN);
-        #endif        
+        #endif
           counter_x -= current_block->step_event_count;
-          count_position[X_AXIS]+=count_direction[X_AXIS];   
+          count_position[X_AXIS]+=count_direction[X_AXIS];
         #ifdef DUAL_X_CARRIAGE
           if (extruder_duplication_enabled){
             WRITE(X_STEP_PIN, INVERT_X_STEP_PIN);
@@ -619,7 +619,7 @@ ISR(TIMER1_COMPA_vect)
       counter_z += current_block->steps_z;
       if (counter_z > 0) {
         WRITE(Z_STEP_PIN, !INVERT_Z_STEP_PIN);
-        
+
         #ifdef Z_DUAL_STEPPER_DRIVERS
           WRITE(Z2_STEP_PIN, !INVERT_Z_STEP_PIN);
         #endif
@@ -627,7 +627,7 @@ ISR(TIMER1_COMPA_vect)
         counter_z -= current_block->step_event_count;
         count_position[Z_AXIS]+=count_direction[Z_AXIS];
         WRITE(Z_STEP_PIN, INVERT_Z_STEP_PIN);
-        
+
         #ifdef Z_DUAL_STEPPER_DRIVERS
           WRITE(Z2_STEP_PIN, INVERT_Z_STEP_PIN);
         #endif
@@ -642,9 +642,9 @@ ISR(TIMER1_COMPA_vect)
           WRITE_E_STEP(INVERT_E_STEP_PIN);
         }
       #endif //!ADVANCE
-      
+
       // steps_l = step count between laser firings
-      // 
+      //
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
@@ -656,15 +656,15 @@ ISR(TIMER1_COMPA_vect)
 			    SERIAL_ECHO("Pixel: ");
 			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[counter_raster]));
 		      }
-		      counter_raster++; 
+		      counter_raster++;
 			}
 		  counter_l -= current_block->step_event_count;
 		  }
-		  if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= (unsigned long)current_block->laser_duration) {
+		  if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= current_block->laser_duration) {
 		    laser_extinguish();
 		  }
       #endif // LASER
-      
+
       step_events_completed += 1;
       if(step_events_completed >= current_block->step_event_count) break;
     }
