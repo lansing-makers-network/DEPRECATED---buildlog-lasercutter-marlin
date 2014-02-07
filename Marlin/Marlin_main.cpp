@@ -2691,6 +2691,14 @@ void prepare_move()
   }
 #endif //DUAL_X_CARRIAGE
 
+  #ifdef LASER_FIRE_E
+  if (current_position[E_AXIS] != destination[E_AXIS]){
+	laser.status = LASER_ON;
+  else
+    laser.status = LASER_OFF;
+  }
+  #endif
+
   // Do not use feedmultiply for E or Z only moves
   if( (current_position[X_AXIS] == destination [X_AXIS]) && (current_position[Y_AXIS] == destination [Y_AXIS])) {
       #ifdef MUVE
