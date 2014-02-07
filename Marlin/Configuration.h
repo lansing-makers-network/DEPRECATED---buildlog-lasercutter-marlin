@@ -75,7 +75,7 @@
 //===========================================================================
 //
 // Laser control is used by the Muve1 3D printer and the Buildlog.net laser cutter
-// 
+//
 
 #define LASER
 
@@ -93,11 +93,9 @@
 #define LASER_FOCAL_HEIGHT 91.67 // millimeters
 #define LASER_AOK_TIMEOUT 30000  // Number of millis to wait for AOK from Relay board
 
-#if defined MUVE or defined BUILDLOG
-  #define LASER_FIRE_G1
-  #define LASER_FIRE_SPINDLE
-  #define LASER_RASTER
-#endif
+#define LASER_FIRE_G1
+#define LASER_FIRE_SPINDLE
+#define LASER_RASTER
 
 #ifdef LASER_RASTER
   #define LASER_MAX_RASTER_LINE 60
