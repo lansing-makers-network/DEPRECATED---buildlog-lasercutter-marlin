@@ -2804,8 +2804,11 @@ void manage_inactivity()
         disable_e1();
         disable_e2();
         #ifdef LASER
-		  laser.lifetime += laser.time / 60000; // convert to minutes
-		  Config_StoreSettings();
+          if (laser.time / 60000 > 0) {
+		    laser.lifetime += laser.time / 60000; // convert to minutes
+		    laser.time = 0;
+		    Config_StoreSettings();
+		  }
 		#endif // LASER
 		#ifdef LASER_PERIPHERALS
             laser_peripherals_off();
