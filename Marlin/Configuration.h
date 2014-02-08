@@ -81,7 +81,7 @@
 
 // #define MUVE // single pin for firing and intensity control
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
-// #define LASER_WATTS 0.5
+// #define LASER_WATTS 0.05
 // #define LASER_DIAMETER 0.1 // milimeters
 // #define LASER_PWM 8000 // hertz
 // #define MUVE_Z_PEEL

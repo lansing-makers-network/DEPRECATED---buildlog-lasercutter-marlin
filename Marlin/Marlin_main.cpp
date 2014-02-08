@@ -2888,7 +2888,7 @@ void Stop()
 {
   disable_heater();
 #ifdef LASER
-  digitalWrite(LASER_FIRING_PIN, LOW);
+  laser_extinguish();
 #endif
 #ifdef LASER_PERIPHERALS
   laser_peripherals_off();
