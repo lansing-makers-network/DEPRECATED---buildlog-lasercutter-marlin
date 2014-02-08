@@ -112,7 +112,7 @@ void laser_peripherals_off(){
     }
 }
 void laser_wait_for_peripherals() {
-	unsigned long timeout = millis() + LASER_AOK_TIMEOUT;
+	unsigned long timeout = millis() + LASER_PERIPHERAL_TIMEOUT;
 	if (laser.diagnostics == true) {
 	  SERIAL_ECHO_START;
 	  SERIAL_ECHOLNPGM("POWER: Waiting for relay board AOK...");

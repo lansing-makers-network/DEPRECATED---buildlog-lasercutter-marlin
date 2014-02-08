@@ -89,12 +89,10 @@
 
 #define BUILDLOG // seperate pins for laser firing and intensity control
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
-#define LASER_WATTS 40
+#define LASER_WATTS 40.0
 #define LASER_DIAMETER 0.1 // milimeters
 #define LASER_PWM 25000 // hertz
 #define LASER_FOCAL_HEIGHT 91.67 // millimeters
-#define LASER_AOK_TIMEOUT 30000  // Number of millis to wait for AOK from peripheral control board
-
 #define LASER_FIRE_G1
 #define LASER_FIRE_SPINDLE
 
@@ -108,6 +106,7 @@
 
 // Uncomment this if the laser cutter is equipped with a peripheral control board
 #define LASER_PERIPHERALS
+#define LASER_PERIPHERAL_TIMEOUT 30000  // Number of millis to wait for AOK from peripheral control board
 
 // Laser constants
 #define LASER_OFF 0

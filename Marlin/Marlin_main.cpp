@@ -789,45 +789,45 @@ static void homeaxis(int axis) {
     current_position[axis] = 0;
     #ifdef MUVE
       plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[Z_AXIS]);
-    #else
-      plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
-    #endif
-    destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
-    feedrate = homing_feedrate[axis];
-    #ifdef MUVE
+      destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
+      feedrate = homing_feedrate[axis];
       plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[Z_AXIS], feedrate/60, active_extruder);
-    #else
-      plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
-	#endif
-    st_synchronize();
+      st_synchronize();
 
-    current_position[axis] = 0;
-    #ifdef MUVE
+      current_position[axis] = 0;
       plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[Z_AXIS]);
-    #else
-      plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
-    #endif
-    destination[axis] = -home_retract_mm(axis) * axis_home_dir;
-    #ifdef MUVE
+      destination[axis] = -home_retract_mm(axis) * axis_home_dir;
+      plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[Z_AXIS], feedrate/60, active_extruder);
+      st_synchronize();
+
+      destination[axis] = 2*home_retract_mm(axis) * axis_home_dir;
+      feedrate = homing_feedrate[axis]/2 ;
+
       plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[Z_AXIS], feedrate/60, active_extruder);
     #else
+      plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+      destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
+      feedrate = homing_feedrate[axis];
       plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
-    #endif
-    st_synchronize();
+      st_synchronize();
 
-    destination[axis] = 2*home_retract_mm(axis) * axis_home_dir;
-#ifdef DELTA
-    feedrate = homing_feedrate[axis]/10;
-#else
-    feedrate = homing_feedrate[axis]/2 ;
-#endif
+      current_position[axis] = 0;
+      plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+      destination[axis] = -home_retract_mm(axis) * axis_home_dir;
+      plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
+      st_synchronize();
 
-	#ifdef MUVE
+      destination[axis] = 2*home_retract_mm(axis) * axis_home_dir;
+	  #ifdef DELTA
+		feedrate = homing_feedrate[axis]/10;
+	  #else
+		feedrate = homing_feedrate[axis]/2 ;
+	  #endif
+
       plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
-    #else
-      plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
-    #endif
-    st_synchronize();
+      #endif // MUVE
+
+      st_synchronize();
 #ifdef DELTA
     // retrace by the amount specified in endstop_adj
     if (endstop_adj[axis] * axis_home_dir < 0) {
