@@ -79,7 +79,7 @@
 
 #define LASER
 
-// Uncommenting these options should produce a working configuration for the mUVe1 3D printer
+// Uncomment these options for the mUVe1 3D printer
 // #define MUVE // single pin for firing and intensity control
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_WATTS 0.05
@@ -88,17 +88,17 @@
 // #define MUVE_Z_PEEL
 // #define LASER_FIRE_E // fire the laser when the E axis moves.  warning: enabling this option may cause the other firing modes to misbehave
 
-// Uncommenting these options should produce a working configuration for the Buildlog.net laser cutter, and other similar models
+// Uncomment these options for the Buildlog.net laser cutter, and other similar models
 #define BUILDLOG // seperate pins for laser firing and intensity control
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
 #define LASER_WATTS 40.0
 #define LASER_DIAMETER 0.1 // milimeters
 #define LASER_PWM 25000 // hertz
-#define LASER_FOCAL_HEIGHT 91.67 // millimeters
-#define LASER_FIRE_G1 // fire the laser on a G1 move
+#define LASER_FOCAL_HEIGHT 91.67 // z axis position at which the laser is focused
+#define LASER_FIRE_G1 // fire the laser on a G1 move, extinguish the laser on G0
 #define LASER_FIRE_SPINDLE // fire the laser on M3, extinguish on M5
 
-// Raster mode allows the laser to etch bitmap data at high speeds.  Increases size of the command buffer substantially.
+// Raster mode enables the laser to etch bitmap data at high speeds.  Increases command buffer size substantially.
 #define LASER_RASTER
 #define LASER_MAX_RASTER_LINE 60 // maximum number of base64 encoded pixels per raster gcode command
 #define LASER_RASTER_ASPECT_RATIO 1.33 // pixels aren't square on most displays, 1.33 == 4:3 aspect ratio
@@ -106,7 +106,7 @@
 
 // Uncomment this if the laser cutter is equipped with a peripheral control board
 #define LASER_PERIPHERALS
-#define LASER_PERIPHERALS_TIMEOUT 30000  // Number of millis to wait for status signal from peripheral control board
+#define LASER_PERIPHERALS_TIMEOUT 30000  // Number of milliseconds to wait for status signal from peripheral control board
 
 //===========================================================================
 //=============================Thermal Settings  ============================
