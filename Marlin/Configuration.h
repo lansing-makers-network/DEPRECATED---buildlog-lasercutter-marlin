@@ -79,42 +79,34 @@
 
 #define LASER
 
+// Uncommenting these options should produce a working configuration for the mUVe1 3D printer
 // #define MUVE // single pin for firing and intensity control
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_WATTS 0.05
 // #define LASER_DIAMETER 0.1 // milimeters
 // #define LASER_PWM 8000 // hertz
 // #define MUVE_Z_PEEL
-// #define LASER_FIRE_E // warning: enabling this option may cause the other firing modes to misbehave
+// #define LASER_FIRE_E // fire the laser when the E axis moves.  warning: enabling this option may cause the other firing modes to misbehave
 
+// Uncommenting these options should produce a working configuration for the Buildlog.net laser cutter, and other similar models
 #define BUILDLOG // seperate pins for laser firing and intensity control
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
 #define LASER_WATTS 40.0
 #define LASER_DIAMETER 0.1 // milimeters
 #define LASER_PWM 25000 // hertz
 #define LASER_FOCAL_HEIGHT 91.67 // millimeters
-#define LASER_FIRE_G1
-#define LASER_FIRE_SPINDLE
+#define LASER_FIRE_G1 // fire the laser on a G1 move
+#define LASER_FIRE_SPINDLE // fire the laser on M3, extinguish on M5
 
 // Raster mode allows the laser to etch bitmap data at high speeds.  Increases size of the command buffer substantially.
 #define LASER_RASTER
-#ifdef LASER_RASTER
-  #define LASER_MAX_RASTER_LINE 60
-  #define LASER_RASTER_ASPECT_RATIO 1.33
-  #define LASER_RASTER_MM_PER_DOT 0.2
-#endif // LASER_RASTER
+#define LASER_MAX_RASTER_LINE 60 // maximum number of base64 encoded pixels per raster gcode command
+#define LASER_RASTER_ASPECT_RATIO 1.33 // pixels aren't square on most displays, 1.33 == 4:3 aspect ratio
+#define LASER_RASTER_MM_PER_PULSE 0.2
 
 // Uncomment this if the laser cutter is equipped with a peripheral control board
 #define LASER_PERIPHERALS
-#define LASER_PERIPHERAL_TIMEOUT 30000  // Number of millis to wait for AOK from peripheral control board
-
-// Laser constants
-#define LASER_OFF 0
-#define LASER_ON 1
-
-#define LASER_CONTINUOUS 0
-#define LASER_PULSED 1
-#define LASER_RASTER 2
+#define LASER_PERIPHERALS_TIMEOUT 30000  // Number of millis to wait for status signal from peripheral control board
 
 //===========================================================================
 //=============================Thermal Settings  ============================

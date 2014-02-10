@@ -36,7 +36,7 @@ typedef struct {
   #ifdef LASER_RASTER
     char raster_data[LASER_MAX_RASTER_LINE];
     float raster_aspect_ratio;
-    float raster_mm_per_dot;
+    float raster_mm_per_pulse;
     int raster_raw_length;
     int raster_num_pixels;
     bool raster_direction;
@@ -50,7 +50,7 @@ typedef struct {
 
 extern laser_t laser;
 
-void laser_setup();
+void laser_init();
 void laser_fire(int intensity);
 void laser_extinguish();
 void laser_update_lifetime();
@@ -60,5 +60,13 @@ void laser_update_lifetime();
   void laser_peripherals_off();
   void laser_wait_for_peripherals();
 #endif // LASER_PERIPHERALS
+
+// Laser constants
+#define LASER_OFF 0
+#define LASER_ON 1
+
+#define LASER_CONTINUOUS 0
+#define LASER_PULSED 1
+#define LASER_RASTER 2
 
 #endif // LASER_H

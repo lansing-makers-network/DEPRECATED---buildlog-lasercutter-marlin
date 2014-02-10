@@ -27,7 +27,7 @@
 
 laser_t laser;
 
-void laser_setup()
+void laser_init()
 {
   pinMode(LASER_FIRING_PIN, OUTPUT);
 
@@ -50,11 +50,11 @@ void laser_setup()
   #endif // LASER_INTENSITY_PIN
 
   #ifdef LASER_PERIPHERALS
-  digitalWrite(LASER_ACC_PIN, HIGH);  // Laser accessories are active LOW, so preset the pin
-  pinMode(LASER_ACC_PIN, OUTPUT);
+  digitalWrite(LASER_PERIPHERALS_PIN, HIGH);  // Laser peripherals are active LOW, so preset the pin
+  pinMode(LASER_PERIPHERALS_PIN, OUTPUT);
 
-  digitalWrite(LASER_AOK_PIN, HIGH);  // Set the AOK pin to pull-up.
-  pinMode(LASER_AOK_PIN, INPUT_PULLUP);
+  digitalWrite(LASER_PERIPHERALS_STATUS_PIN, HIGH);  // Set the peripherals status pin to pull-up.
+  pinMode(LASER_PERIPHERALS_STATUS_PIN, INPUT_PULLUP);
   #endif // LASER_PERIPHERALS
 
   // initialize state to some sane defaults
@@ -68,7 +68,7 @@ void laser_setup()
   laser.time = 0;
   #ifdef LASER_RASTER
     laser.raster_aspect_ratio = LASER_RASTER_ASPECT_RATIO;
-    laser.raster_mm_per_dot = LASER_RASTER_MM_PER_DOT;
+    laser.raster_mm_per_pulse = LASER_RASTER_MM_PER_PULSE;
     laser.raster_direction = 1;
   #endif // LASER_RASTER
   #ifdef MUVE_Z_PEEL
@@ -95,24 +95,24 @@ void laser_extinguish(){
 }
 #ifdef LASER_PERIPHERALS
 bool laser_peripherals_ok(){
-	return !digitalRead(LASER_AOK_PIN);
+	return !digitalRead(LASER_PERIPHERALS_STATUS_PIN);
 }
 void laser_peripherals_on(){
-	digitalWrite(LASER_ACC_PIN, LOW);
+	digitalWrite(LASER_PERIPHERALS_PIN, LOW);
 	if (laser.diagnostics == true) {
 	  SERIAL_ECHO_START;
 	  SERIAL_ECHOLNPGM("POWER: Laser Peripherals Enabled");
     }
 }
 void laser_peripherals_off(){
-	digitalWrite(LASER_ACC_PIN, HIGH);
+	digitalWrite(LASER_PERIPHERALS_PIN, HIGH);
 	if (laser.diagnostics == true) {
 	  SERIAL_ECHO_START;
 	  SERIAL_ECHOLNPGM("POWER: Laser Peripherals Disabled");
     }
 }
 void laser_wait_for_peripherals() {
-	unsigned long timeout = millis() + LASER_PERIPHERAL_TIMEOUT;
+	unsigned long timeout = millis() + LASER_PERIPHERALS_TIMEOUT;
 	if (laser.diagnostics == true) {
 	  SERIAL_ECHO_START;
 	  SERIAL_ECHOLNPGM("POWER: Waiting for relay board AOK...");

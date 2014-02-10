@@ -396,8 +396,8 @@
       #define LASER_FIRING_PIN	5
 	#endif // BUILDLOG
 	#ifdef LASER_PERIPHERALS
-      #define LASER_ACC_PIN       4
-	  #define LASER_AOK_PIN		  11
+      #define LASER_PERIPHERALS_PIN       4
+	  #define LASER_PERIPHERALS_STATUS_PIN		  11
     #endif // LASER_PERIPHERALS
     #ifdef MUVE
       #define LASER_FIRING_PIN    9

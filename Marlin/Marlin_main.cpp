@@ -453,7 +453,7 @@ void setup()
   #endif
 
   #ifdef LASER
-  laser_setup();
+  laser_init();
   #endif
 }
 
@@ -919,23 +919,23 @@ void process_commands()
       if (code_seen('L')) laser.raster_raw_length = int(code_value());
 	  if (code_seen('N')) {
 		laser.raster_direction = (bool)code_value();
-		destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_dot * laser.raster_aspect_ratio); // increment Y axis
+		destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_pulse * laser.raster_aspect_ratio); // increment Y axis
 	  }
       if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
 	  if (laser.raster_direction == 0) {
-	    destination[X_AXIS] = current_position[X_AXIS] - (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	    destination[X_AXIS] = current_position[X_AXIS] - (laser.raster_mm_per_pulse * laser.raster_num_pixels);
 	    if (laser.diagnostics == true) {
           SERIAL_ECHO_START;
           SERIAL_ECHOLN("Negative Raster Line");
         }
 	  } else {
-	    destination[X_AXIS] = current_position[X_AXIS] + (laser.raster_mm_per_dot * laser.raster_num_pixels);
+	    destination[X_AXIS] = current_position[X_AXIS] + (laser.raster_mm_per_pulse * laser.raster_num_pixels);
 	    if (laser.diagnostics == true) {
           SERIAL_ECHO_START;
           SERIAL_ECHOLN("Positive Raster Line");
         }
 	  }
-	  laser.ppm = 1 / laser.raster_mm_per_dot;
+	  laser.ppm = 1 / laser.raster_mm_per_pulse;
 	  laser.duration = labs(1 / (feedrate * laser.ppm) * 1000000);
 	  laser.mode = LASER_RASTER;
 	  laser.status = LASER_ON;
