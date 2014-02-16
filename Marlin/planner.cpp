@@ -687,6 +687,13 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
       block->steps_l = 0;
     }
     block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, max(block->steps_e, block->steps_l))));
+
+    if (laser.diagnostics) {
+		if (block->laser_status == LASER_ON) {
+		  SERIAL_ECHO_START;
+	      SERIAL_ECHOLNPGM("Laser firing enabled");
+	    }
+    }
   #endif // LASER
 
   float inverse_millimeters = 1.0/block->millimeters;  // Inverse millimeters to remove multiple divides
