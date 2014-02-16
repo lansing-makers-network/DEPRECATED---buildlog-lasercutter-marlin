@@ -76,6 +76,7 @@ const char echomagic[] PROGMEM ="echo:";
 
 void serial_echopair_P(const char *s_P, float v);
 void serial_echopair_P(const char *s_P, double v);
+void serial_echopair_P(const char *s_P, long v);
 void serial_echopair_P(const char *s_P, unsigned long v);
 
 
