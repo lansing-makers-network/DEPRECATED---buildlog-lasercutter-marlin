@@ -99,27 +99,29 @@ bool laser_peripherals_ok(){
 }
 void laser_peripherals_on(){
 	digitalWrite(LASER_PERIPHERALS_PIN, LOW);
-	if (laser.diagnostics == true) {
+	if (laser.diagnostics) {
 	  SERIAL_ECHO_START;
 	  SERIAL_ECHOLNPGM("POWER: Laser Peripherals Enabled");
     }
 }
 void laser_peripherals_off(){
-	digitalWrite(LASER_PERIPHERALS_PIN, HIGH);
-	if (laser.diagnostics == true) {
-	  SERIAL_ECHO_START;
-	  SERIAL_ECHOLNPGM("POWER: Laser Peripherals Disabled");
+	if (!digitalRead(LASER_PERIPHERALS_STATUS_PIN)) {
+	  digitalWrite(LASER_PERIPHERALS_PIN, HIGH);
+	  if (laser.diagnostics) {
+	    SERIAL_ECHO_START;
+	    SERIAL_ECHOLNPGM("POWER: Laser Peripherals Disabled");
+      }
     }
 }
 void laser_wait_for_peripherals() {
 	unsigned long timeout = millis() + LASER_PERIPHERALS_TIMEOUT;
-	if (laser.diagnostics == true) {
+	if (laser.diagnostics) {
 	  SERIAL_ECHO_START;
 	  SERIAL_ECHOLNPGM("POWER: Waiting for relay board AOK...");
 	}
 	while(!laser_peripherals_ok()) {
 		if (millis() > timeout) {
-			if (laser.diagnostics == true) {
+			if (laser.diagnostics) {
 			  SERIAL_ERROR_START;
 			  SERIAL_ERRORLNPGM("Power supply failed to indicate AOK");
 			}

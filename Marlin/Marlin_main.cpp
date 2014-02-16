@@ -922,15 +922,15 @@ void process_commands()
 		destination[Y_AXIS] = current_position[Y_AXIS] + (laser.raster_mm_per_pulse * laser.raster_aspect_ratio); // increment Y axis
 	  }
       if (code_seen('D')) laser.raster_num_pixels = base64_decode(laser.raster_data, &cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], laser.raster_raw_length);
-	  if (laser.raster_direction == 0) {
+	  if (!laser.raster_direction) {
 	    destination[X_AXIS] = current_position[X_AXIS] - (laser.raster_mm_per_pulse * laser.raster_num_pixels);
-	    if (laser.diagnostics == true) {
+	    if (laser.diagnostics) {
           SERIAL_ECHO_START;
           SERIAL_ECHOLN("Negative Raster Line");
         }
 	  } else {
 	    destination[X_AXIS] = current_position[X_AXIS] + (laser.raster_mm_per_pulse * laser.raster_num_pixels);
-	    if (laser.diagnostics == true) {
+	    if (laser.diagnostics) {
           SERIAL_ECHO_START;
           SERIAL_ECHOLN("Positive Raster Line");
         }

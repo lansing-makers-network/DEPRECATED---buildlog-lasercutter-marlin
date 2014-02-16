@@ -652,7 +652,7 @@ ISR(TIMER1_COMPA_vect)
 		  	  laser_fire(current_block->laser_intensity);
 			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
 			  laser_fire(current_block->laser_raster_data[counter_raster]/255.0*100.0);
-			  if (laser.diagnostics == true) {
+			  if (laser.diagnostics) {
 			    SERIAL_ECHO("Pixel: ");
 			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[counter_raster]));
 		      }
