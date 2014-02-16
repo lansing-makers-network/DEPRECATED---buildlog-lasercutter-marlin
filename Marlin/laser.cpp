@@ -94,9 +94,9 @@ void laser_extinguish(){
 	if (digitalRead(LASER_FIRING_PIN) == HIGH) {
 	  digitalWrite(LASER_FIRING_PIN, LOW);
 	  laser.time += millis() - (laser.last_firing / 1000);
-	}
-	if (laser.diagnostics) {
-	  SERIAL_ECHOLN("Laser extinguished");
+	  if (laser.diagnostics) {
+	    SERIAL_ECHOLN("Laser extinguished");
+	  }
 	}
 }
 #ifdef LASER_PERIPHERALS
