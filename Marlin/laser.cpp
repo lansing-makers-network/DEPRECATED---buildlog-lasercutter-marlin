@@ -87,7 +87,7 @@ void laser_fire(int intensity = 100.0){
       analogWrite(LASER_FIRING_PIN, (intensity / 100.0)*255);
     #endif // LASER_INTENSITY_PIN
     if (laser.diagnostics) {
-	  SERIAL_ECHO("Laser fired");
+	  SERIAL_ECHOLN("Laser fired");
 	}
 }
 void laser_extinguish(){
@@ -96,7 +96,7 @@ void laser_extinguish(){
 	  laser.time += millis() - (laser.last_firing / 1000);
 	}
 	if (laser.diagnostics) {
-	  SERIAL_ECHO("Laser extinguished");
+	  SERIAL_ECHOLN("Laser extinguished");
 	}
 }
 #ifdef LASER_PERIPHERALS

@@ -100,7 +100,7 @@
 
 // Raster mode enables the laser to etch bitmap data at high speeds.  Increases command buffer size substantially.
 #define LASER_RASTER
-#define LASER_MAX_RASTER_LINE 60 // maximum number of base64 encoded pixels per raster gcode command
+#define LASER_MAX_RASTER_LINE 68 // maximum number of base64 encoded pixels per raster gcode command
 #define LASER_RASTER_ASPECT_RATIO 1.33 // pixels aren't square on most displays, 1.33 == 4:3 aspect ratio
 #define LASER_RASTER_MM_PER_PULSE 0.2
 
