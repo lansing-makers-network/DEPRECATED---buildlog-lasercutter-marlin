@@ -107,7 +107,7 @@ void laser_peripherals_on(){
 	digitalWrite(LASER_PERIPHERALS_PIN, LOW);
 	if (laser.diagnostics) {
 	  SERIAL_ECHO_START;
-	  SERIAL_ECHOLNPGM("POWER: Laser Peripherals Enabled");
+	  SERIAL_ECHOLNPGM("Laser Peripherals Enabled");
     }
 }
 void laser_peripherals_off(){
@@ -115,7 +115,7 @@ void laser_peripherals_off(){
 	  digitalWrite(LASER_PERIPHERALS_PIN, HIGH);
 	  if (laser.diagnostics) {
 	    SERIAL_ECHO_START;
-	    SERIAL_ECHOLNPGM("POWER: Laser Peripherals Disabled");
+	    SERIAL_ECHOLNPGM("Laser Peripherals Disabled");
       }
     }
 }
@@ -123,13 +123,13 @@ void laser_wait_for_peripherals() {
 	unsigned long timeout = millis() + LASER_PERIPHERALS_TIMEOUT;
 	if (laser.diagnostics) {
 	  SERIAL_ECHO_START;
-	  SERIAL_ECHOLNPGM("POWER: Waiting for relay board AOK...");
+	  SERIAL_ECHOLNPGM("Waiting for peripheral control board signal...");
 	}
 	while(!laser_peripherals_ok()) {
 		if (millis() > timeout) {
 			if (laser.diagnostics) {
 			  SERIAL_ERROR_START;
-			  SERIAL_ERRORLNPGM("Power supply failed to indicate AOK");
+			  SERIAL_ERRORLNPGM("Peripheral control board failed to respond");
 			}
 			Stop();
 			break;
