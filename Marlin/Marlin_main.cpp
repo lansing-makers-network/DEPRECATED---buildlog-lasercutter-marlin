@@ -1194,23 +1194,13 @@ void process_commands()
 #endif
 #ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
-      #ifdef LASER_INTENSITY_PIN
-      if (code_seen('S') && (!IsStopped())) {
+      if (code_seen('S') && !IsStopped()) {
     	laser.intensity = code_value();
 	  } else {
 		laser.intensity = 100.0;
 	  }
-	  #endif // LASER_INTENSITY_PIN
-      if (code_seen('P') && (!IsStopped())) {
-    	laser.duration = (unsigned long)labs(code_value());
-      } else {
-		laser.duration = 0;
-	  }
-      if (code_seen('Q') && (!IsStopped())) {
-        laser.ppm = code_value();
-      } else {
-		laser.ppm = 0;
-	  }
+      if (code_seen('D') && !IsStopped()) laser.duration = (unsigned long)labs(code_value());
+      if (code_seen('P') && !IsStopped()) laser.ppm = code_value();
 
       laser.status = LASER_ON;
 
@@ -2271,37 +2261,35 @@ void process_commands()
     break;
     #endif //DUAL_X_CARRIAGE
 
+	#ifdef LASER
+	case 649: // M649 set laser options
+	{
+	  if(code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
+      if(code_seen('D') && !IsStopped()) laser.duration = (unsigned long) code_value();
+      if(code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
+	}
+	break;
+	#endif // LASER
+
     #ifdef MUVE_Z_PEEL
     case 650: // M650 set peel distance
     {
       st_synchronize();
-      if(code_seen('D')) laser.peel_distance = (float) code_value();
-      else {
-          laser.peel_distance=2.0;
-        }
-
-      if(code_seen('S')) laser.peel_speed = (float) code_value();
-      else {
-          laser.peel_speed=2.0;
-        }
-
-      if(code_seen('P')) laser.peel_pause = (float) code_value();
-      else {
-          laser.peel_pause=0.0;
-        }
-
-      if(code_seen('L')) laser.intensity = (float) code_value();
-      else {
-          laser.intensity=100.0;
-        }
-      if(code_seen('Q')) laser.ppm = (float) code_value();
-      else {
-		  laser.ppm=10.0;
-		}
-	  if(code_seen('C')) laser.duration = (unsigned long) code_value();
-	  else {
-		  laser.duration=3000;
-		}
+      if(code_seen('D')){
+		laser.peel_distance = (float) code_value();
+      } else {
+        laser.peel_distance=2.0;
+      }
+      if(code_seen('S')){
+		laser.peel_speed = (float) code_value();
+      } else {
+        laser.peel_speed=2.0;
+      }
+      if(code_seen('P')){
+		laser.peel_pause = (float) code_value();
+      } else {
+        laser.peel_pause=0.0;
+      }
     }
     break;
 
