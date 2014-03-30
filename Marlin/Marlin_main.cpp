@@ -1195,12 +1195,13 @@ void process_commands()
 #ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
       if (code_seen('S') && !IsStopped()) {
-    	laser.intensity = code_value();
+    	laser.intensity = (float) code_value();
 	  } else {
 		laser.intensity = 100.0;
 	  }
-      if (code_seen('D') && !IsStopped()) laser.duration = (unsigned long)labs(code_value());
-      if (code_seen('P') && !IsStopped()) laser.ppm = code_value();
+      if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long)labs(code_value());
+      if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
+      if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
 
       laser.status = LASER_ON;
 
@@ -2264,9 +2265,10 @@ void process_commands()
 	#ifdef LASER
 	case 649: // M649 set laser options
 	{
-	  if(code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
-      if(code_seen('D') && !IsStopped()) laser.duration = (unsigned long) code_value();
-      if(code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
+	  if (code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
+      if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long) code_value();
+      if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
+      if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
 	}
 	break;
 	#endif // LASER
