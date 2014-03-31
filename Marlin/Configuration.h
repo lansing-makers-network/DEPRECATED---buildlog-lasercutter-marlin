@@ -99,7 +99,7 @@
 #define LASER_PERIPHERALS
 #define LASER_PERIPHERALS_TIMEOUT 30000  // Number of milliseconds to wait for status signal from peripheral control board
 
-// Uncomment these options for the mUVe1 3D printer
+// Uncomment these options for the mUVe 1 3D printer
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_WATTS 0.05
 // #define LASER_DIAMETER 0.1 // milimeters
