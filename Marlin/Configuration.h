@@ -76,7 +76,6 @@
 //
 // Laser control is used by the Muve1 3D printer and the Buildlog.net laser cutter
 //
-
 #define LASER
 
 //// The following define selects how to control the laser.  Please choose the one that matches your setup.
@@ -84,13 +83,28 @@
 // 2 = Two pin control - A firing pin which is LOW when off, HIGH when on, and a separate intensity pin which carries a PWM signal for intensity
 #define LASER_CONTROL 2
 
+//// The following define selects which G codes tell the laser to fire.  It's OK to uncomment more than one.
+#define LASER_FIRE_G1 // fire the laser on a G1 move, extinguish the laser on G0
+#define LASER_FIRE_SPINDLE // fire the laser on M3, extinguish on M5
+// #define LASER_FIRE_E // fire the laser when the E axis moves.  warning: enabling this option may cause the other firing modes to misbehave
+
+//// Raster mode enables the laser to etch bitmap data at high speeds.  Increases command buffer size substantially.
+#define LASER_RASTER
+#define LASER_MAX_RASTER_LINE 68 // maximum number of base64 encoded pixels per raster gcode command
+#define LASER_RASTER_ASPECT_RATIO 1.33 // pixels aren't square on most displays, 1.33 == 4:3 aspect ratio
+#define LASER_RASTER_MM_PER_PULSE 0.2
+
+//// Uncomment the following if the laser cutter is equipped with a peripheral relay board
+//// to control power to an exhaust fan, water pump, laser power supply, etc.
+#define LASER_PERIPHERALS
+#define LASER_PERIPHERALS_TIMEOUT 30000  // Number of milliseconds to wait for status signal from peripheral control board
+
 // Uncomment these options for the mUVe1 3D printer
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_WATTS 0.05
 // #define LASER_DIAMETER 0.1 // milimeters
 // #define LASER_PWM 8000 // hertz
 // #define MUVE_Z_PEEL
-// #define LASER_FIRE_E // fire the laser when the E axis moves.  warning: enabling this option may cause the other firing modes to misbehave
 
 // Uncomment these options for the Buildlog.net laser cutter, and other similar models
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
@@ -98,18 +112,6 @@
 #define LASER_DIAMETER 0.1 // milimeters
 #define LASER_PWM 25000 // hertz
 #define LASER_FOCAL_HEIGHT 91.67 // z axis position at which the laser is focused
-#define LASER_FIRE_G1 // fire the laser on a G1 move, extinguish the laser on G0
-#define LASER_FIRE_SPINDLE // fire the laser on M3, extinguish on M5
-
-// Raster mode enables the laser to etch bitmap data at high speeds.  Increases command buffer size substantially.
-#define LASER_RASTER
-#define LASER_MAX_RASTER_LINE 68 // maximum number of base64 encoded pixels per raster gcode command
-#define LASER_RASTER_ASPECT_RATIO 1.33 // pixels aren't square on most displays, 1.33 == 4:3 aspect ratio
-#define LASER_RASTER_MM_PER_PULSE 0.2
-
-// Uncomment this if the laser cutter is equipped with a peripheral control board
-#define LASER_PERIPHERALS
-#define LASER_PERIPHERALS_TIMEOUT 30000  // Number of milliseconds to wait for status signal from peripheral control board
 
 //===========================================================================
 //=============================Thermal Settings  ============================
