@@ -79,8 +79,12 @@
 
 #define LASER
 
+//// The following define selects how to control the laser.  Please choose the one that matches your setup.
+// 1 = Single pin control - LOW when off, HIGH when on, PWM to adjust intensity
+// 2 = Two pin control - A firing pin which is LOW when off, HIGH when on, and a separate intensity pin which carries a PWM signal for intensity
+#define LASER_CONTROL 2
+
 // Uncomment these options for the mUVe1 3D printer
-// #define MUVE // single pin for firing and intensity control
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_WATTS 0.05
 // #define LASER_DIAMETER 0.1 // milimeters
@@ -89,7 +93,6 @@
 // #define LASER_FIRE_E // fire the laser when the E axis moves.  warning: enabling this option may cause the other firing modes to misbehave
 
 // Uncomment these options for the Buildlog.net laser cutter, and other similar models
-#define BUILDLOG // seperate pins for laser firing and intensity control
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
 #define LASER_WATTS 40.0
 #define LASER_DIAMETER 0.1 // milimeters

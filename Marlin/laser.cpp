@@ -31,7 +31,7 @@ void laser_init()
 {
   pinMode(LASER_FIRING_PIN, OUTPUT);
 
-  #ifdef LASER_INTENSITY_PIN
+  #if LASER_CONTROL == 2
     pinMode(LASER_INTENSITY_PIN, OUTPUT);
     analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
 
@@ -47,7 +47,7 @@ void laser_init()
     ICR4 = labs(F_CPU / LASER_PWM); // set new PWM period
     TCCR4B |= 0x01; // start the timer with proper prescaler value
     interrupts();
-  #endif // LASER_INTENSITY_PIN
+  #endif
 
   #ifdef LASER_PERIPHERALS
   digitalWrite(LASER_PERIPHERALS_PIN, HIGH);  // Laser peripherals are active LOW, so preset the pin
@@ -81,12 +81,14 @@ void laser_fire(int intensity = 100.0){
 	laser.last_firing = micros(); // microseconds of last laser firing
 	if (intensity > 100.0) intensity = 100.0; // restrict intensity between 0 and 100
 	if (intensity < 0) intensity = 0;
-	#ifdef LASER_INTENSITY_PIN
+	#if LASER_CONTROL == 1
+	      analogWrite(LASER_FIRING_PIN, (intensity / 100.0)*255);
+    #endif
+	#if LASER_CONTROL == 2
       analogWrite(LASER_INTENSITY_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
       digitalWrite(LASER_FIRING_PIN, HIGH);
-    #else
-      analogWrite(LASER_FIRING_PIN, (intensity / 100.0)*255);
-    #endif // LASER_INTENSITY_PIN
+    #endif
+
     if (laser.diagnostics) {
 	  SERIAL_ECHOLN("Laser fired");
 	}

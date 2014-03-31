@@ -391,17 +391,17 @@
     #define SDSS               53
     #define LED_PIN            13
 
-    #ifdef BUILDLOG
+	#if LASER_CONTROL == 1
+      #define LASER_FIRING_PIN    9
+    #endif
+	#if LASER_CONTROL == 2
       #define LASER_INTENSITY_PIN 6
       #define LASER_FIRING_PIN	5
-	#endif // BUILDLOG
+	#endif
 	#ifdef LASER_PERIPHERALS
       #define LASER_PERIPHERALS_PIN       4
 	  #define LASER_PERIPHERALS_STATUS_PIN		  11
     #endif // LASER_PERIPHERALS
-    #ifdef MUVE
-      #define LASER_FIRING_PIN    9
-    #endif // MUVE
 
   #endif
 
