@@ -84,7 +84,7 @@
 #define LASER_CONTROL 2
 
 //// The following defines select which G codes tell the laser to fire.  It's OK to uncomment more than one.
-#define LASER_FIRE_G1 10 // fire the laser on a G1 move, extinguish the laser on G0
+#define LASER_FIRE_G1 10 // fire the laser on a G1 move, extinguish when the move ends
 #define LASER_FIRE_SPINDLE 11 // fire the laser on M3, extinguish on M5
 #define LASER_FIRE_E 12 // fire the laser when the E axis moves
 
