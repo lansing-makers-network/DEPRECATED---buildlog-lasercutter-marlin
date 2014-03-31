@@ -104,7 +104,7 @@
 // #define LASER_WATTS 0.05
 // #define LASER_DIAMETER 0.1 // milimeters
 // #define LASER_PWM 8000 // hertz
-// #define MUVE_Z_PEEL
+// #define MUVE_Z_PEEL // The mUVe 1 uses a special peel maneuver between each layer, it requires independent control of each Z motor
 
 // Uncomment these options for the Buildlog.net laser cutter, and other similar models
 #define CUSTOM_MENDEL_NAME "Laser Cutter"
