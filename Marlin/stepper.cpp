@@ -650,9 +650,11 @@ ISR(TIMER1_COMPA_vect)
 		  if (counter_l > 0) {
 			if (current_block->laser_mode == LASER_PULSED && current_block->laser_status == LASER_ON) { // Pulsed Firing Mode
 		  	  laser_fire(current_block->laser_intensity);
-		  	  SERIAL_ECHOPAIR("X: ", counter_x);
-		  	  SERIAL_ECHOPAIR("Y: ", counter_y);
-		  	  SERIAL_ECHOPAIR("L: ", counter_l);
+		  	  if (laser.diagnostics) {
+		  	    SERIAL_ECHOPAIR("X: ", counter_x);
+		  	    SERIAL_ECHOPAIR("Y: ", counter_y);
+		  	    SERIAL_ECHOPAIR("L: ", counter_l);
+			  }
 			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
 			  laser_fire(current_block->laser_raster_data[counter_raster]/255.0*100.0);
 			  if (laser.diagnostics) {
