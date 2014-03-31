@@ -24,6 +24,7 @@
 #include "Configuration.h"
 
 typedef struct {
+  int fired; // method used to ask the laser to fire - LASER_FIRE_G1, LASER_FIRE_SPINDLE, LASER_FIRE_E, etc
   float intensity; // Laser firing instensity 0.0 - 100.0
   float ppm; // pulses per millimeter, for pulsed firing mode
   unsigned long duration; // laser firing duration in microseconds, for pulsed firing mode

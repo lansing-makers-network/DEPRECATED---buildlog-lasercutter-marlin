@@ -84,9 +84,9 @@
 #define LASER_CONTROL 2
 
 //// The following define selects which G codes tell the laser to fire.  It's OK to uncomment more than one.
-#define LASER_FIRE_G1 // fire the laser on a G1 move, extinguish the laser on G0
-#define LASER_FIRE_SPINDLE // fire the laser on M3, extinguish on M5
-// #define LASER_FIRE_E // fire the laser when the E axis moves.  warning: enabling this option may cause the other firing modes to misbehave
+#define LASER_FIRE_G1 10 // fire the laser on a G1 move, extinguish the laser on G0
+#define LASER_FIRE_SPINDLE 11 // fire the laser on M3, extinguish on M5
+#define LASER_FIRE_E 12 // fire the laser when the E axis moves
 
 //// Raster mode enables the laser to etch bitmap data at high speeds.  Increases command buffer size substantially.
 #define LASER_RASTER

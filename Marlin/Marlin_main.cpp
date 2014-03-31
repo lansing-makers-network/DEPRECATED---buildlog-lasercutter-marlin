@@ -886,6 +886,7 @@ void process_commands()
           if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
 
           laser.status = LASER_ON;
+          laser.fired = LASER_FIRE_G1;
         #endif // LASER_FIRE_G1
 
         prepare_move();
@@ -950,6 +951,7 @@ void process_commands()
 	  laser.duration = labs(1 / (feedrate * laser.ppm) * 1000000);
 	  laser.mode = LASER_RASTER;
 	  laser.status = LASER_ON;
+	  laser.fired = LASER_RASTER;
 	  prepare_move();
 
       break;
@@ -1213,6 +1215,7 @@ void process_commands()
       if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
 
       laser.status = LASER_ON;
+      laser.fired = LASER_FIRE_SPINDLE;
 
       break;
     case 5:  //M5 stop firing laser
@@ -2705,7 +2708,9 @@ void prepare_move()
   #ifdef LASER_FIRE_E
   if (current_position[E_AXIS] != destination[E_AXIS] && ((current_position[X_AXIS] != destination [X_AXIS]) || (current_position[Y_AXIS] != destination [Y_AXIS]))){
 	laser.status = LASER_ON;
-  } else {
+	laser.fired = LASER_FIRE_E;
+  }
+  if (current_position[E_AXIS] == destination[E_AXIS] && laser.fired == LASER_FIRE_E){
     laser.status = LASER_OFF;
   }
   #endif // LASER_FIRE_E
