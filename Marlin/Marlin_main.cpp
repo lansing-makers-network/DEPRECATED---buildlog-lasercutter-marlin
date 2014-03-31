@@ -2703,15 +2703,15 @@ void prepare_move()
 #endif //DUAL_X_CARRIAGE
 
   #ifdef LASER_FIRE_E
-  if (current_position[E_AXIS] != destination[E_AXIS]){
+  if (current_position[E_AXIS] != destination[E_AXIS] && ((current_position[X_AXIS] != destination [X_AXIS]) || (current_position[Y_AXIS] != destination [Y_AXIS]))){
 	laser.status = LASER_ON;
   } else {
     laser.status = LASER_OFF;
   }
-  #endif
+  #endif // LASER_FIRE_E
 
   // Do not use feedmultiply for E or Z only moves
-  if( (current_position[X_AXIS] == destination [X_AXIS]) && (current_position[Y_AXIS] == destination [Y_AXIS])) {
+  if((current_position[X_AXIS] == destination [X_AXIS]) && (current_position[Y_AXIS] == destination [Y_AXIS])) {
       #ifdef MUVE_Z_PEEL
         plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[Z_AXIS], feedrate/60, active_extruder);
         current_position[E_AXIS] = current_position[Z_AXIS];
