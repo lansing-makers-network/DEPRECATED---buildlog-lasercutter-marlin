@@ -80,7 +80,7 @@
 
 //// The following define selects how to control the laser.  Please choose the one that matches your setup.
 // 1 = Single pin control - LOW when off, HIGH when on, PWM to adjust intensity
-// 2 = Two pin control - A firing pin which is LOW when off, HIGH when on, and a separate intensity pin which carries a PWM signal for intensity
+// 2 = Two pin control - A firing pin for which LOW = off, HIGH = on, and a separate intensity pin which carries a constant PWM signal and adjusts duty cycle to control intensity
 #define LASER_CONTROL 2
 
 //// The following define selects which G codes tell the laser to fire.  It's OK to uncomment more than one.
