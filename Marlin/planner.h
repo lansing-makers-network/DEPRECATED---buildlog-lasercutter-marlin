@@ -69,7 +69,7 @@ typedef struct {
     unsigned long e_to_p_pressure;
   #endif // BARICUDA
   #ifdef LASER
-	uint8_t laser_mode; // LASER_CONTINUOUS, LASER_PULSED, LASER_RASTER
+	uint8_t laser_mode; // CONTINUOUS, PULSED, RASTER
 	bool laser_status; // LASER_OFF, LASER_ON
     float laser_ppm; // pulses per millimeter, for pulsed and raster firing modes
     unsigned long laser_duration; // laser firing duration in microseconds, for pulsed and raster firing modes

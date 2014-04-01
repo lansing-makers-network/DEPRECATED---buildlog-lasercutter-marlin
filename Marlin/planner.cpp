@@ -681,7 +681,7 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
     block->laser_duration = laser.duration;
     block->laser_status = laser.status;
     block->laser_mode = laser.mode;
-    if (laser.mode == LASER_PULSED or laser.mode == LASER_RASTER) {
+    if (laser.mode == PULSED or laser.mode == RASTER) {
       block->steps_l = labs(block->millimeters*laser.ppm);
     } else {
       block->steps_l = 0;

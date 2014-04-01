@@ -29,7 +29,7 @@ typedef struct {
   float ppm; // pulses per millimeter, for pulsed firing mode
   unsigned long duration; // laser firing duration in microseconds, for pulsed firing mode
   bool status; // LASER_ON / LASER_OFF
-  uint8_t mode; // LASER_CONTINUOUS, LASER_PULSED, LASER_RASTER
+  uint8_t mode; // CONTINUOUS, PULSED, RASTER
   unsigned long last_firing; // microseconds since last laser firing
   bool diagnostics; // Verbose debugging output over serial
   unsigned int time; // temporary counter to limit eeprom writes
@@ -66,8 +66,8 @@ void laser_update_lifetime();
 #define LASER_OFF 0
 #define LASER_ON 1
 
-#define LASER_CONTINUOUS 0
-#define LASER_PULSED 1
-#define LASER_RASTER 2
+#define CONTINUOUS 0
+#define PULSED 1
+#define RASTER 2
 
 #endif // LASER_H

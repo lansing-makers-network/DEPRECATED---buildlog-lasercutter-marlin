@@ -62,7 +62,7 @@ void laser_init()
   laser.ppm = 0.0;
   laser.duration = 0;
   laser.status = LASER_OFF;
-  laser.mode = LASER_CONTINUOUS;
+  laser.mode = CONTINUOUS;
   laser.last_firing = 0;
   laser.diagnostics = false;
   laser.time = 0;

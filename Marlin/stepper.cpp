@@ -350,7 +350,7 @@ ISR(TIMER1_COMPA_vect)
       #endif
 
       #ifdef LASER_RASTER
-        if (current_block->laser_mode == LASER_RASTER) {
+        if (current_block->laser_mode == RASTER) {
 			counter_raster = 0;
 		}
 	  #endif // LASER_RASTER
@@ -370,7 +370,7 @@ ISR(TIMER1_COMPA_vect)
 
 	// Continuous firing of the laser during a move happens here, PPM and raster happen further down
 	#ifdef LASER
-	if (current_block->laser_mode == LASER_CONTINUOUS && current_block->laser_status == LASER_ON) {
+	if (current_block->laser_mode == CONTINUOUS && current_block->laser_status == LASER_ON) {
 	  laser_fire(current_block->laser_intensity);
     }
     if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= current_block->laser_duration) {
@@ -654,14 +654,16 @@ ISR(TIMER1_COMPA_vect)
       #ifdef LASER
 		counter_l += current_block->steps_l;
 		  if (counter_l > 0) {
-			if (current_block->laser_mode == LASER_PULSED && current_block->laser_status == LASER_ON) { // Pulsed Firing Mode
+			if (current_block->laser_mode == PULSED && current_block->laser_status == LASER_ON) { // Pulsed Firing Mode
 		  	  laser_fire(current_block->laser_intensity);
 		  	  if (laser.diagnostics) {
 		  	    SERIAL_ECHOPAIR("X: ", counter_x);
 		  	    SERIAL_ECHOPAIR("Y: ", counter_y);
 		  	    SERIAL_ECHOPAIR("L: ", counter_l);
 			  }
-			} else if (current_block->laser_mode == LASER_RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
+			}
+			#ifdef LASER_RASTER
+			if (current_block->laser_mode == RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
 			  laser_fire(current_block->laser_raster_data[counter_raster]/255.0*100.0);
 			  if (laser.diagnostics) {
 			    SERIAL_ECHO("Pixel: ");
@@ -669,6 +671,7 @@ ISR(TIMER1_COMPA_vect)
 		      }
 		      counter_raster++;
 			}
+			#endif // LASER_RASTER
 		  counter_l -= current_block->step_event_count;
 		  }
 		  if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= current_block->laser_duration) {
