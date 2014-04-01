@@ -338,6 +338,9 @@ ISR(TIMER1_COMPA_vect)
       #ifdef Z_LATE_ENABLE
         if(current_block->steps_z > 0) {
           enable_z();
+          #ifdef MUVE
+            enable_e();
+          #endif //MUVE
           OCR1A = 2000; //1ms wait
           return;
         }
