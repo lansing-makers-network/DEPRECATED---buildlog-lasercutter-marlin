@@ -333,6 +333,9 @@ ISR(TIMER1_COMPA_vect)
       counter_y = counter_x;
       counter_z = counter_x;
       counter_e = counter_x;
+      #ifdef LASER
+      counter_l = counter_x;
+      #endif //LASER
       step_events_completed = 0;
 
       #ifdef Z_LATE_ENABLE
