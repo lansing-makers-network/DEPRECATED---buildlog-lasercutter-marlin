@@ -881,8 +881,8 @@ void process_commands()
 	      } else {
 		    laser.intensity = 100.0;
 	      }
-          if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long)labs(code_value());
-          if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
+          if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
+          if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
           if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
 
           laser.status = LASER_ON;
@@ -1210,8 +1210,8 @@ void process_commands()
 	  } else {
 		laser.intensity = 100.0;
 	  }
-      if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long)labs(code_value());
-      if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
+      if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
+      if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
       if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
 
       laser.status = LASER_ON;
@@ -2278,8 +2278,8 @@ void process_commands()
 	case 649: // M649 set laser options
 	{
 	  if (code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
-      if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long) code_value();
-      if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
+      if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
+      if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
       if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
 	}
 	break;
