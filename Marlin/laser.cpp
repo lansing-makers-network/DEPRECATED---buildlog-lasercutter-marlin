@@ -62,6 +62,7 @@ void laser_init()
   laser.ppm = 0.0;
   laser.duration = 0;
   laser.status = LASER_OFF;
+  laser.firing = LASER_OFF;
   laser.mode = CONTINUOUS;
   laser.last_firing = 0;
   laser.diagnostics = false;
@@ -78,6 +79,7 @@ void laser_init()
   #endif // MUVE_Z_PEEL
 }
 void laser_fire(int intensity = 100.0){
+	laser.firing = LASER_ON;
 	laser.last_firing = micros(); // microseconds of last laser firing
 	if (intensity > 100.0) intensity = 100.0; // restrict intensity between 0 and 100
 	if (intensity < 0) intensity = 0;
@@ -94,7 +96,8 @@ void laser_fire(int intensity = 100.0){
 	}
 }
 void laser_extinguish(){
-	if (digitalRead(LASER_FIRING_PIN) == HIGH) {
+	if (laser.firing == LASER_ON) {
+	  laser.firing = LASER_OFF;
 	  digitalWrite(LASER_FIRING_PIN, LOW);
 	  laser.time += millis() - (laser.last_firing / 1000);
 	  if (laser.diagnostics) {
