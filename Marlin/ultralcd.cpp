@@ -469,6 +469,30 @@ static void lcd_move_y()
 }
 static void lcd_move_z()
 {
+  #ifdef MUVE_Z_PEEL
+    if (encoderPosition != 0)
+    {
+        current_position[Z_AXIS] += float((int)encoderPosition) * move_menu_scale;
+        if (min_software_endstops && current_position[Z_AXIS] < Z_MIN_POS)
+            current_position[Z_AXIS] = Z_MIN_POS;
+        if (max_software_endstops && current_position[Z_AXIS] > Z_MAX_POS)
+            current_position[Z_AXIS] = Z_MAX_POS;
+        encoderPosition = 0;
+        plan_buffer_line(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[Z_AXIS], manual_feedrate[Z_AXIS]/60, active_extruder);
+        lcdDrawUpdate = 1;
+    }
+    if (lcdDrawUpdate)
+    {
+        lcd_implementation_drawedit(PSTR("Z"), ftostr31(current_position[Z_AXIS]));
+    }
+    if (LCD_CLICKED)
+    {
+        lcd_quick_feedback();
+        currentMenu = lcd_move_menu_axis;
+        encoderPosition = 0;
+    }
+  
+  #else
     if (encoderPosition != 0)
     {
         current_position[Z_AXIS] += float((int)encoderPosition) * move_menu_scale;
@@ -495,6 +519,7 @@ static void lcd_move_z()
         currentMenu = lcd_move_menu_axis;
         encoderPosition = 0;
     }
+  #endif // MUVE_Z_PEEL
 }
 static void lcd_move_e()
 {

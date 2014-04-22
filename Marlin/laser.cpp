@@ -27,12 +27,26 @@
 
 laser_t laser;
 
-void laser_init()
-{
-  pinMode(LASER_FIRING_PIN, OUTPUT);
+void timer3_init() {
+	pinMode(LASER_FIRING_PIN, OUTPUT);
+    analogWrite(LASER_FIRING_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
 
-  #if LASER_CONTROL == 2
-    pinMode(LASER_INTENSITY_PIN, OUTPUT);
+    TCCR3B = 0x00;  // stop Timer4 clock for register updates
+    TCCR3A = 0x82; // Clear OC3A on match, fast PWM mode, lower WGM3x=14
+    ICR3 = labs(F_CPU / LASER_PWM); // clock cycles per PWM pulse
+    OCR3A = labs(F_CPU / LASER_PWM) - 1; // ICR3 - 1 force immediate compare on next tick
+    TCCR3B = 0x18 | 0x01; // upper WGM4x = 14, clock sel = prescaler, start running
+
+    noInterrupts();
+    TCCR3B &= 0xf8; // stop timer, OC3A may be active now
+    TCNT3 = labs(F_CPU / LASER_PWM); // force immediate compare on next tick
+    ICR3 = labs(F_CPU / LASER_PWM); // set new PWM period
+    TCCR3B |= 0x01; // start the timer with proper prescaler value
+    interrupts();
+}
+
+void timer4_init() {
+	pinMode(LASER_INTENSITY_PIN, OUTPUT);
     analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
 
     TCCR4B = 0x00;  // stop Timer4 clock for register updates
@@ -47,7 +61,19 @@ void laser_init()
     ICR4 = labs(F_CPU / LASER_PWM); // set new PWM period
     TCCR4B |= 0x01; // start the timer with proper prescaler value
     interrupts();
-  #endif
+}
+
+void laser_init()
+{
+  pinMode(LASER_FIRING_PIN, OUTPUT);
+  
+  #if LASER_CONTROL == 1
+	timer3_init();
+  #endif // LASER_CONTROL ==1
+  #if LASER_CONTROL == 2
+    timer3_init();
+    timer4_init();
+  #endif // LASER_CONTROL == 2
 
   #ifdef LASER_PERIPHERALS
   digitalWrite(LASER_PERIPHERALS_PIN, HIGH);  // Laser peripherals are active LOW, so preset the pin
@@ -84,7 +110,7 @@ void laser_fire(int intensity = 100.0){
 	if (intensity > 100.0) intensity = 100.0; // restrict intensity between 0 and 100
 	if (intensity < 0) intensity = 0;
 	#if LASER_CONTROL == 1
-	      analogWrite(LASER_FIRING_PIN, (intensity / 100.0)*255);
+	      analogWrite(LASER_FIRING_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
     #endif
 	#if LASER_CONTROL == 2
       analogWrite(LASER_INTENSITY_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
