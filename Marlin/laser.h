@@ -28,7 +28,8 @@ typedef struct {
   float intensity; // Laser firing instensity 0.0 - 100.0
   float ppm; // pulses per millimeter, for pulsed firing mode
   unsigned long duration; // laser firing duration in microseconds, for pulsed firing mode
-  bool status; // LASER_ON / LASER_OFF
+  bool status; // LASER_ON / LASER_OFF - buffered
+  bool firing; // LASER_ON / LASER_OFF - instantaneous
   uint8_t mode; // CONTINUOUS, PULSED, RASTER
   unsigned long last_firing; // microseconds since last laser firing
   bool diagnostics; // Verbose debugging output over serial
