@@ -2870,7 +2870,7 @@ void manage_inactivity()
   #endif
 
   #ifdef LASER
-  if (current_block->laser_duration > 0 && (micros() - laser.last_firing) >= current_block->laser_duration) {
+  if (current_block->laser_duration > 0 && (current_block->laser_duration + laser.last_firing < micros()) {
     laser_extinguish();
   }
   #endif // LASER
