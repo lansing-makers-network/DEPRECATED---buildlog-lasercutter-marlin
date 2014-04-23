@@ -83,6 +83,9 @@
 // 2 = Two pin control - A firing pin for which LOW = off, HIGH = on, and a separate intensity pin which carries a constant PWM signal and adjusts duty cycle to control intensity
 #define LASER_CONTROL 2
 
+//// Engage the pullup resistor on the laser firing pin when not in use
+#define LASER_PULLUP
+
 //// The following defines select which G codes tell the laser to fire.  It's OK to uncomment more than one.
 #define LASER_FIRE_G1 10 // fire the laser on a G1 move, extinguish when the move ends
 #define LASER_FIRE_SPINDLE 11 // fire the laser on M3, extinguish on M5

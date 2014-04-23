@@ -29,7 +29,8 @@ laser_t laser;
 
 void laser_init()
 {
-  pinMode(LASER_FIRING_PIN, OUTPUT);
+  // Engage the pullup resistor on the firing pin for TTL laser controllers which don't turn off entirely without it.
+  pinMode(LASER_FIRING_PIN, INPUT_PULLUP);
 
   #if LASER_CONTROL == 2
     pinMode(LASER_INTENSITY_PIN, OUTPUT);
@@ -83,6 +84,8 @@ void laser_fire(int intensity = 100.0){
 	laser.last_firing = micros(); // microseconds of last laser firing
 	if (intensity > 100.0) intensity = 100.0; // restrict intensity between 0 and 100
 	if (intensity < 0) intensity = 0;
+
+    pinMode(LASER_FIRING_PIN, OUTPUT);
 	#if LASER_CONTROL == 1
 	      analogWrite(LASER_FIRING_PIN, (intensity / 100.0)*255);
     #endif
@@ -98,8 +101,11 @@ void laser_fire(int intensity = 100.0){
 void laser_extinguish(){
 	if (laser.firing == LASER_ON) {
 	  laser.firing = LASER_OFF;
-	  digitalWrite(LASER_FIRING_PIN, LOW);
+
+	  // Engage the pullup resistor for TTL laser controllers which don't turn off entirely without it.
+	  pinMode(LASER_FIRING_PIN, INPUT_PULLUP);
 	  laser.time += millis() - (laser.last_firing / 1000);
+
 	  if (laser.diagnostics) {
 	    SERIAL_ECHOLN("Laser extinguished");
 	  }
