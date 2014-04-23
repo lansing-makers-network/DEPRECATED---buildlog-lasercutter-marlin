@@ -681,6 +681,10 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
     block->laser_duration = laser.duration;
     block->laser_status = laser.status;
     block->laser_mode = laser.mode;
+    
+    // When operating in PULSED or RASTER modes, laser pulsing must operate in sync with movement.
+    // Calculate steps between laser firings (steps_l) and consider that when determining largest
+    // interval between steps for X, Y, Z, E, L to feed to the motion control code.
     if (laser.mode == PULSED or laser.mode == RASTER) {
       block->steps_l = labs(block->millimeters*laser.ppm);
     } else {
