@@ -81,7 +81,7 @@ void laser_init()
   pinMode(LASER_PERIPHERALS_PIN, OUTPUT);
 
   digitalWrite(LASER_PERIPHERALS_STATUS_PIN, HIGH);  // Set the peripherals status pin to pull-up.
-  pinMode(LASER_PERIPHERALS_STATUS_PIN, INPUT_PULLUP);
+  pinMode(LASER_PERIPHERALS_STATUS_PIN, INPUT);
   #endif // LASER_PERIPHERALS
 
   // initialize state to some sane defaults
@@ -129,7 +129,7 @@ void laser_extinguish(){
 	  laser.firing = LASER_OFF;
 
 	  // Engage the pullup resistor for TTL laser controllers which don't turn off entirely without it.
-	  pinMode(LASER_FIRING_PIN, INPUT_PULLUP);
+	  pinMode(LASER_FIRING_PIN, INPUT);
 	  laser.time += millis() - (laser.last_firing / 1000);
 
 	  if (laser.diagnostics) {
