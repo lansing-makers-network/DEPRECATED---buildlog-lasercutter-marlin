@@ -76,6 +76,7 @@ static void lcd_sdcard_menu();
 	static void action_laser_test_20_100ms();
 	static void action_laser_test_100_50ms();
 	static void action_laser_test_100_100ms();
+	static void action_laser_test_warm();
 	static void action_laser_acc_on();
 	static void action_laser_acc_off();
 #endif
