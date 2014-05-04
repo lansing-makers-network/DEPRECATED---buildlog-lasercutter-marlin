@@ -876,15 +876,31 @@ void process_commands()
         get_coordinates(); // For X Y Z E F
 
         #ifdef LASER_FIRE_G1
-          if (code_seen('S') && !IsStopped()) {
+          if (code_seen('S') && !IsStopped()) 
+          {
     	    laser.intensity = (float) code_value();
-	      } else {
-		    laser.intensity = 100.0;
-	      }
-          if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
-          if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
-          if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
-
+	  } 
+          else 
+          {
+            if (laser.indensity == 0.0)
+            {
+               laser.intensity = 100.0;
+            }
+	  }
+          if (code_seen('L') && !IsStopped()) 
+          { 
+            laser.duration = (unsigned long)labs(code_value());
+            laser.mode = PULSED; 
+          }
+          if (code_seen('P') && !IsStopped()) 
+          { 
+            laser.ppm = (float) code_value(); 
+            laser.mode = PULSED; 
+          }
+          if (code_seen('D') && !IsStopped())
+          {
+            laser.diagnostics = (bool) code_value();
+          }
           laser.status = LASER_ON;
           laser.fired = LASER_FIRE_G1;
         #endif // LASER_FIRE_G1
