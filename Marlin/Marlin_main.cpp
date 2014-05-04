@@ -882,7 +882,7 @@ void process_commands()
 	  } 
           else 
           {
-            if (laser.indensity == 0.0)
+            if (laser.intensity == 0.0)
             {
                laser.intensity = 100.0;
             }
