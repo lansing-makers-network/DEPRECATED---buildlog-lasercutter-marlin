@@ -775,6 +775,7 @@ static void lcd_laser_test_fire_menu() {
 	MENU_ITEM(function, " 20% 100ms", action_laser_test_20_100ms);
 	MENU_ITEM(function, "100%  50ms", action_laser_test_100_50ms);
 	MENU_ITEM(function, "100% 100ms", action_laser_test_100_100ms);
+	MENU_ITEM(function, "Warm-up Laser 2sec", action_laser_test_warm);
 	END_MENU();
 }
 
@@ -801,6 +802,10 @@ static void action_laser_test_100_50ms() {
 
 static void action_laser_test_100_100ms() {
 	laser_test_fire(100, 100);
+}
+
+static void action_laser_test_warm() {
+	laser_test_fire(15, 2000);
 }
 
 static void laser_test_fire(uint8_t power, uint8_t dwell) {
