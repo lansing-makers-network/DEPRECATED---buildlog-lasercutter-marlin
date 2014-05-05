@@ -102,6 +102,9 @@
 #define LASER_PERIPHERALS
 #define LASER_PERIPHERALS_TIMEOUT 30000  // Number of milliseconds to wait for status signal from peripheral control board
 
+//// Uncomment the following line to enable cubic bezier curve movement with the G5 code
+// #define G5_BEZIER
+
 // Uncomment these options for the mUVe 1 3D printer
 // #define CUSTOM_MENDEL_NAME "mUVe1 Printer"
 // #define LASER_WATTS 0.05
@@ -114,7 +117,7 @@
 #define LASER_WATTS 40.0
 #define LASER_DIAMETER 0.1 // milimeters
 #define LASER_PWM 25000 // hertz
-#define LASER_FOCAL_HEIGHT 91.67 // z axis position at which the laser is focused
+#define LASER_FOCAL_HEIGHT 78.425 // z axis position at which the laser is focused
 
 //===========================================================================
 //=============================Thermal Settings  ============================
