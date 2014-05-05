@@ -143,6 +143,8 @@
 // M503 - print the current settings (from memory not from eeprom)
 // M540 - Use S[0|1] to enable or disable the stop SD card print on endstop hit (requires ABORT_ON_ENDSTOP_HIT_FEATURE_ENABLED)
 // M600 - Pause for filament change X[pos] Y[pos] Z[relative lift] E[initial retract] L[later retract distance for removal]
+// M649 - 
+// M650 - 
 // M666 - set delta endstop adjustemnt
 // M605 - Set dual x-carriage movement mode: S<mode> [ X<duplication x-offset> R<duplication temp offset> ]
 // M907 - Set digital trimpot motor current using axis codes.
@@ -876,11 +878,7 @@ void process_commands()
         get_coordinates(); // For X Y Z E F
 
         #ifdef LASER_FIRE_G1
-          if (code_seen('S') && !IsStopped()) {
-    	    laser.intensity = (float) code_value();
-	      } else {
-		    laser.intensity = 100.0;
-	      }
+          if (code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
           if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
           if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
           if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
@@ -926,6 +924,9 @@ void process_commands()
         lcd_update();
       }
       break;
+    case 5: // G5 bezier curve
+	  
+    break;
     #ifdef LASER_RASTER
     case 7: //G7 Execute raster line
       if (code_seen('L')) laser.raster_raw_length = int(code_value());
@@ -1205,11 +1206,7 @@ void process_commands()
 #endif
 #ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
-      if (code_seen('S') && !IsStopped()) {
-    	laser.intensity = (float) code_value();
-	  } else {
-		laser.intensity = 100.0;
-	  }
+      if (code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
       if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
       if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
       if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
@@ -2825,6 +2822,7 @@ void manage_inactivity()
 		    laser.time = 0;
 		    Config_StoreSettings();
 		  }
+		  laser_init();
 		#endif // LASER
 		#ifdef LASER_PERIPHERALS
             laser_peripherals_off();
@@ -2889,13 +2887,18 @@ void kill()
   disable_e0();
   disable_e1();
   disable_e2();
-#ifdef LASER_PERIPHERALS
-  laser_peripherals_off();
-#endif
 
-#if defined(PS_ON_PIN) && PS_ON_PIN > -1
-  pinMode(PS_ON_PIN,INPUT);
-#endif
+  #ifdef LASER
+    laser_init();
+  #endif // LASER
+  
+  #ifdef LASER_PERIPHERALS
+    laser_peripherals_off();
+  #endif // LASER_PERIPHERALS
+
+  #if defined(PS_ON_PIN) && PS_ON_PIN > -1
+    pinMode(PS_ON_PIN,INPUT);
+  #endif
   SERIAL_ERROR_START;
   SERIAL_ERRORLNPGM(MSG_ERR_KILLED);
   LCD_ALERTMESSAGEPGM(MSG_KILLED);
