@@ -137,6 +137,19 @@ void laser_extinguish(){
 	  }
 	}
 }
+void laser_set_mode(int mode){
+	switch(code_value()){
+		case 0:
+		  laser.mode = CONTINUOUS;
+		  return;
+		case 1:
+		  laser.mode = PULSED;
+		  return;
+		case 2:
+		  laser.mode = RASTER;
+		  return;
+	}
+}
 #ifdef LASER_PERIPHERALS
 bool laser_peripherals_ok(){
 	return !digitalRead(LASER_PERIPHERALS_STATUS_PIN);

@@ -879,10 +879,11 @@ void process_commands()
 
         #ifdef LASER_FIRE_G1
           if (code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
-          if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
-          if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
+          if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long) labs(code_value());
+          if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
           if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
-          
+          if (code_seen('B') && !IsStopped()) laser_set_mode((int) code_value());
+
           laser.status = LASER_ON;
           laser.fired = LASER_FIRE_G1;
         #endif // LASER_FIRE_G1
@@ -1305,12 +1306,15 @@ void process_commands()
 #ifdef LASER_FIRE_SPINDLE
     case 3:  //M3 - fire laser
       if (code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
-      if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
-      if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
+      if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long) labs(code_value());
+      if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
       if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
-
+      if (code_seen('B') && !IsStopped()) laser_set_mode((int) code_value());
+          
       laser.status = LASER_ON;
       laser.fired = LASER_FIRE_SPINDLE;
+      
+      prepare_move();
 
       break;
     case 5:  //M5 stop firing laser
@@ -2373,9 +2377,10 @@ void process_commands()
 	case 649: // M649 set laser options
 	{
 	  if (code_seen('S') && !IsStopped()) laser.intensity = (float) code_value();
-      if (code_seen('L') && !IsStopped()) { laser.duration = (unsigned long)labs(code_value()); laser.mode = PULSED; }
-      if (code_seen('P') && !IsStopped()) { laser.ppm = (float) code_value(); laser.mode = PULSED; }
+      if (code_seen('L') && !IsStopped()) laser.duration = (unsigned long) labs(code_value());
+      if (code_seen('P') && !IsStopped()) laser.ppm = (float) code_value();
       if (code_seen('D') && !IsStopped()) laser.diagnostics = (bool) code_value();
+      if (code_seen('B') && !IsStopped()) laser_set_mode((int) code_value());
 	}
 	break;
 	#endif // LASER

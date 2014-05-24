@@ -1815,6 +1815,13 @@
   #endif
 #endif //ULTRA_LCD
 
+	#if LASER_CONTROL == 1
+      #define LASER_FIRING_PIN    5
+    #endif
+	#if LASER_CONTROL == 2
+      #define LASER_INTENSITY_PIN 5 // This is currently hard-coded to timer3 which services pins 2, 3, and 5
+      #define LASER_FIRING_PIN	2 // This is currently hard-coded to timer3 which services pins 2, 3, and 5
+	#endif
 
 #endif
 

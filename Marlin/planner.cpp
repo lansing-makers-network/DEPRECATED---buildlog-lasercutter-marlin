@@ -582,7 +582,7 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
   block->step_event_count = max(block->steps_x, max(block->steps_y, max(block->steps_z, block->steps_e)));
 
   // Bail if this is a zero-length block
-  if (block->step_event_count <= dropsegments)
+  if (block->step_event_count <= dropsegments && laser.status == LASER_OFF)
   {
     return;
   }
