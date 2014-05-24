@@ -1319,6 +1319,7 @@ void process_commands()
       break;
     case 5:  //M5 stop firing laser
 	  laser.status = LASER_OFF;
+	  prepare_move();
       break;
 #endif // LASER_FIRE_SPINDLE
     case 17:
