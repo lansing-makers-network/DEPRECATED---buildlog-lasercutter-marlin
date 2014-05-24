@@ -65,16 +65,8 @@ void timer4_init() {
 
 void laser_init()
 {
-  #if LASER_CONTROL == 1
-	timer3_init();
-  #endif // LASER_CONTROL ==1
-  #if LASER_CONTROL == 2
-    timer3_init();
-    timer4_init();
-  #endif // LASER_CONTROL == 2
-
-  // Engage the pullup resistor for TTL laser controllers which don't turn off entirely without it.
-  pinMode(LASER_FIRING_PIN, OUTPUT);
+  if (LASER_INTENSITY_PIN == 2 || LASER_INTENSITY_PIN == 3 || LASER_INTENSITY_PIN == 5) timer3_init();
+  if (LASER_INTENSITY_PIN == 6 || LASER_INTENSITY_PIN == 7 || LASER_INTENSITY_PIN == 8) timer4_init();
 
   #ifdef LASER_PERIPHERALS
   digitalWrite(LASER_PERIPHERALS_PIN, HIGH);  // Laser peripherals are active LOW, so preset the pin

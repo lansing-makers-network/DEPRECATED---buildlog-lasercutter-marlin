@@ -1312,10 +1312,8 @@ void process_commands()
       if (code_seen('B') && !IsStopped()) laser_set_mode((int) code_value());
           
       laser.status = LASER_ON;
-      laser.fired = LASER_FIRE_SPINDLE;
-      
+      laser.fired = LASER_FIRE_SPINDLE;      
       prepare_move();
-
       break;
     case 5:  //M5 stop firing laser
 	  laser.status = LASER_OFF;
