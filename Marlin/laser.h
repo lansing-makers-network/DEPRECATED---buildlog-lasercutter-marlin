@@ -56,7 +56,7 @@ void laser_init();
 void laser_fire(int intensity);
 void laser_extinguish();
 void laser_update_lifetime();
-void laser_set_mode();
+void laser_set_mode(int mode);
 #ifdef LASER_PERIPHERALS
   bool laser_peripherals_ok();
   void laser_peripherals_on();

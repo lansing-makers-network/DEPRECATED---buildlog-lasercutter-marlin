@@ -138,7 +138,7 @@ void laser_extinguish(){
 	}
 }
 void laser_set_mode(int mode){
-	switch(code_value()){
+	switch(mode){
 		case 0:
 		  laser.mode = CONTINUOUS;
 		  return;
