@@ -322,6 +322,13 @@ FORCE_INLINE void trapezoid_generator_reset() {
 // It pops blocks from the block_buffer and executes them by pulsing the stepper pins appropriately.
 ISR(TIMER1_COMPA_vect)
 {
+  #ifdef LASER
+  if (laser.dur != 0 && (laser.last_firing + laser.dur < micros())) {
+    if (laser.diagnostics) SERIAL_ECHOLN("Laser firing duration elapsed, in interrupt handler");
+	laser_extinguish();
+  }
+  #endif LASER
+	
   // If there is no current block, attempt to pop one from the buffer
   if (current_block == NULL) {
     // Anything in the buffer?
@@ -335,6 +342,7 @@ ISR(TIMER1_COMPA_vect)
       counter_e = counter_x;
       #ifdef LASER
       counter_l = counter_x;
+      laser.dur = current_block->laser_duration;
       #endif //LASER
       step_events_completed = 0;
 
@@ -373,10 +381,8 @@ ISR(TIMER1_COMPA_vect)
 	if (current_block->laser_mode == CONTINUOUS && current_block->laser_status == LASER_ON) {
 	  laser_fire(current_block->laser_intensity);
     }
-    if (current_block->laser_duration > 0 && (laser.last_firing + current_block->laser_duration < micros())) {
-	  laser_extinguish();
-	}
     if (current_block->laser_status == LASER_OFF) {
+      if (laser.diagnostics) SERIAL_ECHOLN("Laser status set to off, in interrupt handler");
       laser_extinguish();
     }
     #endif // LASER
@@ -664,17 +670,17 @@ ISR(TIMER1_COMPA_vect)
 			}
 			#ifdef LASER_RASTER
 			if (current_block->laser_mode == RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
-			  laser_fire(current_block->laser_raster_data[counter_raster]/255.0*100.0);
+			  laser_fire((float)current_block->laser_raster_data[counter_raster]/255.0*100.0);
 			  if (laser.diagnostics) {
-			    SERIAL_ECHO("Pixel: ");
-			    SERIAL_ECHOLN(itostr3(current_block->laser_raster_data[counter_raster]));
+			    SERIAL_ECHOPAIR("Pixel: ", (float)current_block->laser_raster_data[counter_raster]);
 		      }
 		      counter_raster++;
 			}
 			#endif // LASER_RASTER
 		  counter_l -= current_block->step_event_count;
 		  }
-		  if (current_block->laser_duration > 0 && (laser.last_firing + current_block->laser_duration < micros())) {
+		  if (current_block->laser_duration != 0 && (laser.last_firing + current_block->laser_duration < micros())) {
+			if (laser.diagnostics) SERIAL_ECHOLN("Laser firing duration elapsed, in interrupt fast loop");
 		    laser_extinguish();
 		  }
       #endif // LASER

@@ -27,9 +27,9 @@
 
 laser_t laser;
 
-void timer3_init() {
-	pinMode(LASER_FIRING_PIN, OUTPUT);
-    analogWrite(LASER_FIRING_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
+void timer3_init(int pin) {
+	pinMode(pin, OUTPUT);
+    analogWrite(pin, 1);  // let Arduino setup do it's thing to the PWM pin
 
     TCCR3B = 0x00;  // stop Timer4 clock for register updates
     TCCR3A = 0x82; // Clear OC3A on match, fast PWM mode, lower WGM3x=14
@@ -45,9 +45,9 @@ void timer3_init() {
     interrupts();
 }
 
-void timer4_init() {
-	pinMode(LASER_INTENSITY_PIN, OUTPUT);
-    analogWrite(LASER_INTENSITY_PIN, 1);  // let Arduino setup do it's thing to the PWM pin
+void timer4_init(int pin) {
+	pinMode(pin, OUTPUT);
+    analogWrite(pin, 1);  // let Arduino setup do it's thing to the PWM pin
 
     TCCR4B = 0x00;  // stop Timer4 clock for register updates
     TCCR4A = 0x82; // Clear OC4A on match, fast PWM mode, lower WGM4x=14
@@ -65,8 +65,15 @@ void timer4_init() {
 
 void laser_init()
 {
-  if (LASER_INTENSITY_PIN == 2 || LASER_INTENSITY_PIN == 3 || LASER_INTENSITY_PIN == 5) timer3_init();
-  if (LASER_INTENSITY_PIN == 6 || LASER_INTENSITY_PIN == 7 || LASER_INTENSITY_PIN == 8) timer4_init();
+  // Initialize timers for laser intensity control
+  #if LASER_CONTROL == 1
+    if (LASER_FIRING_PIN == 2 || LASER_FIRING_PIN == 3 || LASER_FIRING_PIN == 5) timer3_init(LASER_FIRING_PIN);
+    if (LASER_FIRING_PIN == 6 || LASER_FIRING_PIN == 7 || LASER_FIRING_PIN == 8) timer4_init(LASER_FIRING_PIN);
+  #endif
+  #if LASER_CONTROL == 2
+    if (LASER_INTENSITY_PIN == 2 || LASER_INTENSITY_PIN == 3 || LASER_INTENSITY_PIN == 5) timer3_init(LASER_INTENSITY_PIN);
+    if (LASER_INTENSITY_PIN == 6 || LASER_INTENSITY_PIN == 7 || LASER_INTENSITY_PIN == 8) timer4_init(LASER_INTENSITY_PIN);
+  #endif
 
   #ifdef LASER_PERIPHERALS
   digitalWrite(LASER_PERIPHERALS_PIN, HIGH);  // Laser peripherals are active LOW, so preset the pin
@@ -96,6 +103,8 @@ void laser_init()
     laser.peel_speed = 2.0;
     laser.peel_pause = 0.0;
   #endif // MUVE_Z_PEEL
+  
+  laser_extinguish();
 }
 void laser_fire(int intensity = 100.0){
 	laser.firing = LASER_ON;

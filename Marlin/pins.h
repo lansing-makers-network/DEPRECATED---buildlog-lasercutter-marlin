@@ -395,8 +395,8 @@
       #define LASER_FIRING_PIN    5
     #endif
 	#if LASER_CONTROL == 2
-      #define LASER_INTENSITY_PIN 6 // This is currently hard-coded to timer4 which services pins 6, 7, and 8
-      #define LASER_FIRING_PIN	5 // This is currently hard-coded to timer3 which services pins 2, 3, and 5
+      #define LASER_INTENSITY_PIN 6 // Digital pins 2, 3, 5, 6, 7, 8 are attached to timers we can use
+      #define LASER_FIRING_PIN	5
 	#endif
 	#ifdef LASER_POWER_DOWN
 	  #define LASER_POWER_PIN 9 // This is currently hard-coded to timer2 which services pins 9, 10
@@ -1688,45 +1688,45 @@
 
 #define LARGE_FLASH true
 
-#define X_STEP_PIN 37
-#define X_DIR_PIN 48
+#define X_STEP_PIN 32
+#define X_DIR_PIN 44
 #define X_MIN_PIN 12
 #define X_MAX_PIN 24
-#define X_ENABLE_PIN 29
+#define X_ENABLE_PIN 22
 #define X_MS1_PIN 40
 #define X_MS2_PIN 41
 
-#define Y_STEP_PIN 36
-#define Y_DIR_PIN 49
+#define Y_STEP_PIN 31
+#define Y_DIR_PIN 45
 #define Y_MIN_PIN 11
-#define Y_MAX_PIN 23
-#define Y_ENABLE_PIN 28
+#define Y_MAX_PIN 28
+#define Y_ENABLE_PIN 23
 #define Y_MS1_PIN 69
 #define Y_MS2_PIN 39
 
-#define Z_STEP_PIN 35
-#define Z_DIR_PIN 47
+#define Z_STEP_PIN 30
+#define Z_DIR_PIN 46
 #define Z_MIN_PIN 10
 #define Z_MAX_PIN 30
 #define Z_ENABLE_PIN 27
 #define Z_MS1_PIN 68
 #define Z_MS2_PIN 67
 
-#define HEATER_BED_PIN 3
-#define TEMP_BED_PIN 2
+#define HEATER_BED_PIN 0
+#define TEMP_BED_PIN 0
 
-#define HEATER_0_PIN  9
+#define HEATER_0_PIN  0
 #define TEMP_0_PIN 0
 
-#define HEATER_1_PIN 7
-#define TEMP_1_PIN 1
+#define HEATER_1_PIN 0
+#define TEMP_1_PIN 0
 
 #ifdef BARICUDA
-#define HEATER_2_PIN 6
+#define HEATER_2_PIN 0
 #else
-#define HEATER_2_PIN -1
+#define HEATER_2_PIN 0
 #endif
-#define TEMP_2_PIN -1
+#define TEMP_2_PIN 0
 
 #define E0_STEP_PIN         34
 #define E0_DIR_PIN          43
@@ -1747,7 +1747,7 @@
 #define SDSS               53
 #define LED_PIN            13
 #define FAN_PIN            8
-#define PS_ON_PIN          4
+#define PS_ON_PIN          -1
 #define KILL_PIN           -1 //80 with Smart Controller LCD
 #define SUICIDE_PIN        -1  //PIN that has to be turned on right after start, to keep power flowing.
 
@@ -1819,8 +1819,8 @@
       #define LASER_FIRING_PIN    5
     #endif
 	#if LASER_CONTROL == 2
-      #define LASER_INTENSITY_PIN 5 // This is currently hard-coded to timer3 which services pins 2, 3, and 5
-      #define LASER_FIRING_PIN	2 // This is currently hard-coded to timer3 which services pins 2, 3, and 5
+      #define LASER_INTENSITY_PIN 5 // Digital pins 2, 3, 5, 6, 7, 8 are attached to timers we can use
+      #define LASER_FIRING_PIN	2
 	#endif
 
 #endif

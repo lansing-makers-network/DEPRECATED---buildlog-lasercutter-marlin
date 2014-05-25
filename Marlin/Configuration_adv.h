@@ -210,7 +210,11 @@
 #define INVERT_E_STEP_PIN false
 
 //default stepper release if idle
-#define DEFAULT_STEPPER_DEACTIVE_TIME 60
+// AMRI Laser cutter
+#define DEFAULT_STEPPER_DEACTIVE_TIME 0
+
+// LMN Laser cutter
+//#define DEFAULT_STEPPER_DEACTIVE_TIME 60
 
 #define DEFAULT_MINIMUMFEEDRATE       0.0     // minimum feedrate
 #define DEFAULT_MINTRAVELFEEDRATE     0.0

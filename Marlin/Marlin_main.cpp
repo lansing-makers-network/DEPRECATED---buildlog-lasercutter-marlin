@@ -2969,12 +2969,6 @@ void manage_inactivity()
     }
   #endif
 
-  #ifdef LASER
-  if (current_block->laser_duration > 0 && (laser.last_firing + current_block->laser_duration < micros())) {
-    laser_extinguish();
-  }
-  #endif // LASER
-
   check_axes_activity();
 }
 
@@ -3012,6 +3006,7 @@ void Stop()
 {
   disable_heater();
 #ifdef LASER
+  if (laser.diagnostics) SERIAL_ECHOLN("Laser set to off, stop() called");
   laser_extinguish();
 #endif
 #ifdef LASER_PERIPHERALS
