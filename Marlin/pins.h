@@ -1704,8 +1704,8 @@
 #define Y_MS1_PIN 69
 #define Y_MS2_PIN 39
 
-#define Z_STEP_PIN 30
-#define Z_DIR_PIN 46
+#define Z_STEP_PIN 35
+#define Z_DIR_PIN 47
 #define Z_MIN_PIN 10
 #define Z_MAX_PIN 30
 #define Z_ENABLE_PIN 27
