@@ -55,7 +55,7 @@
 // 21 = Elefu Ra Board (v3)
 
 #ifndef MOTHERBOARD
-#define MOTHERBOARD 301
+#define MOTHERBOARD 35
 #endif
 
 // Define this to set a custom name for your generic Mendel,
@@ -96,8 +96,8 @@
 
 //// Uncomment the following if the laser cutter is equipped with a peripheral relay board
 //// to control power to an exhaust fan, water pump, laser power supply, etc.
-//#define LASER_PERIPHERALS
-//#define LASER_PERIPHERALS_TIMEOUT 30000  // Number of milliseconds to wait for status signal from peripheral control board
+#define LASER_PERIPHERALS
+#define LASER_PERIPHERALS_TIMEOUT 30000  // Number of milliseconds to wait for status signal from peripheral control board
 
 //// Uncomment the following line to enable cubic bezier curve movement with the G5 code
 // #define G5_BEZIER
@@ -114,7 +114,7 @@
 #define LASER_WATTS 40.0
 #define LASER_DIAMETER 0.1 // milimeters
 #define LASER_PWM 25000 // hertz
-#define LASER_FOCAL_HEIGHT 77.50 // z axis position at which the laser is focused
+#define LASER_FOCAL_HEIGHT 74.50 // z axis position at which the laser is focused
 
 //===========================================================================
 //=============================Thermal Settings  ============================
@@ -335,20 +335,20 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 // Travel limits after homing
 
 // AMRI Laser Cutter
-#define X_MAX_POS 600
-#define X_MIN_POS 0
-#define Y_MAX_POS 475
-#define Y_MIN_POS 0
-#define Z_MAX_POS 90
-#define Z_MIN_POS 0
+//#define X_MAX_POS 600
+//#define X_MIN_POS 0
+//#define Y_MAX_POS 475
+//#define Y_MIN_POS 0
+//#define Z_MAX_POS 90
+//#define Z_MIN_POS 0
 
 // Lansing Makers Netowrk Laser Cutter
-//#define X_MAX_POS 531
-//#define X_MIN_POS 0
-//#define Y_MAX_POS 558
-//#define Y_MIN_POS 0
-//#define Z_MAX_POS 95
-//#define Z_MIN_POS 0
+#define X_MAX_POS 531
+#define X_MIN_POS 0
+#define Y_MAX_POS 558
+#define Y_MIN_POS 0
+#define Z_MAX_POS 95
+#define Z_MIN_POS 0
 
 #define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
 #define Y_MAX_LENGTH (Y_MAX_POS - Y_MIN_POS)
@@ -372,19 +372,19 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 // default settings
 
 // AMRI Laser Cutter
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {167.20882, 167.20882, 4000/25.4, 1380/4}
-#define DEFAULT_MAX_FEEDRATE          {165, 165, 50, 200000}    // (mm/sec)    
-#define DEFAULT_MAX_ACCELERATION      {5000,5000,5000,500}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
-#define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   {167.20882, 167.20882, 4000/25.4, 1380/4}
+//#define DEFAULT_MAX_FEEDRATE          {165, 165, 50, 200000}    // (mm/sec)    
+//#define DEFAULT_MAX_ACCELERATION      {5000,5000,5000,500}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+//#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
+//#define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
 
 // Lansing Makers Netowork Laser Cutter
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   {157.4802,157.4802,6047.2440}  // default steps per unit for Ultimaker
-//#define DEFAULT_MAX_FEEDRATE          {500, 500, 10, 25}    // (mm/sec)
-//#define DEFAULT_MAX_ACCELERATION      {2600,2600,2.5,2.5}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {157.4802,157.4802,6047.2440}  // default steps per unit for Ultimaker
+#define DEFAULT_MAX_FEEDRATE          {500, 500, 10, 25}    // (mm/sec)
+#define DEFAULT_MAX_ACCELERATION      {2600,2600,2.5,2.5}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
-//#define DEFAULT_ACCELERATION          2000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves
-//#define DEFAULT_RETRACT_ACCELERATION  2000   // X, Y, Z and E max acceleration in mm/s^2 for retracts
+#define DEFAULT_ACCELERATION          2000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  2000   // X, Y, Z and E max acceleration in mm/s^2 for retracts
 
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
