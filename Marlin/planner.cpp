@@ -689,6 +689,7 @@ block->steps_y = labs((target[X_AXIS]-position[X_AXIS]) - (target[Y_AXIS]-positi
     // interval between steps for X, Y, Z, E, L to feed to the motion control code.
     if (laser.mode == PULSED or laser.mode == RASTER) {
       block->steps_l = labs(block->millimeters*laser.ppm);
+      block->laser_raster_data = laser.raster_data;
     } else {
       block->steps_l = 0;
     }

@@ -112,7 +112,6 @@ void laser_fire(int intensity = 100.0){
 	if (intensity > 100.0) intensity = 100.0; // restrict intensity between 0 and 100
 	if (intensity < 0) intensity = 0;
 
-    pinMode(LASER_FIRING_PIN, OUTPUT);
 	#if LASER_CONTROL == 1
 	  analogWrite(LASER_FIRING_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
     #endif
