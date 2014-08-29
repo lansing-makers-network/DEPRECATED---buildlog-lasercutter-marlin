@@ -792,6 +792,12 @@ static void homeaxis(int axis) {
     has_axis_homed[axis] = true;
     current_position[axis] = 0;
     #ifdef MUVE_Z_PEEL
+
+      if (axis == Z_AXIS) {
+        has_axis_homed[E_AXIS] = true;
+        current_position[E_AXIS] = 0;
+      }
+
       plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[Z_AXIS]);
       destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
       feedrate = homing_feedrate[axis];
