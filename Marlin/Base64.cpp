@@ -47,7 +47,7 @@ int base64_encode(char *output, char *input, int inputLen) {
 	return encLen;
 }
 
-int base64_decode(char * output, char * input, int inputLen) {
+int base64_decode(unsigned char * output, char * input, int inputLen) {
 	int i = 0, j = 0;
 	int decLen = 0;
 	unsigned char a3[3];

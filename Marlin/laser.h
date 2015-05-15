@@ -38,7 +38,9 @@ typedef struct {
   unsigned int time; // temporary counter to limit eeprom writes
   unsigned int lifetime; // laser lifetime firing counter in minutes
   #ifdef LASER_RASTER
-    char raster_data[LASER_MAX_RASTER_LINE];
+    unsigned char raster_data[LASER_MAX_RASTER_LINE];
+    unsigned char rasterlaserpower;
+
     float raster_aspect_ratio;
     float raster_mm_per_pulse;
     int raster_raw_length;

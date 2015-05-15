@@ -670,7 +670,7 @@ ISR(TIMER1_COMPA_vect)
 			}
 			#ifdef LASER_RASTER
 			if (current_block->laser_mode == RASTER && current_block->laser_status == LASER_ON) { // Raster Firing Mode
-			  laser_fire((float)current_block->laser_raster_data[counter_raster]/255.0*100.0);
+			  laser_fire(current_block->laser_raster_data[counter_raster]); //For some reason, when comparing raster power to ppm line burns the rasters were around 2% more powerful - going from darkened paper to burning through paper.
 			  if (laser.diagnostics) {
 			    SERIAL_ECHOPAIR("Pixel: ", (float)current_block->laser_raster_data[counter_raster]);
 		      }

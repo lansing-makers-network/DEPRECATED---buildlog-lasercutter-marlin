@@ -76,11 +76,11 @@ void laser_init()
   #endif
 
   #ifdef LASER_PERIPHERALS
-  digitalWrite(LASER_PERIPHERALS_PIN, HIGH);  // Laser peripherals are active LOW, so preset the pin
-  pinMode(LASER_PERIPHERALS_PIN, OUTPUT);
+    digitalWrite(LASER_PERIPHERALS_PIN, HIGH);  // Laser peripherals are active LOW, so preset the pin
+    pinMode(LASER_PERIPHERALS_PIN, OUTPUT);
 
-  digitalWrite(LASER_PERIPHERALS_STATUS_PIN, HIGH);  // Set the peripherals status pin to pull-up.
-  pinMode(LASER_PERIPHERALS_STATUS_PIN, INPUT);
+    digitalWrite(LASER_PERIPHERALS_STATUS_PIN, HIGH);  // Set the peripherals status pin to pull-up.
+    pinMode(LASER_PERIPHERALS_STATUS_PIN, INPUT);
   #endif // LASER_PERIPHERALS
 
   // initialize state to some sane defaults
@@ -107,22 +107,23 @@ void laser_init()
   laser_extinguish();
 }
 void laser_fire(int intensity = 100.0){
-	laser.firing = LASER_ON;
-	laser.last_firing = micros(); // microseconds of last laser firing
-	if (intensity > 100.0) intensity = 100.0; // restrict intensity between 0 and 100
-	if (intensity < 0) intensity = 0;
+    laser.firing = LASER_ON;
+    laser.last_firing = micros(); // microseconds of last laser firing
+    if (intensity > 100.0) intensity = 100.0; // restrict intensity between 0 and 100
+    if (intensity < 0) intensity = 0;
 
-	#if LASER_CONTROL == 1
+    pinMode(LASER_FIRING_PIN, OUTPUT);
+    #if LASER_CONTROL == 1
 	  analogWrite(LASER_FIRING_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
     #endif
-	#if LASER_CONTROL == 2
+    #if LASER_CONTROL == 2
       analogWrite(LASER_INTENSITY_PIN, labs((intensity / 100.0)*(F_CPU / LASER_PWM)));
       digitalWrite(LASER_FIRING_PIN, HIGH);
     #endif
 
     if (laser.diagnostics) {
 	  SERIAL_ECHOLN("Laser fired");
-	}
+    }
 }
 void laser_extinguish(){
 	if (laser.firing == LASER_ON) {

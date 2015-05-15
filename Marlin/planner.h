@@ -76,7 +76,7 @@ typedef struct {
     long steps_l; // step count between firings of the laser, for pulsed firing mode
     int laser_intensity; // Laser firing instensity in clock cycles for the PWM timer
     #ifdef LASER_RASTER
-      char laser_raster_data[LASER_MAX_RASTER_LINE];
+      unsigned char laser_raster_data[LASER_MAX_RASTER_LINE]; 
     #endif // LASER_RASTER
   #endif // LASER
   volatile char busy;
