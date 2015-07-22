@@ -391,20 +391,22 @@
     #define SDSS               53
     #define LED_PIN            13
 
-	#if LASER_CONTROL == 1
+  #if LASER_CONTROL == 1
       #define LASER_FIRING_PIN    5
     #endif
-	#if LASER_CONTROL == 2
+  #if LASER_CONTROL == 2
       #define LASER_INTENSITY_PIN 6 // Digital pins 2, 3, 5, 6, 7, 8 are attached to timers we can use
-      #define LASER_FIRING_PIN	5
-	#endif
-	#ifdef LASER_POWER_DOWN
-	  #define LASER_POWER_PIN 9 // This is currently hard-coded to timer2 which services pins 9, 10
-	#endif // LASER_POWER_DOWN
-	#ifdef LASER_PERIPHERALS
-      #define LASER_PERIPHERALS_PIN       4
-	  #define LASER_PERIPHERALS_STATUS_PIN		  11
-    #endif // LASER_PERIPHERALS
+      #define LASER_FIRING_PIN  5
+  #endif
+  #ifdef LASER_POWER_DOWN
+    #define LASER_POWER_PIN 9 // This is currently hard-coded to timer2 which services pins 9, 10
+  #endif // LASER_POWER_DOWN
+  #ifdef LASER_PERIPHERALS
+    #define LASER_COOLANT       64
+    #define LASER_AIR           40
+    #define LASER_POWER         44
+    #define LASER_EXHAUST       42
+  #endif // LASER_PERIPHERALS
 
   #endif
 
@@ -558,10 +560,10 @@
     #endif
     #else //old style panel with shift register
       //arduino pin witch triggers an piezzo beeper
-      #define BEEPER 33		//No Beeper added
+      #define BEEPER 33   //No Beeper added
 
       //buttons are attached to a shift register
-	// Not wired this yet
+  // Not wired this yet
       //#define SHIFT_CLK 38
       //#define SHIFT_LD 42
       //#define SHIFT_OUT 40
@@ -691,18 +693,18 @@
 *
 ****************************************************************************************/
 #if MOTHERBOARD == 21
-#define	KNOWN_BOARD 1
+#define KNOWN_BOARD 1
 
 #ifndef __AVR_ATmega2560__
  #error Oops!  Make sure you have 'Arduino Mega' selected from the 'Tools -> Boards' menu.
 #endif
 
 
-#define X_STEP_PIN		     49
-#define X_DIR_PIN			     13
-#define X_ENABLE_PIN		   48
-#define X_MIN_PIN			     35
-#define X_MAX_PIN			     -1 //34
+#define X_STEP_PIN         49
+#define X_DIR_PIN          13
+#define X_ENABLE_PIN       48
+#define X_MIN_PIN          35
+#define X_MAX_PIN          -1 //34
 
 #define Y_STEP_PIN         11
 #define Y_DIR_PIN          9
@@ -734,18 +736,18 @@
 #define FAN_PIN            16 //5V PWM
 
 #define PS_ON_PIN          10 //Set to -1 if using a manual switch on the PWRSW Connector
-#define SLEEP_WAKE_PIN		 26 //This feature still needs work
+#define SLEEP_WAKE_PIN     26 //This feature still needs work
 
-#define HEATER_0_PIN       45	//12V PWM1
-#define HEATER_1_PIN       46	//12V PWM2
-#define HEATER_2_PIN       17	//12V PWM3
-#define HEATER_BED_PIN     44	//DOUBLE 12V PWM
-#define TEMP_0_PIN         3	//ANALOG NUMBERING
-#define TEMP_1_PIN         2 	//ANALOG NUMBERING
-#define TEMP_2_PIN         1 	//ANALOG NUMBERING
-#define TEMP_BED_PIN       0	//ANALOG NUMBERING
+#define HEATER_0_PIN       45 //12V PWM1
+#define HEATER_1_PIN       46 //12V PWM2
+#define HEATER_2_PIN       17 //12V PWM3
+#define HEATER_BED_PIN     44 //DOUBLE 12V PWM
+#define TEMP_0_PIN         3  //ANALOG NUMBERING
+#define TEMP_1_PIN         2  //ANALOG NUMBERING
+#define TEMP_2_PIN         1  //ANALOG NUMBERING
+#define TEMP_BED_PIN       0  //ANALOG NUMBERING
 
-#define BEEPER 		         36
+#define BEEPER             36
 
 #define KILL_PIN           -1
 
@@ -933,7 +935,7 @@
 
 #ifdef STB
  #define FAN_PIN            4
-	//  Uncomment this if you have the first generation (V1.10) of STBs board
+  //  Uncomment this if you have the first generation (V1.10) of STBs board
  #define LCD_PIN_BL         17 // LCD backlight LED
 #endif
 
@@ -1028,7 +1030,7 @@
      // Pins for DOGM SPI LCD Support
      #define DOGLCD_A0  30
      #define DOGLCD_CS  17
-     #define LCD_PIN_BL	28	// backlight LED on PA3
+     #define LCD_PIN_BL 28  // backlight LED on PA3
      // GLCD features
      #define LCD_CONTRAST 1
      // Uncomment screen orientation
@@ -1815,13 +1817,13 @@
   #endif
 #endif //ULTRA_LCD
 
-	#if LASER_CONTROL == 1
+  #if LASER_CONTROL == 1
       #define LASER_FIRING_PIN    5
     #endif
-	#if LASER_CONTROL == 2
+  #if LASER_CONTROL == 2
       #define LASER_INTENSITY_PIN 5 // Digital pins 2, 3, 5, 6, 7, 8 are attached to timers we can use
-      #define LASER_FIRING_PIN	2
-	#endif
+      #define LASER_FIRING_PIN  2
+  #endif
 
 #endif
 
@@ -1915,7 +1917,7 @@
     #define BLEN_B 1
     #define BLEN_A 0
 
-    #define SDCARDDETECT -1		// Ramps does not use this port
+    #define SDCARDDETECT -1   // Ramps does not use this port
 
       //encoder rotation values
     #define encrot0 0
@@ -2027,7 +2029,7 @@
  #define BLEN_B 1
  #define BLEN_A 0
 
- #define SDCARDDETECT -1	// Megatronics does not use this port
+ #define SDCARDDETECT -1  // Megatronics does not use this port
 
    //encoder rotation values
  #define encrot0 0
@@ -2123,7 +2125,7 @@
  #define BLEN_B 1
  #define BLEN_A 0
 
- #define SDCARDDETECT -1	// Megatronics does not use this port
+ #define SDCARDDETECT -1  // Megatronics does not use this port
 
    //encoder rotation values
  #define encrot0 0
