@@ -1,3 +1,6 @@
+# HEADS UP!  This repository has moved!
+## The official development repository for this project has moved to: https://github.com/timschmidt/buildlog-lasercutter-marlin
+
 ==========================================
 Turnkey K40 Laser Arduino + Ramps Firmware
 ==========================================
